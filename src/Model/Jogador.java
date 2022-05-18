@@ -1,6 +1,6 @@
 package Model;
 
-public class Jogador{
+class Jogador{
 	enum Cor {
 		vermelho, azul,laranja,amarelo,roxo,preto
 	}
