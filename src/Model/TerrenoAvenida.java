@@ -12,25 +12,28 @@ class TerrenoAvenida extends Terreno{
 		Morumbi, RuaAugusta
 	}
 	
-	private String image;
 	private int aluguel[];
-	private String dono;
 	private CorTerreno cor;
-	private int preco[];
+	private int qntdCasa = 0;
+	private boolean hotel = false;
 	
 	CorTerreno getCor() {
 		return cor;
 	}
 	
-	int getPreco() {
-		return preco[0];
+	int getPrecoConstrucao() {
+		return precoConstrucao;
 	}
 	
-	int getPrecoConstrucao(int tipo) {
-		return preco[tipo+1];
+	void setHotel() {
+		this.hotel = true;
 	}
 	
-	void setAluguel(int qntdCasa, boolean hotel) {
+	void adicionaCasa() {
+		this.qntdCasa += 1;
+	}
+	
+	void setAluguel() {
 		if(hotel) {
 			aluguelAtual += aluguel[4];
 		}
@@ -46,7 +49,8 @@ class TerrenoAvenida extends Terreno{
 		case Av9Julho:
 			aluguel = new int[]{90,250,700,875,1050};
 			aluguelAtual = 18;
-			preco = new int[]{220,150,150};
+			preco = 220;
+			precoConstrucao = 150;
 			image = "Av. 9 de Julho.png";
 			cor = CorTerreno.azul;
 			break;
@@ -54,7 +58,8 @@ class TerrenoAvenida extends Terreno{
 		case AvAtlantica:
 			aluguel = new int[]{130,390,900,1100,1275};
 			aluguelAtual = 26;
-			preco = new int[]{300,200,200};
+			preco = 300;
+			precoConstrucao = 200;
 			image = "Av. Atlântica.png";
 			cor = CorTerreno.verde;
 			break;
@@ -62,7 +67,8 @@ class TerrenoAvenida extends Terreno{
 		case AvBrasil:
 			aluguel = new int[]{60,180,500,700,900};
 			aluguelAtual = 12;
-			preco = new int[]{160,100,100};
+			preco = 160;
+			precoConstrucao = 100;
 			image = "Av. Brasil.png";
 			cor = CorTerreno.amarelo;
 			break;
@@ -70,7 +76,8 @@ class TerrenoAvenida extends Terreno{
 		case AvBrigadeiro:
 			aluguel = new int[]{100,300,750,925,1100};
 			aluguelAtual = 20;
-			preco = new int[]{240,150,150};
+			preco = 240;
+			precoConstrucao = 150;
 			image = "Av. Brigadeiro Faria Lima.png";
 			cor = CorTerreno.azul;
 			break;
@@ -78,14 +85,16 @@ class TerrenoAvenida extends Terreno{
 		case AvEuropa:
 			aluguel = new int[]{80,220,600,800,1000};
 			aluguelAtual = 16;
-			preco = new int[]{200,100,100};
+			preco = 200;
+			precoConstrucao = 100;
 			image = "Av. Europa.png";
 			cor = CorTerreno.marrom;
 			break;
 			
 		case AvNossaSraCopacabana:
 			aluguel = new int[]{4,20,60,180,320,450};
-			preco = new int[]{60,50,50};
+			preco = 60;
+			precoConstrucao = 50;
 			image = "Av. Nossa S. de Copacabana.png";
 			cor = CorTerreno.rosa;
 			break;
@@ -93,7 +102,8 @@ class TerrenoAvenida extends Terreno{
 		case AvPacaembu:
 			aluguel = new int[]{70,200,550,750,950};
 			aluguelAtual = 14;
-			preco = new int[]{180,100,100};
+			preco = 180;
+			precoConstrucao = 100;
 			image = "Av. Pacaembú.png";
 			cor = CorTerreno.marrom;
 			break;
@@ -101,7 +111,8 @@ class TerrenoAvenida extends Terreno{
 		case AvPaulista:
 			aluguel = new int[]{50,150,450,625,750};
 			aluguelAtual = 10;
-			preco = new int[]{140,100,100};
+			preco = 140;
+			precoConstrucao = 100;
 			image = "Av. Paulista.png";
 			cor = CorTerreno.amarelo;
 			break;
@@ -109,7 +120,8 @@ class TerrenoAvenida extends Terreno{
 		case AvPresidenteVargas:
 			aluguel = new int[]{10,30,90,160,250};
 			aluguelAtual = 2;
-			preco = new int[]{60,50,50};
+			preco = 60;
+			precoConstrucao = 50;
 			image = "Av. Presidente Vargas.png";
 			cor = CorTerreno.rosa;
 			break;
@@ -117,7 +129,8 @@ class TerrenoAvenida extends Terreno{
 		case AvReboucas:
 			aluguel = new int[]{90,250,70,875,1050};
 			aluguelAtual = 18;
-			preco = new int[]{220,150,150};
+			preco = 220;
+			precoConstrucao = 150;
 			image = "Av. Rebouças.png";
 			cor = CorTerreno.azul;
 			break;
@@ -125,14 +138,16 @@ class TerrenoAvenida extends Terreno{
 		case AvVieiraSouto:
 			aluguel = new int[]{150,450,1000,1200,1400};
 			aluguelAtual = 28;
-			preco = new int[]{320,200,200};
+			preco = 320;
+			precoConstrucao = 200;
 			image = "Av. Vieira Souto.png";
 			cor = CorTerreno.verde;
 			break;		
 		case Botafogo:
 			aluguel = new int[]{30,90,270,400,500};
 			aluguelAtual = 6;
-			preco = new int[]{100,50,50};
+			preco = 100;
+			precoConstrucao = 50;
 			image = "Botafogo.png";
 			cor = CorTerreno.vermelho;
 			break;
@@ -140,7 +155,8 @@ class TerrenoAvenida extends Terreno{
 		case Brooklin:
 			aluguel = new int[]{110,330,800,975,1150};
 			aluguelAtual = 22;
-			preco = new int[]{260,150,150};
+			preco = 260;
+			precoConstrucao = 150;
 			image = "Brooklin.png";
 			cor = CorTerreno.petroleo;
 			break;
@@ -148,7 +164,8 @@ class TerrenoAvenida extends Terreno{
 		case Copacabana:
 			aluguel = new int[]{110,330,800,975,1150};
 			aluguelAtual = 22;
-			preco = new int[]{260,150,150};
+			preco = 260;
+			precoConstrucao = 150;
 			image = "Copacabana.png";
 			cor = CorTerreno.verde;
 			break;
@@ -156,7 +173,8 @@ class TerrenoAvenida extends Terreno{
 		case Flamengo:
 			aluguel = new int[]{40,100,300,450,600};
 			aluguelAtual = 8;
-			preco = new int[]{120,50,50};
+			preco = 120;
+			precoConstrucao = 50;
 			image = "Flamengo.png";
 			cor = CorTerreno.vermelho;
 			break;
@@ -164,7 +182,8 @@ class TerrenoAvenida extends Terreno{
 		case Interlagos:
 			aluguel = new int[]{175,500,1100,1300,1500};
 			aluguelAtual = 35;
-			preco = new int[]{350,200,200};
+			preco = 350;
+			precoConstrucao = 200;
 			image = "Interlagos.png";
 			cor = CorTerreno.laranja;
 			break;
@@ -172,7 +191,8 @@ class TerrenoAvenida extends Terreno{
 		case Ipanema:
 			aluguel = new int[]{130,390,900,1100,1275};
 			aluguelAtual = 26;
-			preco = new int[]{300,200,200};
+			preco = 300;
+			precoConstrucao = 200;
 			image = "Ipanema.png";
 			cor = CorTerreno.verde;
 			break;
@@ -180,7 +200,8 @@ class TerrenoAvenida extends Terreno{
 		case JardimEuropa:
 			aluguel = new int[]{50,150,450,625,750};
 			aluguelAtual = 10;
-			preco = new int[]{140,100,100};
+			preco = 140;
+			precoConstrucao = 100;
 			image = "Jardim Europa.png";
 			cor = CorTerreno.amarelo;
 			break;
@@ -188,7 +209,8 @@ class TerrenoAvenida extends Terreno{
 		case JardimPaulista:
 			aluguel = new int[]{120,360,850,1025,1200};
 			aluguelAtual = 24;
-			preco = new int[]{280,150,150};
+			preco = 280;
+			precoConstrucao = 150;
 			image = "Jardim Paulista.png";
 			cor = CorTerreno.petroleo;
 			break;
@@ -196,7 +218,8 @@ class TerrenoAvenida extends Terreno{
 		case Leblon:
 			aluguel = new int[]{30,90,270,400,500};
 			aluguelAtual = 6;
-			preco = new int[]{100,50,50};
+			preco = 100;
+			precoConstrucao = 50;
 			image = "Leblon.png";
 			cor = CorTerreno.petroleo;
 			break;
@@ -204,7 +227,8 @@ class TerrenoAvenida extends Terreno{
 		case Morumbi:
 			aluguel = new int[]{200,600,1400,1700,2000};
 			aluguelAtual = 50;
-			preco = new int[]{400,200,200};
+			preco = 400;
+			precoConstrucao = 200;
 			image = "Morumbi.png";
 			cor = CorTerreno.laranja;
 			break;
@@ -212,7 +236,8 @@ class TerrenoAvenida extends Terreno{
 		case RuaAugusta:
 			aluguel = new int[]{70,200,550,750,950};
 			aluguelAtual = 14;
-			preco = new int[]{180,100,100};
+			preco = 180;
+			precoConstrucao = 100;
 			image = "Rua Augusta.png";
 			cor = CorTerreno.marrom;
 			break;

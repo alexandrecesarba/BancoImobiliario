@@ -1,30 +1,55 @@
 package Model;
 
 import Model.TerrenoAvenida.Territorio;
+import Model.TerrenoCompanhia.Companhia;
+import Model.TerrenoNeutro.TipoTerreno;
 
 class Tabuleiro {
-	private TerrenoAvenida tabuleiro[] = {
-			new TerrenoAvenida(Territorio.Av9Julho),
-			new TerrenoAvenida(Territorio.AvAtlantica),
-			new TerrenoAvenida(Territorio.AvBrasil),
-			new TerrenoAvenida(Territorio.AvBrigadeiro), 
-			new TerrenoAvenida(Territorio.AvEuropa),
-			new TerrenoAvenida(Territorio.AvNossaSraCopacabana),
-			new TerrenoAvenida(Territorio.AvPacaembu),
-			new TerrenoAvenida(Territorio.AvPaulista),
+	
+	public static Terreno tabuleiro[] = {
+			new TerrenoNeutro(TipoTerreno.Inicio),
+			new TerrenoAvenida(Territorio.Leblon),
+			new TerrenoNeutro(TipoTerreno.SorteReves),
 			new TerrenoAvenida(Territorio.AvPresidenteVargas),
+			new TerrenoAvenida(Territorio.AvNossaSraCopacabana),			
+			new TerrenoCompanhia(Companhia.Ferroviaria),
+			new TerrenoAvenida(Territorio.AvBrigadeiro),
+			new TerrenoCompanhia(Companhia.Viacao),
 			new TerrenoAvenida(Territorio.AvReboucas),
-			new TerrenoAvenida(Territorio.AvVieiraSouto),
-			new TerrenoAvenida(Territorio.Botafogo),
-			new TerrenoAvenida(Territorio.Brooklin),
-			new TerrenoAvenida(Territorio.Copacabana),
+			new TerrenoAvenida(Territorio.Av9Julho),
+			new TerrenoNeutro(TipoTerreno.Prisao),
+			new TerrenoAvenida(Territorio.AvEuropa),
+			new TerrenoNeutro(TipoTerreno.SorteReves),
+			new TerrenoAvenida(Territorio.RuaAugusta),
+			new TerrenoAvenida(Territorio.AvPacaembu),
+			new TerrenoCompanhia(Companhia.Taxi),
+			new TerrenoNeutro(TipoTerreno.SorteReves),
+			new TerrenoAvenida(Territorio.Interlagos),
+			new TerrenoNeutro(TipoTerreno.LucrosOuDividendos),
+			new TerrenoAvenida(Territorio.Morumbi),
+			new TerrenoNeutro(TipoTerreno.ParadaLivre),
 			new TerrenoAvenida(Territorio.Flamengo),
-			new TerrenoAvenida(Territorio.Interlagos), 
-			new TerrenoAvenida(Territorio.Ipanema),
+			new TerrenoNeutro(TipoTerreno.SorteReves),
+			new TerrenoAvenida(Territorio.Botafogo),
+			new TerrenoNeutro(TipoTerreno.Imposto),
+			new TerrenoCompanhia(Companhia.Navegacao),
+			new TerrenoAvenida(Territorio.AvBrasil),
+			new TerrenoNeutro(TipoTerreno.SorteReves),
+			new TerrenoAvenida(Territorio.AvPaulista),
 			new TerrenoAvenida(Territorio.JardimEuropa),
-			new TerrenoAvenida(Territorio.JardimPaulista), 
-			new TerrenoAvenida(Territorio.Leblon), 
-			new TerrenoAvenida(Territorio.Morumbi), 
-			new TerrenoAvenida(Territorio.RuaAugusta)
+			new TerrenoNeutro(TipoTerreno.VaPrisao),
+			new TerrenoAvenida(Territorio.Copacabana),
+			new TerrenoCompanhia(Companhia.Aviacao),
+			new TerrenoAvenida(Territorio.AvVieiraSouto),			
+			new TerrenoAvenida(Territorio.AvAtlantica),
+			new TerrenoCompanhia(Companhia.TaxiAereo),
+			new TerrenoAvenida(Territorio.Ipanema),
+			new TerrenoNeutro(TipoTerreno.SorteReves),
+			new TerrenoAvenida(Territorio.JardimPaulista),
+			new TerrenoAvenida(Territorio.Brooklin)
 		};
+	
+	Terreno getTerreno(int pos) {
+		return tabuleiro[pos];
+	}
 }

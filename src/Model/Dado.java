@@ -2,10 +2,10 @@ package Model;
 import java.util.Random;
 
 class Dado {
-	Random ran = new Random();
-	int valor = 0;
-	private String image = "";
-	int rodaDado() {
+	static Random ran = new Random();
+	static int valor = 0;
+	private static String image = "";
+	public static int rodaDado() {
 		valor = ran.nextInt(6)+1;
 		Integer myInt = Integer.valueOf(valor);
 		String s = myInt.toString();
@@ -13,10 +13,7 @@ class Dado {
 		return valor;
 	}
 	
-	String getImage() {
+	static String getImage() {
 		return image;
 	}
-	
-	
-
 }
