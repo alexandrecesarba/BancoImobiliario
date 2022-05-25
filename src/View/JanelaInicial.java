@@ -17,7 +17,6 @@ public class JanelaInicial extends JFrame{
 		setSize(1200,700);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		janelaPanel.add(inputQtdJogadores);
-		
 		janelaPanel.add(botaoSubmit);
 		botaoSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
