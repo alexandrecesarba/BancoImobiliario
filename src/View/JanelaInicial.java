@@ -26,6 +26,10 @@ public class JanelaInicial extends JFrame{
 					qtdJogadores = 0;
 				}else {
 					System.out.printf("%d\n", qtdJogadores);
+					Tabuleiro frame = new Tabuleiro();
+					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					frame.setVisible(true);
+					
 				}
 			}
 		});
