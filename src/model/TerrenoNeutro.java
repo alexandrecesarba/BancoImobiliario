@@ -1,10 +1,6 @@
-package Model;
+package model;
 
 class TerrenoNeutro extends Terreno{
-	enum TipoTerreno {
-		Inicio, SorteReves, Prisao, LucrosOuDividendos, ParadaLivre,
-		Imposto, VaPrisao
-	}
 	public TerrenoNeutro(TipoTerreno carta) {
 		switch(carta) {
 		case Inicio:
@@ -13,6 +9,7 @@ class TerrenoNeutro extends Terreno{
 		case SorteReves:
 			break;
 		case Prisao:
+			break;
 		case LucrosOuDividendos:
 			aluguelAtual = 200;
 			break;

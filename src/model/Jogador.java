@@ -1,12 +1,9 @@
-package Model;
+package model;
 
 import java.util.ArrayList;
 
 class Jogador{
-	enum Cor {
-		vermelho, azul,laranja,amarelo,roxo,preto
-	}
-	private Cor cor;
+	private CorPino cor;
 	private String image;
 	private int posicao = 0;
 	private boolean naPrisao = false;
@@ -18,14 +15,14 @@ class Jogador{
 		Integer myInt = Integer.valueOf(pos);
 		String s = myInt.toString();
 		this.image = "pin" + s;
-		this.cor = Cor.values()[pos];
+		this.cor = CorPino.values()[pos];
 	}
 	
 	String getImage() {
 		return this.image;
 	}
 	
-	Cor getCor() {
+	CorPino getCor() {
 		return this.cor;
 	}
 	

@@ -1,16 +1,12 @@
-package Model;
+package model;
 
 
 class Terreno {
-	protected String image;
+	protected String nome;
 	protected int aluguelAtual;
 	protected String dono;
 	protected int preco;
 	protected int precoConstrucao;
-	
-	String getImage() {
-		return image;
-	}
 	
 	String getDono() {
 		return dono;

@@ -1,4 +1,4 @@
-package View;
+package view;
 
 // Utilizar singleton pattern para gerenciar os frames
 

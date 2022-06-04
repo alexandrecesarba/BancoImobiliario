@@ -1,9 +1,9 @@
-package Model;
+package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import Model.CartaSorteReves.SorteReves;
+import model.CartaSorteReves.SorteReves;
 
 class BaralhoSorte {
 	private ArrayList<SorteReves> baralho = new ArrayList<SorteReves>();
