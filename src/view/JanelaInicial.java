@@ -1,9 +1,9 @@
 package view;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+@SuppressWarnings("serial")
 public class JanelaInicial extends JFrame{
 	JPanel janelaPanel = new JPanel();
 	JLabel janelaLabel = new JLabel();
@@ -21,15 +21,19 @@ public class JanelaInicial extends JFrame{
 		botaoSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				qtdJogadores = Integer.parseInt(inputQtdJogadores.getText());
-				if(qtdJogadores < 3 || qtdJogadores > 6) {
-					System.out.printf("%s\n", "Num de jogadores nao permitido (3 a 6 jogadores)");
-					qtdJogadores = 0;
-				}else {
-					System.out.printf("%d\n", qtdJogadores);
-					Tabuleiro frame = new Tabuleiro();
-					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					frame.setVisible(true);
-					
+				try {
+					if(qtdJogadores >= 3 && qtdJogadores <= 6) {
+						System.out.printf("%d\n", qtdJogadores);
+						Tabuleiro frame = new Tabuleiro();
+						frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+						frame.setVisible(true);
+					}
+					else {
+						qtdJogadores = 0;
+						throw new Exception("Quantidade de jogadores invalida");
+					}
+				}catch(Exception e1) {
+					System.out.println(e1);
 				}
 			}
 		});
