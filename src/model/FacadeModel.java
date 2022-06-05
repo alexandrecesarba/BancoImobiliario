@@ -10,8 +10,16 @@ public class FacadeModel {
 	
 	private FacadeModel(){}
 	
-	static FacadeModel getInstance() {
+	public static FacadeModel getInstance() {
 		return instance;
+	}
+	
+	public int[] getDados(int x) {
+		int[] resultados = {0,0};
+		for(int i=0; i < x; i++) {
+			resultados[i] = dado.rodaDado();
+		}
+		return resultados;
 	}
 	
 //	public int getCartaSorteReves() {

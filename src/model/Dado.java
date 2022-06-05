@@ -13,15 +13,8 @@ class Dado {
 		return instance;
 	}
 
-	public static int rodaDado() {
+	public int rodaDado() {
 		valor = ran.nextInt(6)+1;
-//		Integer myInt = Integer.valueOf(valor);
-//		String s = myInt.toString();
-//		image = "die_face_" + s;
 		return valor;
 	}
-	
-//	static String getImage() {
-//		return image;
-//	}
 }

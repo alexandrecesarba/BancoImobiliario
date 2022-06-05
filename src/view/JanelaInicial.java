@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 public class JanelaInicial extends JFrame{
 	JPanel janelaPanel = new JPanel();
-	JLabel janelaLabel = new JLabel();
+	JLabel instrucao1 = new JLabel("Coloque o número de jogadores:");
 	JTextField inputQtdJogadores = new JTextField(15);
 	JButton botaoSubmit = new JButton("Enter");
 	private int qtdJogadores;
@@ -16,6 +16,8 @@ public class JanelaInicial extends JFrame{
 		setVisible(true);
 		setSize(1200,700);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+//		instrucao1.
+		janelaPanel.add(instrucao1);
 		janelaPanel.add(inputQtdJogadores);
 		janelaPanel.add(botaoSubmit);
 		botaoSubmit.addActionListener(new ActionListener() {
@@ -37,7 +39,6 @@ public class JanelaInicial extends JFrame{
 				}
 			}
 		});
-		janelaPanel.add(janelaLabel);
 		add(janelaPanel);
 	}
 }
