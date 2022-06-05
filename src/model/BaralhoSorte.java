@@ -5,10 +5,10 @@ import java.util.Collections;
 
 class BaralhoSorte {
 	private ArrayList<Integer> baralho = new ArrayList<Integer>();
-	private BaralhoSorte instance = new BaralhoSorte();
+	private static BaralhoSorte instance = new BaralhoSorte();
 	
-	BaralhoSorte getInstance() {
-		return this.instance;
+	static BaralhoSorte getInstance() {
+		return instance;
 	}
 	
 	private BaralhoSorte(){

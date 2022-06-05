@@ -1,13 +1,13 @@
  package model;
 
 class Tabuleiro {
-	private Tabuleiro instance = new Tabuleiro();
+	private static Tabuleiro instance = new Tabuleiro();
 	
 	
 	private Tabuleiro(){	}
 	
-	Tabuleiro getInstance() {
-		return this.instance;
+	static Tabuleiro getInstance() {
+		return instance;
 	}
 	
 	public static Terreno tabuleiro[] = {

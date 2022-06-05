@@ -5,12 +5,12 @@ class Dado {
 	static Random ran = new Random();;
 	static int valor = 0;
 //	private static String image = "";
-	private Dado instance = new Dado();
+	private static Dado instance = new Dado();
 
 	private Dado(){	}
 	
-	Dado getInstance() {
-		return this.instance;
+	static Dado getInstance() {
+		return instance;
 	}
 
 	public static int rodaDado() {
