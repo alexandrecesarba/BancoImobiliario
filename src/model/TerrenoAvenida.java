@@ -24,7 +24,9 @@ class TerrenoAvenida extends Terreno{
 	}
 	
 	void setHotel() {
-		this.hotel = true;
+		if(qntdCasa > 0) {
+			this.hotel = true;
+		}
 	}
 	
 	void adicionaCasa() {

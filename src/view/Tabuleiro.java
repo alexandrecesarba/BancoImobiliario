@@ -10,6 +10,7 @@ import java.io.IOException;
 //import java.util.Observer;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
@@ -20,31 +21,39 @@ public class Tabuleiro extends JFrame implements ActionListener{//,Observer{
 	private String image2;
 	private BufferedImage dadoImagem1;
 	private BufferedImage dadoImagem2;
+	private JButton cartaSorte;
 	private JButton salvarJogo = new JButton("SALVAR");
 	private JButton carregarJogo = new JButton("CARREGAR");
+	private JButton encerrarJogo = new JButton("ENCERRAR PARTIDA");
 	private JButton rodaDados = new JButton("ROLL");
 	private JButton baralhoSorte = new JButton("BARALHO");
-	private DadosView dado = new DadosView();
-	String path = "Imagens-01/dados/";
+	private ViewController view = ViewController.getInstance();
+	String pathDados = "Imagens-01/dados/";
+	String pathSorte = "Imagens-01/sorteReves/";
 	
 	public Tabuleiro() {
 		setLayout(null);
 		setImagesDado();
 		salvarJogo.setBounds(20,20,100,45);
 		carregarJogo.setBounds(120,20,100,45);
+		encerrarJogo.setBounds(220,20,200,45);
 		rodaDados.setBounds(320,550,75,45);
 		baralhoSorte.setBounds(120,250,100,150);
+		
 		
 		baralhoSorte.setBackground(Color.orange);
 		rodaDados.setBackground(Color.red);
 		
 		add(salvarJogo);
 		add(carregarJogo);
+		add(encerrarJogo);
 		add(baralhoSorte);
 		add(rodaDados);
 		
 		salvarJogo.addActionListener(this);
 		carregarJogo.addActionListener(this);
+		encerrarJogo.addActionListener(this);
+		baralhoSorte.addActionListener(this);
 		rodaDados.addActionListener(this);
 		
 		this.setVisible(true);
@@ -56,12 +65,12 @@ public class Tabuleiro extends JFrame implements ActionListener{//,Observer{
 			e.printStackTrace();
 		}
 		try {
-			dadoImagem1 = ImageIO.read(getClass().getResourceAsStream(path + image1));
+			dadoImagem1 = ImageIO.read(getClass().getResourceAsStream(pathDados + image1));
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
 		try {
-			dadoImagem2 = ImageIO.read(getClass().getResourceAsStream(path + image2));
+			dadoImagem2 = ImageIO.read(getClass().getResourceAsStream(pathDados + image2));
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -70,22 +79,35 @@ public class Tabuleiro extends JFrame implements ActionListener{//,Observer{
 	}
 	
 	void setImagesDado() {
-		String images = dado.rodaDados();
-//		System.out.println(images);
+		String images = view.rodaDados();
 		this.image1 = images.substring(0, 14);
-		System.out.println(image1);
 		this.image2 = images.substring(14);
 		System.out.println(image2);
 		try {
-			dadoImagem1 = ImageIO.read(getClass().getResourceAsStream(path + image1));
+			dadoImagem1 = ImageIO.read(getClass().getResourceAsStream(pathDados + image1));
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
 		try {
-			dadoImagem2 = ImageIO.read(getClass().getResourceAsStream(path + image2));
+			dadoImagem2 = ImageIO.read(getClass().getResourceAsStream(pathDados + image2));
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	void setImagesBaralho() {
+		String imageSorte = view.getCartaSorte();
+		ImageIcon cartaImagem = new ImageIcon(pathSorte + imageSorte);
+		System.out.println(pathSorte + imageSorte);
+//		try {
+//			cartaImagem = ImageIO.read(getClass().getResourceAsStream(pathSorte + image1));
+//		} catch(IOException e) {
+//			e.printStackTrace();
+//		}
+		cartaSorte = new JButton(cartaImagem);
+		cartaSorte.setBounds(230,250,100,150);
+		cartaSorte.addActionListener(this);
+		add(cartaSorte);
 	}
 	
 	public void paint(Graphics g) {
@@ -100,6 +122,16 @@ public class Tabuleiro extends JFrame implements ActionListener{//,Observer{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == rodaDados) {
 			this.setImagesDado();
+			this.repaint();
+		}
+		else if(e.getSource() == baralhoSorte) {
+			setImagesBaralho();
+		}
+		else if(e.getSource() == encerrarJogo) {
+			// to be implemented
+		}
+		else if(e.getSource() == cartaSorte) {
+			cartaSorte.hide();
 			this.repaint();
 		}
 		else if(e.getSource() == carregarJogo) {

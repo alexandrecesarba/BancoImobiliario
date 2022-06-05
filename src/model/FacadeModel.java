@@ -8,6 +8,7 @@ public class FacadeModel {
 	private Tabuleiro tabuleiro = Tabuleiro.getInstance();
 	private CartaSorteReves cartaSorte = CartaSorteReves.getInstance();
 	
+	
 	private FacadeModel(){}
 	
 	public static FacadeModel getInstance() {
@@ -22,9 +23,9 @@ public class FacadeModel {
 		return resultados;
 	}
 	
-//	public int getCartaSorteReves() {
-//		
-//	}
+	public int getCartaSorteReves() {
+		return baralhoSorte.getCarta();
+	}
 //	public int getTerreno() {}
 	
 
