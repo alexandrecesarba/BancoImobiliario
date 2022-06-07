@@ -16,7 +16,6 @@ class BaralhoSorte {
 			baralho.add(i);
 		}
 		Collections.shuffle(baralho);
-		System.out.println(baralho);
 	}
 	
 	int getCarta() {
@@ -24,7 +23,6 @@ class BaralhoSorte {
 		System.out.println(aux);
 		baralho.add(aux);
 		baralho.remove(baralho.get(0));
-		System.out.println(baralho);
 		return aux;
 	}
 	

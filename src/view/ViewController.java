@@ -12,7 +12,7 @@ class ViewController {//extends Observable{
 
 	private static ViewController instance = new ViewController();
 	private GameController controller = GameController.getInstance();
-//	Tabuleiro tabuleiro = new Tabuleiro();
+	Tabuleiro tabuleiro = new Tabuleiro();
 	
 	private ViewController(){
 //		addObserver(tabuleiro);
