@@ -28,6 +28,7 @@ public class GameController {
 	
 	public int[] rodaDados(int x) {
 		int[] dados= model.getDados(x);
+		System.out.println(dados);
 		return dados;
 	}
 	

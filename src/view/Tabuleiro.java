@@ -14,7 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-public class Tabuleiro extends JFrame implements ActionListener{//,Observer{
+public class Tabuleiro extends JFrame implements ActionListener{
 	
 	private BufferedImage image;
 	private String image1;
@@ -30,10 +30,17 @@ public class Tabuleiro extends JFrame implements ActionListener{//,Observer{
 	private ViewController view = ViewController.getInstance();
 	String pathDados = "Imagens-01/dados/";
 	String pathSorte = "Imagens-01/sorteReves/";
+	{
+		try {
+			image = ImageIO.read(getClass().getResourceAsStream("Imagens-01/tabuleiro.png"));
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public Tabuleiro() {
 		setLayout(null);
-		setImagesDado();
+		setImagesDado(0);
 		salvarJogo.setBounds(20,20,100,45);
 		carregarJogo.setBounds(120,20,100,45);
 		encerrarJogo.setBounds(220,20,200,45);
@@ -58,23 +65,6 @@ public class Tabuleiro extends JFrame implements ActionListener{//,Observer{
 		
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		System.out.println(image1);
-		try {
-			image = ImageIO.read(getClass().getResourceAsStream("Imagens-01/tabuleiro.png"));
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			dadoImagem1 = ImageIO.read(getClass().getResourceAsStream(pathDados + image1));
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			dadoImagem2 = ImageIO.read(getClass().getResourceAsStream(pathDados + image2));
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-
 		this.setSize(image.getWidth()+20, image.getHeight()+115);
 	}
 	
@@ -82,7 +72,6 @@ public class Tabuleiro extends JFrame implements ActionListener{//,Observer{
 		String images = view.rodaDados();
 		this.image1 = images.substring(0, 14);
 		this.image2 = images.substring(14);
-		System.out.println(image2);
 		try {
 			dadoImagem1 = ImageIO.read(getClass().getResourceAsStream(pathDados + image1));
 		} catch(IOException e) {
@@ -90,6 +79,19 @@ public class Tabuleiro extends JFrame implements ActionListener{//,Observer{
 		}
 		try {
 			dadoImagem2 = ImageIO.read(getClass().getResourceAsStream(pathDados + image2));
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	void setImagesDado(int beginning) {
+		try {
+			dadoImagem1 = ImageIO.read(getClass().getResourceAsStream(pathDados + "die_face_1.png"));
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			dadoImagem2 = ImageIO.read(getClass().getResourceAsStream(pathDados + "die_face_1.png"));
 		} catch(IOException e) {
 			e.printStackTrace();
 		}

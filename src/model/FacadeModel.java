@@ -20,6 +20,7 @@ public class FacadeModel {
 		for(int i=0; i < x; i++) {
 			resultados[i] = dado.rodaDado();
 		}
+		System.out.println(resultados);
 		return resultados;
 	}
 	

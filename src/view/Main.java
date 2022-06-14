@@ -8,6 +8,7 @@ public class Main {
 		// TODO Auto-generated method stub
 //		new JanelaInicial();
 		new Tabuleiro();
+		
 //		new DadosView();
 		
 	}
