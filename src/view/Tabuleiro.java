@@ -10,7 +10,6 @@ import java.io.IOException;
 //import java.util.Observer;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
@@ -21,7 +20,8 @@ public class Tabuleiro extends JFrame implements ActionListener{
 	private String image2;
 	private BufferedImage dadoImagem1;
 	private BufferedImage dadoImagem2;
-	private JButton cartaSorte;
+	private BufferedImage cartaImagem;
+	private JButton cartaSorte = new JButton("REMOVER CARTA");
 	private JButton salvarJogo = new JButton("SALVAR");
 	private JButton carregarJogo = new JButton("CARREGAR");
 	private JButton encerrarJogo = new JButton("ENCERRAR PARTIDA");
@@ -30,6 +30,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 	private ViewController view = ViewController.getInstance();
 	String pathDados = "Imagens-01/dados/";
 	String pathSorte = "Imagens-01/sorteReves/";
+	
 	{
 		try {
 			image = ImageIO.read(getClass().getResourceAsStream("Imagens-01/tabuleiro.png"));
@@ -45,7 +46,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		carregarJogo.setBounds(120,20,100,45);
 		encerrarJogo.setBounds(220,20,200,45);
 		rodaDados.setBounds(320,550,75,45);
-		baralhoSorte.setBounds(120,250,100,150);
+		baralhoSorte.setBounds(140,250,100,150);
 		
 		
 		baralhoSorte.setBackground(Color.orange);
@@ -99,11 +100,16 @@ public class Tabuleiro extends JFrame implements ActionListener{
 	
 	void setImagesBaralho() {
 		String imageSorte = view.getCartaSorte();
-		ImageIcon cartaImagem = new ImageIcon(pathSorte + imageSorte);
-		cartaSorte = new JButton(cartaImagem);
-		cartaSorte.setBounds(230,250,100,150);
+		try {
+			cartaImagem = ImageIO.read(getClass().getResourceAsStream(pathSorte + imageSorte));
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+//		cartaSorte.setBounds(230,250,100,150);
+		cartaSorte.setBounds(120,405,140,40);
 		cartaSorte.addActionListener(this);
 		add(cartaSorte);
+		this.repaint();
 	}
 	
 	public void paint(Graphics g) {
@@ -111,6 +117,9 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		g2D.drawImage(image,10,105,image.getWidth(), image.getHeight(),null);
 		g2D.drawImage(dadoImagem1,280,490,70,70,null);
 		g2D.drawImage(dadoImagem2,380,490,70,70,null);
+		if(cartaImagem != null) {
+			g2D.drawImage(cartaImagem,280,230,180,230,null);
+		}
 	}
 	
 
@@ -128,6 +137,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		}
 		else if(e.getSource() == cartaSorte) {
 			this.remove(cartaSorte);
+			cartaImagem = null;
 			this.repaint();
 		}
 		else if(e.getSource() == carregarJogo) {

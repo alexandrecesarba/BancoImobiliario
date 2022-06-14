@@ -26,9 +26,9 @@ public class JanelaInicial extends JFrame{
 				try {
 					if(qtdJogadores >= 3 && qtdJogadores <= 6) {
 						System.out.printf("%d\n", qtdJogadores);
-						Tabuleiro frame = new Tabuleiro();
-						frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-						frame.setVisible(true);
+//						Tabuleiro frame = new Tabuleiro();
+//						frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//						frame.setVisible(true);
 					}
 					else {
 						qtdJogadores = 0;
