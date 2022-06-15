@@ -20,10 +20,17 @@ class BaralhoSorte {
 	
 	int getCarta() {
 		int aux = baralho.get(0);
-		System.out.println(aux);
 		baralho.add(aux);
 		baralho.remove(baralho.get(0));
 		return aux;
+	}
+	
+	void removeCartaLivrePrisao() {
+		baralho.remove(baralho.get(9));
+	}
+	
+	void adicionaCartaLivrePrisao() {
+		baralho.add((baralho.size()-1),9);
 	}
 	
 

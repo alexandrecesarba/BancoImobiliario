@@ -5,6 +5,7 @@ class TerrenoCompanhia extends Terreno{
 		this.aluguelAtual = aluguelAtual;
 		this.preco = preco;
 		this.nome = nome;
+		this.tipo = 1;
 	}
 
 }
