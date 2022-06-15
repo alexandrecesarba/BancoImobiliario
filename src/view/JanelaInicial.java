@@ -15,7 +15,7 @@ public class JanelaInicial extends JFrame{
 		setTitle("Janela Incial");
 		setVisible(true);
 		setSize(1200,700);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 //		instrucao1.
 		janelaPanel.add(instrucao1);
 		janelaPanel.add(inputQtdJogadores);
@@ -25,10 +25,9 @@ public class JanelaInicial extends JFrame{
 				qtdJogadores = Integer.parseInt(inputQtdJogadores.getText());
 				try {
 					if(qtdJogadores >= 3 && qtdJogadores <= 6) {
-						System.out.printf("%d\n", qtdJogadores);
-//						Tabuleiro frame = new Tabuleiro();
-//						frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//						frame.setVisible(true);
+						Tabuleiro frame = new Tabuleiro(qtdJogadores);
+						frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+						frame.setVisible(true);
 					}
 					else {
 						qtdJogadores = 0;
@@ -36,6 +35,7 @@ public class JanelaInicial extends JFrame{
 					}
 				}catch(Exception e1) {
 					System.out.println(e1);
+					// add(JText) anunciando o erro pro usuario
 				}
 			}
 		});

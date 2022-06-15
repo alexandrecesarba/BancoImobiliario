@@ -8,6 +8,7 @@ public class FacadeModel {
 	private Jogador[] jogadores;
 	
 	public FacadeModel(int n_jogadores){
+		this.jogadores = new Jogador[n_jogadores];
 		for(int i=0; i < n_jogadores; i++) {
 			jogadores[i]= new Jogador(i);
 		}

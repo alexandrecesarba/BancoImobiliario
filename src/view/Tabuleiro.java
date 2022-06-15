@@ -31,7 +31,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 	private JButton rodaDados = new JButton("ROLL");
 	private JButton setaDados = new JButton("SET");
 	private JButton baralhoSorte = new JButton("BARALHO");
-	
+	private BufferedImage[] jogadores;
 
 	// botoes dado
 	private JButton dado1 = new JButton("1");
@@ -51,6 +51,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 	
 	private int valorDado1 = 1;
 	private int valorDado2 = 1;
+	private int n_jogadores;
 	
 	private ViewController view = ViewController.getInstance();
 	String pathDados = "Imagens-01/dados/";
@@ -64,13 +65,14 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		}
 	}
 	
-	public Tabuleiro() {
+	Tabuleiro(int n) {
 		setLayout(null);
 		setImagesDado(valorDado1,valorDado2);
 		salvarJogo.setBounds(20,20,100,45);
 		carregarJogo.setBounds(120,20,100,45);
 		encerrarJogo.setBounds(220,20,200,45);
-		
+		this.n_jogadores = n;
+		view.initJogadores(n_jogadores);
 		
 		//posicao dos dados
 		dado1.setBounds(210,550,45,45);
@@ -126,10 +128,15 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		add(rdado5);
 		add(rdado6);
 		
-		rodaDados.setBounds(350,470,70,70);
+		rodaDados.setBounds(350,460,67,40);
 		rodaDados.setBackground(Color.red);
 		add(rodaDados);
 		rodaDados.addActionListener(this);
+		
+		setaDados.setBounds(350,500,67,40);
+		setaDados.setBackground(Color.gray);
+		add(setaDados);
+		setaDados.addActionListener(this);
 		
 		
 		salvarJogo.addActionListener(this);
@@ -157,21 +164,26 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		this.setSize(image.getWidth()+20, image.getHeight()+115);
 	}
 	
-//	void setImagesDado() {
-//		String images = view.rodaDados();
-//		this.image1 = images.substring(0, 14);
-//		this.image2 = images.substring(14);
-//		try {
-//			dadoImagem1 = ImageIO.read(getClass().getResourceAsStream(pathDados + image1));
-//		} catch(IOException e) {
-//			e.printStackTrace();
-//		}
-//		try {
-//			dadoImagem2 = ImageIO.read(getClass().getResourceAsStream(pathDados + image2));
-//		} catch(IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	void setImagesDado() {
+		String images = view.rodaDados();
+		this.image1 = images.substring(0, 14);
+		this.image2 = images.substring(14);
+		try {
+			dadoImagem1 = ImageIO.read(getClass().getResourceAsStream(pathDados + image1));
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			dadoImagem2 = ImageIO.read(getClass().getResourceAsStream(pathDados + image2));
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	void setImagesJogador(int jogador, int posX, int posY) {
+		
+	}
+	
 	
 	void setImagesDado(int s1, int s2) {
 		String image1 = "die_face_" + s1 + ".png";
@@ -210,6 +222,8 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		if(cartaImagem != null) {
 			g2D.drawImage(cartaImagem,280,230,180,230,null);
 		}
+		for(int i=0; i< this.n_jogadores; i++)
+			g2D.drawImage(view.getImageJogador(i),280+10,230,50,50,null);
 	}
 	
 	void mostraDado(int dado1,int dado2) {
@@ -270,10 +284,14 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		}
 		
 		else if (e.getSource() == rodaDados) {
-			this.setImagesDado(valorDado1, valorDado2);
+			this.setImagesDado();
 			this.repaint();
 		}
 		
+		else if (e.getSource() == setaDados) {
+			this.setImagesDado(valorDado1, valorDado2);
+			this.repaint();
+		}
 		
 		else if(e.getSource() == baralhoSorte) {
 			setImagesBaralho();

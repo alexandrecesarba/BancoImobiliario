@@ -1,11 +1,13 @@
 package controller;
 
+
 class Rodada {
 	//private GameController controller = new GameController();
 	private int[] jogadores;
 	public int jogadorDaVez;
 	
 	Rodada(int n_jogadores){
+		this.jogadores = new int[n_jogadores];
 		for(int i=0; i < n_jogadores; i++) {
 			this.jogadores[i] = i;
 		}

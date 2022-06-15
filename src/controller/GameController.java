@@ -13,24 +13,22 @@ public class GameController extends Observable{
 	// caso o dono do terreno seja ele, pode construir - caso já tenha casa, pode construir um hotel.
 	// encerra jogo;
 	
-	private static GameController instance = new GameController();
+//	private static GameController instance = new GameController();
 	private FacadeModel model;
 	private Rodada rodada;
-	private int jogadores = 6;
 	private int n_duplas = 0;
+	private int jogadores;
 	private int total_dados;
 	private boolean tentativaSairDaPrisão = false;
 //	private int[] dados = {0,0}; 
 	int jogadorDaVez;
 	
-	private GameController(){
+	public GameController(int n) {
+		this.jogadores = n;
 		this.rodada = new Rodada(jogadores);
 		this.model = new FacadeModel(jogadores);
 	}
 	
-	public static GameController getInstance() {
-		return instance;
-	}
 	
 	public int jogadorMoveu(int casas) {
 		model.jogadorAndou(jogadorDaVez, casas);
@@ -196,7 +194,7 @@ public class GameController extends Observable{
 		return dados;
 	}
 	
-	String dadoDupla() {
+	void dadoDupla() {
 		if(n_duplas == 1 || n_duplas == 2) {
 			//jogador tem direito a mais um roll
 			//send info to view
