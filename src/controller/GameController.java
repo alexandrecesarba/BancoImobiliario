@@ -2,7 +2,7 @@ package controller;
 
 import model.FacadeModel;
 
-public class GameController {
+public class GameController extends Observable{
 	//rodada
 	//jogador
 	//roda dado
@@ -20,7 +20,7 @@ public class GameController {
 	private int n_duplas = 0;
 	private int total_dados;
 	private boolean tentativaSairDaPrisão = false;
-	private int[] dados = {0,0}; 
+//	private int[] dados = {0,0}; 
 	int jogadorDaVez;
 	
 	private GameController(){
@@ -164,8 +164,10 @@ public class GameController {
 	}
 	
 	public int[] rodaDados(int x) {
+		int[] dados;
 		if(x == 1) {
 			dados = model.getDados(1);
+			notifyObservers();
 		}
 		else if(x == 2 && tentativaSairDaPrisão) {
 			if(model.temCartaLivreDaPrisão(jogadorDaVez)) {
@@ -173,6 +175,7 @@ public class GameController {
 				model.mudaPrisãoJogador(jogadorDaVez);
 			}
 			dados = model.getDados(2);
+			notifyObservers();
 			if(dados[0]==dados[1]) {
 				model.mudaPrisãoJogador(jogadorDaVez);
 				//send to view
@@ -189,10 +192,11 @@ public class GameController {
 				jogadorMoveu(total_dados);
 			}
 		}
+		notifyObservers();
 		return dados;
 	}
 	
-	void dadoDupla() {
+	String dadoDupla() {
 		if(n_duplas == 1 || n_duplas == 2) {
 			//jogador tem direito a mais um roll
 			//send info to view
@@ -224,6 +228,10 @@ public class GameController {
 	}
 	
 	void encerraJogo() {
+		
+	}
+	
+	public void notifyObservers() {
 		
 	}
 	
