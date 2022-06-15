@@ -100,4 +100,8 @@ class Tabuleiro {
 	Terreno getTerreno(int pos) {
 		return tabuleiro[pos];
 	}
+	
+	int getTipoTerreno(int pos) {
+		return tabuleiro[pos].tipo;
+	}
 }

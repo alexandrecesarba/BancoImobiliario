@@ -6,8 +6,9 @@ class Jogador{
 	private CorPino cor;
 	private String image;
 	private int posicao = 0;
-	private boolean naPrisao = false;
-	private boolean temCartaSaiaPrisao = false;
+	boolean naPrisao = false;
+	boolean falido = false;
+	boolean temCartaSaiaPrisao = false;
 	private ArrayList<String> propriedades = new ArrayList<String>();
 	private int dinheiro = 4000;
 	
@@ -30,12 +31,24 @@ class Jogador{
 		this.posicao += dado;
 	}
 	
+	void faliu() {
+		falido = true;
+	}
+	
+	boolean getFalido() {
+		return falido;
+	}
+	
 	void compraPropriedades(String propriedade) {
 		this.propriedades.add(propriedade);
 	}
 	
 	void vendaPropriedades(String propriedade) {
 		this.propriedades.remove(propriedade);
+	}
+	
+	void vendaPropriedades() {
+		this.propriedades.clear();
 	}
 	
 	void mudaEstadoPreso() {

@@ -4,11 +4,22 @@ package model;
 class Terreno {
 	protected String nome;
 	protected int aluguelAtual;
-	protected String dono;
+	protected int dono = -1;
 	protected int preco;
 	protected int precoConstrucao;
+	protected int tipo;
 	
-	String getDono() {
+//	void setAluguel() {}
+//	void setHotel() {}
+//	void setQntdCasas() {}
+//	int getPrecoConstrucao() {}
+//	void setHotel() {}
+//	void adicionaCasa() {}
+//	void getCasas() {}
+//	void temHotel() {}
+//	void setAluguel() {}
+	
+	int getDono() {
 		return dono;
 	}
 	
@@ -20,12 +31,12 @@ class Terreno {
 		return preco;
 	}
 	
-	void Compra(String dono) {
+	void Compra(int dono) {
 		this.dono = dono;
 	}
 	
 	void Venda() {
-		this.dono = "";
+		this.dono = -1;
 	}
 
 }

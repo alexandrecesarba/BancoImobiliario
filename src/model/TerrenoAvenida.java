@@ -10,9 +10,10 @@ class TerrenoAvenida extends Terreno{
 		this.nome = nome;
 		this.aluguel = aluguel;
 		this.aluguelAtual = aluguel[0];
-		this.preco = 220;
-		this.precoConstrucao = 150;
+		this.preco = preco;
+		this.precoConstrucao = precoConstrucao;
 		this.cor = cor;
+		this.tipo = 0;
 	}
 	
 	CorTerreno getCor() {
@@ -31,6 +32,13 @@ class TerrenoAvenida extends Terreno{
 	
 	void adicionaCasa() {
 		this.qntdCasa += 1;
+	}
+	
+	int getCasas() {
+		return this.qntdCasa;
+	}
+	boolean temHotel() {
+		return this.hotel;
 	}
 	
 	void setAluguel() {
