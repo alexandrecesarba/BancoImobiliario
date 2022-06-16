@@ -35,7 +35,7 @@ public class JanelaInicial extends JFrame{
 					}
 				}catch(Exception e1) {
 					System.out.println(e1);
-					// add(JText) anunciando o erro pro usuario
+					JOptionPane.showMessageDialog(null, "Quantidade de jogadores invalida (Min: 3 , Max: 6)");
 				}
 			}
 		});
