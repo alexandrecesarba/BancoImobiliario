@@ -1,6 +1,6 @@
 package view;
 
 public abstract class Observer {
-	public void update() {}
+	public abstract void update();
 
 }

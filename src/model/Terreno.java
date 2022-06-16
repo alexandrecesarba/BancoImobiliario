@@ -9,16 +9,6 @@ class Terreno {
 	protected int precoConstrucao;
 	protected int tipo;
 	
-//	void setAluguel() {}
-//	void setHotel() {}
-//	void setQntdCasas() {}
-//	int getPrecoConstrucao() {}
-//	void setHotel() {}
-//	void adicionaCasa() {}
-//	void getCasas() {}
-//	void temHotel() {}
-//	void setAluguel() {}
-	
 	int getDono() {
 		return dono;
 	}

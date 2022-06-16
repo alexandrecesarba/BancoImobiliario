@@ -28,8 +28,9 @@ public class GameController extends Observable{
 	private boolean tentativaSairDaPrisão = false;
 //	private int[] dados = {0,0}; 
 	int jogadorDaVez;
-	String gameState = "";
-	
+	private String state = "";
+	public GameState gameState = GameState.getInstance();
+
 	public GameController(Observer o,int n_jogadores) {
 		attach(o);
 		this.jogadores = n_jogadores;
@@ -233,11 +234,20 @@ public class GameController extends Observable{
 		
 	}
 	
-	void encerraJogo() {
+	public void encerraJogo() {
+//		gameState.setStateRank(state,model.ranking());
 		//change state
 		
 	}
-	
+//	
+//	public void setState(String state) {
+//		this.gameState = state;
+//	}
+//	
+//	public String getState() {
+//		return this.gameState;
+//	}
+//	
 	public void notifyObservers() {
 		
 	}
@@ -279,3 +289,8 @@ public class GameController extends Observable{
 		}
 	}
 }
+
+
+
+
+

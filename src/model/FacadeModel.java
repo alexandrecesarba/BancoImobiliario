@@ -80,6 +80,20 @@ public class FacadeModel {
 		}
 	}
 	
+	public String ranking() { // retorna true se ainda há pelo menos dois jogadores não falidos
+		String rank = "";
+		for(int i=0; i < jogadores.length-1; i++) {
+			if(jogadores[i].getDinheiro() >= jogadores[i+1].getDinheiro()) {
+				rank.concat(jogadores[i].getNome()+ " ");
+			}
+			else {
+				rank.concat(jogadores[i+1].getNome()+ " ");
+			}
+		}
+		return rank;
+	}
+	
+	
 	public void mudaEstadoCartaLivreDaPrisão(int jogadorDaVez) {
 		jogadores[jogadorDaVez].mudaEstadoCartaSaiaPrisao();
 		if(jogadores[jogadorDaVez].temCartaSaiaPrisao) {
@@ -123,7 +137,7 @@ public class FacadeModel {
 		}
 		else {
 			jogadores[jogadorDaVez].faliu();
-			// precisa vender automaticamente todas as propriedades do jogador que faliu;
+			tabuleiro.jogadorFaliu(jogadorDaVez);
 			jogadores[jogadorDaVez].vendaPropriedades();
 			return false;
 		}
