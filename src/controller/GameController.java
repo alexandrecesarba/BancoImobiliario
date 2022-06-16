@@ -1,5 +1,11 @@
 package controller;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 import model.FacadeModel;
 import view.Observer;
 
@@ -236,4 +242,40 @@ public class GameController extends Observable{
 		
 	}
 	
+	public void salvaJogo() {
+		try {
+			File saveFile = new File ("save.txt");
+			if(saveFile.createNewFile()) {
+				System.out.println("Arquivo de save criado com sucesso");
+			}
+			}catch (IOException e) {
+				System.out.println("Erro na criação do arquivo de save");
+				e.printStackTrace();
+		}
+		
+		try {
+			FileWriter escriba = new FileWriter("save.txt");
+			//Escrever infos aqui:
+			escriba.write("info");
+			//--------------------
+			escriba.close();
+			System.out.println("Jogo salvo com sucesso!");
+		}catch(IOException e) {
+			System.out.println("Erro no salvamento do jogo");
+			e.printStackTrace();
+		}
+	}
+	
+	public void carregaJogo() {
+		try {
+			File saveFile = new File("save.txt");
+			Scanner leitor = new Scanner(saveFile);
+			while(leitor.hasNextLine()) {
+				System.out.println(leitor.nextLine()); //Isso so esta printando o arquivo, no lugar botar para pegar a info e jogar no gamestate (eu acho)
+			}
+		}catch(FileNotFoundException e) {
+			System.out.println("Arquivo não encontrado.");
+			e.printStackTrace();
+		}
+	}
 }
