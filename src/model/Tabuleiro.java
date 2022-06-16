@@ -104,4 +104,12 @@ class Tabuleiro {
 	int getTipoTerreno(int pos) {
 		return tabuleiro[pos].tipo;
 	}
+	
+	void jogadorFaliu(int jogador) {
+		for(int pos=0; pos < tabuleiro.length; pos++) {
+			if(tabuleiro[pos].dono == jogador) {
+				tabuleiro[pos].Venda();
+			}
+		}
+	}
 }

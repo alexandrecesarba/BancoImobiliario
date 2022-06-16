@@ -44,6 +44,11 @@ class ViewController extends Observer{
 		this.controller= new GameController(this,n);
 	}
 	
+	void encerraJogo() {
+		controller.encerraJogo();
+	}
+	
+	
 	String rodaDados() {
 		resultadoDados = controller.rodaDados(2);
 		Integer myInt1 = Integer.valueOf(resultadoDados[0]);
@@ -151,7 +156,6 @@ class ViewController extends Observer{
 	public void update() {
 		carta = controller.getCartaSorte();
 		resultadoDados = controller.rodaDados(2);
-		
 	}
 
 }
