@@ -1,5 +1,6 @@
 package view;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -66,7 +67,10 @@ public class Tabuleiro extends JFrame implements ActionListener{
 	}
 	
 	Tabuleiro(int n) {
-		setLayout(null);
+//		this.getContentPane()
+		this.getContentPane().setVisible(true);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.getContentPane().setLayout(null);
 		setImagesDado(valorDado1,valorDado2);
 		salvarJogo.setBounds(20,20,100,45);
 		carregarJogo.setBounds(120,20,100,45);
@@ -89,6 +93,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		rdado5.setBounds(460,600,45,45);
 		rdado6.setBounds(510,600,45,45);
 		
+//		this.getContentPane().setComponentZOrder(baralhoSorte, -3); doesnt work
 		baralhoSorte.setBounds(140,250,100,150);
 		
 		
@@ -159,8 +164,6 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		rdado5.addActionListener(this);
 		rdado6.addActionListener(this);
 		
-		this.setVisible(true);
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setSize(image.getWidth()+20, image.getHeight()+115);
 	}
 	
@@ -216,14 +219,20 @@ public class Tabuleiro extends JFrame implements ActionListener{
 	
 	public void paint(Graphics g) {
 		Graphics2D g2D = (Graphics2D) g;
+		super.paintComponents(g2D);
 		g2D.drawImage(image,10,105,image.getWidth(), image.getHeight(),null);
 		g2D.drawImage(dadoImagem1,260,490,70,70,null);
 		g2D.drawImage(dadoImagem2,460,490,70,70,null);
 		if(cartaImagem != null) {
 			g2D.drawImage(cartaImagem,280,230,180,230,null);
 		}
-		for(int i=0; i< this.n_jogadores; i++)
-			g2D.drawImage(view.getImageJogador(i),280+10,230,50,50,null);
+		for(int i=0; i< this.n_jogadores; i++) {
+			g2D.drawImage(view.getImageJogador(i), 
+					view.getPosJogador(i)[0] + (view.multiplicadorPosX*i), 
+					view.getPosJogador(i)[1] + (view.multiplicadorPosY*i), 
+					view.widthJogador, view.heightJogador,null);
+		}
+		
 	}
 	
 	void mostraDado(int dado1,int dado2) {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 class Jogador{
 	private CorPino cor;
-	private String image;
+	private String nome;
 	private int posicao = 0;
 	boolean naPrisao = false;
 	boolean falido = false;
@@ -12,19 +12,19 @@ class Jogador{
 	private ArrayList<String> propriedades = new ArrayList<String>();
 	private int dinheiro = 4000;
 	
-	public Jogador(int pos) {
-		Integer myInt = Integer.valueOf(pos);
+	public Jogador(int n) {
+		Integer myInt = Integer.valueOf(n);
 		String s = myInt.toString();
-		this.image = "pin" + s;
-		this.cor = CorPino.values()[pos];
-	}
-	
-	String getImage() {
-		return this.image;
+		this.nome = "Jogador "+ s;
+		this.cor = CorPino.values()[n];
 	}
 	
 	CorPino getCor() {
 		return this.cor;
+	}
+	
+	String getNome() {
+		return this.nome;
 	}
 	
 	void setPosicao(int dado) {

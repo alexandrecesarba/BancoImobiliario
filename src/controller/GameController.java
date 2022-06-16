@@ -1,6 +1,7 @@
 package controller;
 
 import model.FacadeModel;
+import view.Observer;
 
 public class GameController extends Observable{
 	//rodada
@@ -13,7 +14,6 @@ public class GameController extends Observable{
 	// caso o dono do terreno seja ele, pode construir - caso já tenha casa, pode construir um hotel.
 	// encerra jogo;
 	
-//	private static GameController instance = new GameController();
 	private FacadeModel model;
 	private Rodada rodada;
 	private int n_duplas = 0;
@@ -22,9 +22,11 @@ public class GameController extends Observable{
 	private boolean tentativaSairDaPrisão = false;
 //	private int[] dados = {0,0}; 
 	int jogadorDaVez;
+	String gameState = "";
 	
-	public GameController(int n) {
-		this.jogadores = n;
+	public GameController(Observer o,int n_jogadores) {
+		attach(o);
+		this.jogadores = n_jogadores;
 		this.rodada = new Rodada(jogadores);
 		this.model = new FacadeModel(jogadores);
 	}
@@ -36,7 +38,7 @@ public class GameController extends Observable{
 		return casas; // change to Observer
 	}
 	
-	public void tipoTerreno(int pos) { //receber da View o tipo de Terreno
+	public void tipoTerreno(int pos) { //receber da View o tipo de Terreno - ??? ta errado isso
 		int tipoTerreno = model.getTipoTerreno(pos);
 		if(tipoTerreno == 0) {
 			entrouAvenida(pos);
@@ -226,6 +228,7 @@ public class GameController extends Observable{
 	}
 	
 	void encerraJogo() {
+		//change state
 		
 	}
 	
