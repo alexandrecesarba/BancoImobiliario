@@ -46,6 +46,7 @@ class Jogador{
 	
 	void compraPropriedades(String propriedade) {
 		this.propriedades.add(propriedade);
+		this.propriedades.remove("");
 	}
 	
 	void vendaPropriedades(String propriedade) {
@@ -54,6 +55,7 @@ class Jogador{
 	
 	void vendaPropriedades() {
 		this.propriedades.clear();
+		this.propriedades.add("");
 	}
 	
 	boolean mudaEstadoPreso() {

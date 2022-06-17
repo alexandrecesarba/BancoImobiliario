@@ -5,12 +5,12 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import controller.GameController;
+import controller.GameManager;
 
 public class ViewController extends Observer{
 
 	private static ViewController instance = new ViewController();
-	private GameController controller;
+	private GameManager manager;
 	private String state = "";
 	int carta;
 	int resultadoDados[] = new int[]{0,0};
@@ -38,18 +38,17 @@ public class ViewController extends Observer{
 	}
 	
 	void initJogadores(int n) {
-		System.out.println("initJogadores");
-		this.controller= new GameController(this,n);
+		this.manager= new GameManager(this,n);
 	}
 	
 	void encerraJogo() {
-		controller.encerraJogo();
+		manager.encerraJogo();
 	}
 	
 	
 	String rodaDados() {
-		controller.rodaDados(2);
-		resultadoDados = controller.gameState.getDados(state);
+		manager.rodaDados(2);
+		resultadoDados = manager.gameState.getDados(state);
 		Integer myInt1 = Integer.valueOf(resultadoDados[0]);
 		String s1 = myInt1.toString();
 		Integer myInt2 = Integer.valueOf(resultadoDados[1]);
@@ -77,7 +76,7 @@ public class ViewController extends Observer{
 	
 	int[] getPosJogador(int jogador) {
 		System.out.println("getPosJogadores");
-		int pos = controller.gameState.getPosJogador(state, jogador);
+		int pos = manager.gameState.getPosJogador(state, jogador);
 		int[] posJogador = {-1,-1};
 		if(pos >= 0 && pos <= 10 ) { // y fixo x móvel mX = 7 e mY=13
 			this.multiplicadorPosX = 7;
@@ -148,8 +147,8 @@ public class ViewController extends Observer{
 //	
 	
 	String getCartaSorte() {
-		controller.getCartaSorte();
-		carta = controller.gameState.getCarta(state);
+		manager.getCartaSorte();
+		carta = manager.gameState.getCarta(state);
 		Integer myInt1 = Integer.valueOf(carta);
 		String s1 = myInt1.toString();
 		String image = "chance" + s1 + ".png";
@@ -157,9 +156,8 @@ public class ViewController extends Observer{
 	}
 	
 	public void update() {
-		System.out.println("update");
-		this.state = controller.getState();
-		System.out.println(state);
+		this.state = manager.getState();
+		System.out.println(this.state);
 	}
 
 }

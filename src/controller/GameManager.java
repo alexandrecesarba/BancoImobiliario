@@ -1,12 +1,17 @@
 package controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import model.FacadeModel;
 import view.Observer;
 import view.ViewController;
 
-public class GameController extends Observable{
+public class GameManager extends Observable{
 	//rodada
 	//jogador
 	//roda dado
@@ -35,7 +40,7 @@ public class GameController extends Observable{
 	private String rank = "";
 	private String state;
 
-	public GameController(Observer o,int n_jogadores) {
+	public GameManager(Observer o,int n_jogadores) {
 		attach(o);
 		this.jogadores = n_jogadores;
 		initGame();
@@ -45,6 +50,7 @@ public class GameController extends Observable{
 		this.rodada = new Rodada(jogadores);
 		this.model = new FacadeModel(jogadores);
 		this.banco = 200000;
+		setState();
 		notifyObservers();
 		
 	}
@@ -193,7 +199,6 @@ public class GameController extends Observable{
 	public void rodaDados(int x) {
 		if(x == 1) {
 			this.dados = model.getDados(1);
-			setState();
 			notifyObservers();
 		}
 		else if(x == 2 && tentativaSairDaPrisao) {
@@ -261,16 +266,9 @@ public class GameController extends Observable{
 		//change state
 		
 	}
-
-	public void notifyObservers() {
-		this.setState();
-		for(Observer observer: observers) {
-			observer.update();
-		}
-	}
 	
 	public String getState() {
-		System.out.println(state);
+		setState();
 		return this.state;
 	}
 	
@@ -284,11 +282,42 @@ public class GameController extends Observable{
 				this.qtdDuplasNoDado,this.total_dados, this.cartaSorte, this.banco, this.rank);
 	}
 	
-//	
-//	public String getState() {
-//		return this.gameState;
-//	}
-//	
+	public void salvaJogo() {
+        try {
+            File saveFile = new File ("save.txt");
+            if(saveFile.createNewFile()) {
+                System.out.println("Arquivo de save criado com sucesso");
+            }
+            }catch (IOException e) {
+                System.out.println("Erro na criação do arquivo de save");
+                e.printStackTrace();
+        }
+        
+        try {
+            FileWriter escriba = new FileWriter("save.txt");
+            //Escrever infos aqui:
+            escriba.write("info");
+            //--------------------
+            escriba.close();
+            System.out.println("Jogo salvo com sucesso!");
+        }catch(IOException e) {
+            System.out.println("Erro no salvamento do jogo");
+            e.printStackTrace();
+        }
+    }
+    
+    public void carregaJogo() {
+        try {
+            File saveFile = new File("save.txt");
+            Scanner leitor = new Scanner(saveFile);
+            while(leitor.hasNextLine()) {
+                System.out.println(leitor.nextLine()); //Isso so esta printando o arquivo, no lugar botar para pegar a info e jogar no gamestate (eu acho)
+            }
+        }catch(FileNotFoundException e) {
+            System.out.println("Arquivo não encontrado.");
+            e.printStackTrace();
+        }
+    }
 
 	
 }
