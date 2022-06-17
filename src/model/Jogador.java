@@ -17,6 +17,7 @@ class Jogador{
 		String s = myInt.toString();
 		this.nome = "Jogador "+ s;
 		this.cor = CorPino.values()[n];
+		this.propriedades.add("");
 	}
 	
 	CorPino getCor() {
@@ -29,6 +30,10 @@ class Jogador{
 	
 	void setPosicao(int dado) {
 		this.posicao += dado;
+	}
+	
+	void resetPosicao(int dado) {
+		this.posicao = dado;
 	}
 	
 	void faliu() {
@@ -51,15 +56,16 @@ class Jogador{
 		this.propriedades.clear();
 	}
 	
-	void mudaEstadoPreso() {
+	boolean mudaEstadoPreso() {
 		this.naPrisao = !naPrisao;
+		return naPrisao;
 	}
 	
 	void mudaEstadoCartaSaiaPrisao() {
 		this.temCartaSaiaPrisao = !temCartaSaiaPrisao;
 	}
 	
-	int getPosicao(int dado) {
+	int getPosicao() {
 		return posicao;
 	}
 	
@@ -71,8 +77,11 @@ class Jogador{
 		this.dinheiro += valor;
 	}
 	
+	void resetDinheiro(int valor) {
+		this.dinheiro = valor;
+	}
+	
 	ArrayList<String> getPropriedades() {
-		if(this.propriedades.isEmpty()) {return null;}
 		return this.propriedades;
 	}
 		

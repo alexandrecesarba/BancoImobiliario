@@ -174,18 +174,20 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		try {
 			dadoImagem1 = ImageIO.read(getClass().getResourceAsStream(pathDados + image1));
 		} catch(IOException e) {
+			System.out.println("dadoImagem1 falhou");
 			e.printStackTrace();
 		}
 		try {
 			dadoImagem2 = ImageIO.read(getClass().getResourceAsStream(pathDados + image2));
 		} catch(IOException e) {
+			System.out.println("dadoImagem2 falhou");
 			e.printStackTrace();
 		}
 	}
 	
-	void setImagesJogador(int jogador, int posX, int posY) {
-		
-	}
+//	void setImagesJogador(int jogador, int posX, int posY) {
+//		
+//	}
 	
 	
 	void setImagesDado(int s1, int s2) {

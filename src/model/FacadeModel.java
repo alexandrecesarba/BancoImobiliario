@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 public class FacadeModel {
 	private Dado dado = Dado.getInstance();
 	private BaralhoSorte baralhoSorte = BaralhoSorte.getInstance();
@@ -25,6 +27,10 @@ public class FacadeModel {
 	
 	public int getCartaSorteReves() {
 		return baralhoSorte.getCarta();
+	}
+	
+	public int getEfeitoCarta(int carta) {
+		return cartaSorte.getEfeito(carta);
 	}
 	
 	public int getAluguelTerreno(int pos) {
@@ -108,16 +114,21 @@ public class FacadeModel {
 		return jogadores[jogadorDaVez].temCartaSaiaPrisao;
 	}
 	
-	public void mudaPrisãoJogador(int jogadorDaVez) {
-		jogadores[jogadorDaVez].mudaEstadoPreso();
+	public boolean mudaPrisãoJogador(int jogadorDaVez) {
+		return jogadores[jogadorDaVez].mudaEstadoPreso();
 	}
 	
 	public boolean jogadorPreso(int jogadorDaVez) {
 		return jogadores[jogadorDaVez].naPrisao;
 	}
 	
-	public void jogadorAndou(int jogadorDaVez, int casas) {
+	public int jogadorAndou(int jogadorDaVez, int casas) {
 		jogadores[jogadorDaVez].setPosicao(casas);
+		int checaPosicao = jogadores[jogadorDaVez].getPosicao();
+		if(checaPosicao == Tabuleiro.tabuleiro.length-1) {
+			jogadores[jogadorDaVez].setPosicao(0);
+		}
+		return jogadores[jogadorDaVez].getPosicao();
 	}
 	
 	public void transacaoJogador(int jogadorDaVez, int preco) {
@@ -147,5 +158,36 @@ public class FacadeModel {
 		return jogadores[jogadorDaVez].getFalido();
 	}
 	
+	public boolean[] atualizaJogadoresPresos() {
+		boolean[] jogadoresPresos = new boolean[jogadores.length];
+		for(int i=0; i < jogadores.length; i++) {
+			jogadoresPresos[i] = jogadores[i].naPrisao;
+		}
+		return jogadoresPresos;
+	}
+	
+	public int[] atualizaPosJogadores() {
+		int[] posJ = new int[jogadores.length];
+		for(int i=0; i < jogadores.length; i++) {
+			posJ[i] = jogadores[i].getPosicao();
+		}
+		return posJ;
+	}
 
+	public int[] atualizaDinheiroJogadores() {
+		int[] dinJ = new int[jogadores.length];
+		for(int i=0; i < jogadores.length; i++) {
+			dinJ[i] = jogadores[i].getDinheiro();
+		}
+		return dinJ;
+	}
+
+	public ArrayList<String>[] atualizaPropriedadesJogadores() {
+		@SuppressWarnings("unchecked")
+		ArrayList<String>[] propJ = new ArrayList[jogadores.length];
+		for(int i=0; i < jogadores.length; i++) {
+			propJ[i] = jogadores[i].getPropriedades();
+		}
+		return propJ;
+	}
 }

@@ -1,7 +1,10 @@
 package controller;
 
+import java.util.ArrayList;
+
 import model.FacadeModel;
 import view.Observer;
+import view.ViewController;
 
 public class GameController extends Observable{
 	//rodada
@@ -16,30 +19,43 @@ public class GameController extends Observable{
 	
 	private FacadeModel model;
 	private Rodada rodada;
-	private int n_duplas = 0;
+	public GameState gameState = GameState.getInstance();
 	private int jogadores;
 	private int total_dados;
-	private boolean tentativaSairDaPrisão = false;
-//	private int[] dados = {0,0}; 
-	int jogadorDaVez;
-	private String state = "";
-	public GameState gameState = GameState.getInstance();
+	private boolean tentativaSairDaPrisao = false;
+	private int[] dados = {0,0};
+	private int jogadorDaVez = 0;
+	private boolean[] jogadoresPresos;
+	private int[] posJogadores; 
+	private int[] dinheiroJogadores;
+	private ArrayList<String>[] propriedadesJogadores;
+	private int qtdDuplasNoDado = 0;
+	private int cartaSorte = -1;
+	private	int banco;
+	private String rank = "";
+	private String state;
 
 	public GameController(Observer o,int n_jogadores) {
 		attach(o);
 		this.jogadores = n_jogadores;
+		initGame();
+	}
+	
+	public void initGame() {
 		this.rodada = new Rodada(jogadores);
 		this.model = new FacadeModel(jogadores);
+		this.banco = 200000;
+		notifyObservers();
+		
 	}
 	
-	
-	public int jogadorMoveu(int casas) {
-		model.jogadorAndou(jogadorDaVez, casas);
-//		tipoTerreno(pos);//getFromObserver
-		return casas; // change to Observer
+	public void jogadorMoveu(int casas) {
+		int pos = model.jogadorAndou(jogadorDaVez, casas);
+		tipoTerreno(pos);
+		notifyObservers();
 	}
 	
-	public void tipoTerreno(int pos) { //receber da View o tipo de Terreno - ??? ta errado isso
+	public void tipoTerreno(int pos) {
 		int tipoTerreno = model.getTipoTerreno(pos);
 		if(tipoTerreno == 0) {
 			entrouAvenida(pos);
@@ -54,13 +70,14 @@ public class GameController extends Observable{
 	void entrouAvenida(int pos) {
 		int dono = model.getDonoTerreno(pos); 
 		if(dono == -1) { // não tem dono
-			boolean compra = false;//send to View opção de compra;
-			if(compra) {
-				model.jogadorComprou(jogadorDaVez,pos);
-				if(!model.checaEstadoJogador(jogadorDaVez)) {
-					encerraRodada();
-				}
-			}
+//			boolean compra = false;
+//			compra = view.jogadorComprou();//send to View opção de compra;
+//			if(compra) {
+//				model.jogadorComprou(jogadorDaVez,pos);
+//				if(!model.checaEstadoJogador(jogadorDaVez)) {
+//					encerraRodada();
+//				}
+//			}
 		}else {// tem dono
 			if(dono == jogadorDaVez) { //dono é o jogadorDaVez
 				int qntdCasa = model.terrenoPossuiCasa(pos);
@@ -90,18 +107,23 @@ public class GameController extends Observable{
 	void entrouCompanhia(int pos) {
 		int dono = model.getDonoTerreno(pos); 
 		if(dono == -1) { // não tem dono
-			boolean compra = false;//send to View opção de compra;
-			if(compra) {
-				model.jogadorComprou(jogadorDaVez,pos);
-				if(!model.checaEstadoJogador(jogadorDaVez)) {
-				}
-			}
+//			boolean compra = false;//send to View opção de compra;
+//			if(compra) {
+//				model.jogadorComprou(jogadorDaVez,pos);
+//				if(!model.checaEstadoJogador(jogadorDaVez)) {
+//				}
+//			}
 		}else {// tem dono
 			if(dono != jogadorDaVez) { //dono não é o jogadorDaVez
-				int[] valor = rodaDados(1); //deve-se rodar o dado 1 vez
-				int preco = model.getAluguelTerreno(pos)*valor[0];
+
+				rodaDados(1); //deve-se rodar o dado 1 vez
+				
+				int preco = model.getAluguelTerreno(pos)*this.dados[0];
+				
 				//send to View resultado do dado + valor total
+				
 				model.transacaoJogador(jogadorDaVez, -preco);
+				
 				if(model.checaEstadoJogador(jogadorDaVez)) {
 					model.transacaoJogador(dono, model.getAluguelTerreno(pos));
 				}else {
@@ -110,6 +132,7 @@ public class GameController extends Observable{
 				}
 			}
 		}
+		notifyObservers();
 		// tem dono? sim - não
 			//sim tem dono - é o jogadorDaVez? sim- não
 			//não tem dono - jogadorDaVez quer comprar? sim-não
@@ -120,7 +143,8 @@ public class GameController extends Observable{
 	void entrouNeutro(int pos) {
 		int efeito = model.getAluguelTerreno(pos);
 		if(efeito == -1) { // prisão
-			model.jogadorPreso(jogadorDaVez);
+			this.jogadoresPresos[jogadorDaVez] = model.jogadorPreso(jogadorDaVez);
+			notifyObservers();
 			// send to view noticia da prisao
 			encerraRodada();
 		}
@@ -139,21 +163,22 @@ public class GameController extends Observable{
 			// é carta de sorte? chama função carta
 	}
 	
-	public int getCartaSorte() {
+	public void getCartaSorte() {
 		// 0 -> saída livre da prisão
 		// 1 -> receba 50 de cada jogador
 		//-1 -> vá para a prisão
 		int carta = model.getCartaSorteReves();
-		if(carta == 0) {
+		int efeitoCarta = model.getEfeitoCarta(model.getCartaSorteReves());
+		if(efeitoCarta == 0) {
 			model.mudaEstadoCartaLivreDaPrisão(jogadorDaVez);
 			
 		}
-		if(carta == 1) {
+		if(efeitoCarta == 1) {
 			for(int i=0; i < jogadores; i++) {
 				if(!model.jogadorFalido(i)) {
 					model.transacaoJogador(i, -50);
 					model.transacaoJogador(jogadorDaVez, 50);
-					//send to view transacao
+					//this.dinheiroJogadores mudou
 					if(!model.checaEstadoJogador(i)) {
 						//send to view notícia de falência
 					}	
@@ -161,54 +186,56 @@ public class GameController extends Observable{
 			}
 			
 		}
-		return carta;
+		this.cartaSorte = carta;
+		notifyObservers();
 	}
 	
-	public int[] rodaDados(int x) {
-		int[] dados;
+	public void rodaDados(int x) {
 		if(x == 1) {
-			dados = model.getDados(1);
+			this.dados = model.getDados(1);
+			setState();
 			notifyObservers();
 		}
-		else if(x == 2 && tentativaSairDaPrisão) {
+		else if(x == 2 && tentativaSairDaPrisao) {
 			if(model.temCartaLivreDaPrisão(jogadorDaVez)) {
 				model.mudaEstadoCartaLivreDaPrisão(jogadorDaVez);
 				model.mudaPrisãoJogador(jogadorDaVez);
 			}
-			dados = model.getDados(2);
+			this.dados = model.getDados(2);
 			notifyObservers();
-			if(dados[0]==dados[1]) {
-				model.mudaPrisãoJogador(jogadorDaVez);
+			if(this.dados[0]==this.dados[1]) {
+				this.jogadoresPresos[jogadorDaVez] = model.mudaPrisãoJogador(jogadorDaVez);
 				//send to view
 			}
 		}
 		else {
-			dados = model.getDados(2);
-			if(dados[0]==dados[1]) {
-				total_dados += dados[0] + dados[1];
-				n_duplas++;
-				dadoDupla();
-			}
-			else {
-				jogadorMoveu(total_dados);
-			}
+			this.dados = model.getDados(2);
+			total_dados += this.dados[0] + this.dados[1];
+//			if(this.dados[0]==this.dados[1]) {
+//				total_dados += this.dados[0] + this.dados[1];
+//				this.qtdDuplasNoDado++;
+//				notifyObservers();
+//				dadoDupla();
+//			}
+//			else {
+			jogadorMoveu(total_dados);
+//			}
 		}
-		notifyObservers();
-		return dados;
 	}
 	
-	void dadoDupla() {
-		if(n_duplas == 1 || n_duplas == 2) {
-			//jogador tem direito a mais um roll
-			//send info to view
-		}
-		else if(n_duplas == 3) {
-			//jogador vai para a prisão
-			model.mudaPrisãoJogador(jogadorDaVez);
-			//send info to view
-		}
-		
-	}
+//	void dadoDupla() {
+//		if(this.qtdDuplasNoDado == 1 || this.qtdDuplasNoDado == 2) {
+//			//jogador tem direito a mais um roll
+//			//send info to view
+//		}
+//		else if(qtdDuplasNoDado == 3) {
+//			//jogador vai para a prisão
+//			model.mudaPrisãoJogador(jogadorDaVez);
+//			this.jogadoresPresos[jogadorDaVez] = true;
+//			notifyObservers();
+//		}
+//		
+//	}
 	
 	void encerraRodada() {
 		if(!model.jogoContinua()) {
@@ -218,13 +245,14 @@ public class GameController extends Observable{
 		if(model.jogadorFalido(rodada.jogadorDaVez)) {
 			encerraRodada();
 		}
-		n_duplas = 0;
+		this.qtdDuplasNoDado = 0;
 		this.jogadorDaVez = rodada.jogadorDaVez;
 		if(model.jogadorPreso(jogadorDaVez)) {
-			tentativaSairDaPrisão = true;
+			tentativaSairDaPrisao = true;
 		}else {
-			tentativaSairDaPrisão = false;
+			tentativaSairDaPrisao = false;
 		}
+		notifyObservers();
 		
 	}
 	
@@ -233,18 +261,35 @@ public class GameController extends Observable{
 		//change state
 		
 	}
-//	
-//	public void setState(String state) {
-//		this.gameState = state;
-//	}
+
+	public void notifyObservers() {
+		this.setState();
+		for(Observer observer: observers) {
+			observer.update();
+		}
+	}
+	
+	public String getState() {
+		System.out.println(state);
+		return this.state;
+	}
+	
+	public void setState() {
+		this.posJogadores = model.atualizaPosJogadores();
+		this.dinheiroJogadores = model.atualizaDinheiroJogadores();
+		this.jogadoresPresos = model.atualizaJogadoresPresos();
+		this.propriedadesJogadores = model.atualizaPropriedadesJogadores();
+		this.state = this.gameState.setState(this.jogadores, this.posJogadores, this.dinheiroJogadores, 
+				this.propriedadesJogadores, this.jogadoresPresos,this.jogadorDaVez, this.dados, 
+				this.qtdDuplasNoDado,this.total_dados, this.cartaSorte, this.banco, this.rank);
+	}
+	
 //	
 //	public String getState() {
 //		return this.gameState;
 //	}
 //	
-	public void notifyObservers() {
-		
-	}
+
 	
 }
 

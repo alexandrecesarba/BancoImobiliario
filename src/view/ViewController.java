@@ -7,10 +7,11 @@ import javax.imageio.ImageIO;
 
 import controller.GameController;
 
-class ViewController extends Observer{
+public class ViewController extends Observer{
 
 	private static ViewController instance = new ViewController();
 	private GameController controller;
+	private String state = "";
 	int carta;
 	int resultadoDados[] = new int[]{0,0};
 	int heightJogador;
@@ -19,21 +20,17 @@ class ViewController extends Observer{
 	int[] posYTabuleiro;
 	int multiplicadorPosX=7;
 	int multiplicadorPosY=13;
-//	private int n_jogadores;
-	{
-		this.posXTabuleiro = new int[11];
-		for(int i=0; i< 11; i++) {
-			posXTabuleiro[i] = 610-55*i;
-		}
-		this.posYTabuleiro = new int[11];
-		for(int i=0; i< 11; i++) {
-			posYTabuleiro[i] = 690-55*i;
-		}
-		
-		
-	}
+	boolean comprou;
 	
 	private ViewController(){
+		this.posXTabuleiro = new int[11];
+		this.posYTabuleiro = new int[11];
+			for(int i=0; i< 11; i++) {
+				posXTabuleiro[i] = 610-55*i;
+			}
+			for(int i=0; i< 11; i++) {
+				posYTabuleiro[i] = 690-55*i;
+			}
 	}
 	
 	public static ViewController getInstance() {
@@ -41,6 +38,7 @@ class ViewController extends Observer{
 	}
 	
 	void initJogadores(int n) {
+		System.out.println("initJogadores");
 		this.controller= new GameController(this,n);
 	}
 	
@@ -50,7 +48,8 @@ class ViewController extends Observer{
 	
 	
 	String rodaDados() {
-		resultadoDados = controller.rodaDados(2);
+		controller.rodaDados(2);
+		resultadoDados = controller.gameState.getDados(state);
 		Integer myInt1 = Integer.valueOf(resultadoDados[0]);
 		String s1 = myInt1.toString();
 		Integer myInt2 = Integer.valueOf(resultadoDados[1]);
@@ -67,6 +66,7 @@ class ViewController extends Observer{
 		try {
 			image = ImageIO.read(getClass().getResourceAsStream(imageName));
 		} catch(IOException e) {
+			System.out.println("getImageJogador falhou");
 			e.printStackTrace();
 		}
 		this.heightJogador = image.getHeight();
@@ -76,7 +76,8 @@ class ViewController extends Observer{
 	
 	
 	int[] getPosJogador(int jogador) {
-		int pos = 0; //get dado from string do update
+		System.out.println("getPosJogadores");
+		int pos = controller.gameState.getPosJogador(state, jogador);
 		int[] posJogador = {-1,-1};
 		if(pos >= 0 && pos <= 10 ) { // y fixo x móvel mX = 7 e mY=13
 			this.multiplicadorPosX = 7;
@@ -145,8 +146,10 @@ class ViewController extends Observer{
 //		}
 //	}
 //	
+	
 	String getCartaSorte() {
-		carta = controller.getCartaSorte();
+		controller.getCartaSorte();
+		carta = controller.gameState.getCarta(state);
 		Integer myInt1 = Integer.valueOf(carta);
 		String s1 = myInt1.toString();
 		String image = "chance" + s1 + ".png";
@@ -154,8 +157,9 @@ class ViewController extends Observer{
 	}
 	
 	public void update() {
-		carta = controller.getCartaSorte();
-		resultadoDados = controller.rodaDados(2);
+		System.out.println("update");
+		this.state = controller.getState();
+		System.out.println(state);
 	}
 
 }
