@@ -45,7 +45,7 @@ public class GameManager extends Observable{
 	private boolean jogadorIndeciso = false;
 
 
-	private GameManager() {
+	public GameManager() {
 	}
 	
 	public static GameManager getInstance() {
@@ -485,6 +485,7 @@ public class GameManager extends Observable{
             while(leitor.hasNextLine()) {
                 System.out.println(leitor.nextLine()); //Isso so esta printando o arquivo, no lugar botar para pegar a info e jogar no gamestate (eu acho)
             }
+            leitor.close();
         }catch(FileNotFoundException e) {
             System.out.println("Arquivo nao encontrado.");
             e.printStackTrace();
