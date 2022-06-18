@@ -15,6 +15,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
+
+import controller.GameManager;
+
 import javax.swing.ButtonGroup;
 
 
@@ -40,6 +43,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 	private BufferedImage[] jogadores;
 	private Dialogo dialogo;
 	private String feedback;
+	private GameManager gm = new GameManager();
 	
 	// botoes dado
 	private JButton dado1 = new JButton("1");
@@ -332,11 +336,13 @@ public class Tabuleiro extends JFrame implements ActionListener{
 			this.setImagesDado();
 			this.setImagesTerreno();
 			this.repaint();
+			gm.salvaJogo();
 		}
 		
 		else if (e.getSource() == setaDados) {
 			this.setImagesDado(valorDado1, valorDado2);
 			this.repaint();
+			gm.salvaJogo();
 		}
 		
 		else if(e.getSource() == baralhoSorte) {
@@ -365,6 +371,8 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		else if(e.getSource() == construirHotel) {
 			view.construirNoTerreno(1);
 			setFeedback();
+		}else if(e.getSource() == salvarJogo) {
+			gm.salvaJogo();
 		}
 		else{
 			//to be implemented

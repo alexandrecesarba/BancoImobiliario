@@ -2,20 +2,25 @@ package view;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import controller.GameManager;
 
 @SuppressWarnings("serial")
-public class JanelaInicial extends JFrame{
+public class JanelaInicial extends JFrame implements ActionListener{
 	JPanel janelaPanel = new JPanel();
 	JLabel instrucao1 = new JLabel("Coloque o número de jogadores:");
 	JTextField inputQtdJogadores = new JTextField(15);
 	JButton botaoSubmit = new JButton("Enter");
 	private int qtdJogadores;
-	
+	private JButton carregarJogo = new JButton("CARREGAR");
+	private GameManager gm = new GameManager();
 	public JanelaInicial() {
 		setTitle("Janela Incial");
 		setVisible(true);
 		setSize(1200,700);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
+		carregarJogo.setBounds(550,60,100,45);
+		add(carregarJogo);
+		carregarJogo.addActionListener(this);
 //		instrucao1.
 		janelaPanel.add(instrucao1);
 		janelaPanel.add(inputQtdJogadores);
@@ -40,5 +45,13 @@ public class JanelaInicial extends JFrame{
 			}
 		});
 		add(janelaPanel);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == carregarJogo) {
+			gm.carregaJogo();
+		}
+		
 	}
 }
