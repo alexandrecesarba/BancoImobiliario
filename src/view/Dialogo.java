@@ -7,13 +7,7 @@ public class Dialogo extends JFrame{
 	JLabel instrucao = new JLabel();
 	
 	public Dialogo(String feedback) {
-		setTitle("JOGO");
-		setVisible(true);
-		setSize(1200,100);
-		setDefaultCloseOperation(HIDE_ON_CLOSE);
-		instrucao.setText(feedback);
-		janelaPanel.add(instrucao);
-		add(janelaPanel);
+		JOptionPane.showMessageDialog(null, feedback);
 	}
 	
 	

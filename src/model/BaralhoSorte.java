@@ -12,10 +12,12 @@ class BaralhoSorte {
 	}
 	
 	private BaralhoSorte(){
-		for(int i=1; i <= 30; i++) {
+		for(int i=0; i < 30; i++) {
 			baralho.add(i);
 		}
 		Collections.shuffle(baralho);
+
+		System.out.println(baralho);
 	}
 	
 	int getCarta() {

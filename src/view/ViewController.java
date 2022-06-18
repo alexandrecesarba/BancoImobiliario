@@ -43,7 +43,7 @@ public class ViewController extends Observer{
 //	void encerraJogo() {
 //		manager.encerraJogo();
 //	}
-//	
+	
 	void comprarTerreno() {
 		manager.comprarTerreno();
 	}
@@ -127,7 +127,7 @@ public class ViewController extends Observer{
 			System.out.println(20-pos);
 			this.multiplicadorPosX = 13;
 			this.multiplicadorPosY = 7;
-			posJogador[0] = posXTabuleiro[10-(pos-20)];//posXTabuleiro[pos-20];				
+			posJogador[0] = posXTabuleiro[10-(pos-20)];		
 			posJogador[1] = posYTabuleiro[10];
 		}
 		else {
@@ -144,7 +144,7 @@ public class ViewController extends Observer{
 	String getCartaSorte() {
 		manager.getCartaSorte();
 		carta = manager.gameState.getCarta(state);
-		Integer myInt1 = Integer.valueOf(carta);
+		Integer myInt1 = Integer.valueOf(carta+1);
 		String s1 = myInt1.toString();
 		String image = "chance" + s1 + ".png";
 		return image;

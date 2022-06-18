@@ -121,7 +121,7 @@ public class GameManager extends Observable{
 
 	public void naoComprarTerreno() {
 		this.jogadorIndeciso = false;
-		this.feedback = completeFeedback(jogadorDaVez, " nao quis. Ok ent");
+		this.feedback = completeFeedback(jogadorDaVez, " nao quis. Ok entao...");
 //		notifyObservers();
 		encerraRodada();
 	}
@@ -152,39 +152,44 @@ public class GameManager extends Observable{
 	
 	
 	void entrouAvenida(int pos) {
-		encerraRodada();
-//		int dono = model.getDonoTerreno(pos);
-//			if(dono == jogadorDaVez) { //dono é o jogadorDaVez
-//				int qntdCasa = model.terrenoPossuiCasa(pos);
-//				if(qntdCasa > 0) {
-//					if(qntdCasa != 4) {
-//						if(!model.terrenoPossuiHotel(pos)) {
-//							//send to View opção de construir casa ou hotel
-//						}
-//						//send to View opção de construir casa
-//					}
-//				}else {
-//					//send to View opção de construir casa
-//				}
-//				
-//				//send to View opção de vender terreno
-//				
-//			}else {//dono não é o jogadorDaVez
-//				model.transacaoJogador(jogadorDaVez, -model.getAluguelTerreno(pos));
-//				if(model.checaEstadoJogador(jogadorDaVez)) {
-//					model.transacaoJogador(dono, model.getAluguelTerreno(pos));
-//				}
-//				//send to View 
-//			}
-//		}
+		int dono = model.getDonoTerreno(pos); 
+		if(dono == -1) { // não tem dono
+			Integer myInt = Integer.valueOf(model.getPrecoTerreno(pos));
+			String aux = myInt.toString();
+			this.feedback = completeFeedback(jogadorDaVez, ", a rua"+ model.getNomeTerreno(pos) +"ainda não tem dono! Ela custa "+aux+". Aperte COMPRAR ou NAO COMPRAR no tabuleiro.");
+			this.jogadorIndeciso = true;
+			notifyObservers();
+		}else {// tem dono
+			if(dono == jogadorDaVez) { //dono e o jogadorDaVez
+				Integer myInt = Integer.valueOf(model.terrenoPossuiCasa(pos));
+				String aux = myInt.toString();
+				myInt = Integer.valueOf(model.getTerrenoConstrucaoPreco(pos));
+				String aux2 = myInt.toString();
+				if(model.terrenoPossuiHotel(pos)) {
+					this.feedback = completeFeedback(jogadorDaVez,", "+model.getNomeTerreno(pos) + " ja e sua! Se deseja construir algo, aperte CONSTRUIR CASA ou CONSTRUIR HOTEL. Ela possui "+aux+" casas e ja possui hotel. O preco para construir e de "+aux2+".");
+				}else {
+					this.feedback = completeFeedback(jogadorDaVez,", "+model.getNomeTerreno(pos) + " ja e sua! Se deseja construir algo, aperte CONSTRUIR CASA ou CONSTRUIR HOTEL. Ela possui "+aux+" casas e não possui hotel. O preco para construir e de "+aux2+".");
+				}
+				notifyObservers();
+			}
+			else {
+				this.feedback = completeFeedback(jogadorDaVez,", "+model.getNomeTerreno(pos) + " pertence a " + model.getNomeJogador(dono) + ". Vamos descontar o aluguel, ok?");
+				rodaDados(1);
+				model.transacaoJogador(jogadorDaVez, -model.getAluguelTerreno(pos)*this.dados[0]);
+				model.transacaoJogador(dono, model.getAluguelTerreno(pos)*this.dados[0]); 
+				this.dinheiroJogadores = model.atualizaDinheiroJogadores();
+				model.checaEstadoJogador(jogadorDaVez);// se o jogador falir com essa operacao, este caso nao esta sendo tratado
+				encerraRodada();
+			}
+		}
 	}
-////	
+	
 	void entrouCompanhia(int pos) {
 		int dono = model.getDonoTerreno(pos); 
 		if(dono == -1) { // não tem dono
 			Integer myInt = Integer.valueOf(model.getPrecoTerreno(pos));
 			String aux = myInt.toString();
-			this.feedback = completeFeedback(jogadorDaVez, ", esta companhia ainda não tem dono! Ela custa "+aux+". Aperte COMPRAR ou NAO COMPRAR no tabuleiro.");
+			this.feedback = completeFeedback(jogadorDaVez, ", "+model.getNomeTerreno(pos) + "  ainda não tem dono! Ela custa "+aux+". Aperte COMPRAR ou NAO COMPRAR no tabuleiro.");
 			this.jogadorIndeciso = true;
 			notifyObservers();
 		}else {// tem dono
@@ -193,13 +198,12 @@ public class GameManager extends Observable{
 				encerraRodada();
 			}
 			else {
-				this.feedback = completeFeedback(jogadorDaVez, " essa companhia pertence a " + model.getNomeJogador(dono) + ". Pague o aluguel multiplicado pelo resultado do dado da esquerda.");
+				this.feedback = completeFeedback(jogadorDaVez, " essa companhia pertence a " + model.getNomeJogador(dono) + ". Vamos descontar o aluguel multiplicado pelo resultado do dado da esquerda, ok?");
 				rodaDados(1);
 				model.transacaoJogador(jogadorDaVez, -model.getAluguelTerreno(pos)*this.dados[0]);
 				model.transacaoJogador(dono, model.getAluguelTerreno(pos)*this.dados[0]); 
-				// se o jogador falir com essa operacao, este caso nao esta sendo tratado
 				this.dinheiroJogadores = model.atualizaDinheiroJogadores();
-				model.checaEstadoJogador(jogadorDaVez);
+				model.checaEstadoJogador(jogadorDaVez);// se o jogador falir com essa operacao, este caso nao esta sendo tratado
 				encerraRodada();
 			}
 		}
@@ -223,10 +227,11 @@ public class GameManager extends Observable{
 		}
 		else if(efeito == -2) { // carta sorteOuReves
 			this.feedback = completeFeedback(jogadorDaVez,", retire uma carta do baralho! Sorte... ou reves?");
+			this.jogadorIndeciso = true;
 			notifyObservers();
 		}
 		else {
-			this.banco += efeito;
+			this.banco -= efeito;
 			model.transacaoJogador(jogadorDaVez, efeito);
 			this.dinheiroJogadores = model.atualizaDinheiroJogadores();
 			model.checaEstadoJogador(jogadorDaVez);
@@ -271,13 +276,14 @@ public class GameManager extends Observable{
 			model.checaEstadoJogador(jogadorDaVez);
 			this.feedback = completeFeedback(jogadorDaVez, ", transacao feita!");
 		}
+		this.jogadorIndeciso = false;
 		notifyObservers();
 		encerraRodada();
 	}
 	
 	public void rodaDados(int x) {
 		if(tentativaSairDaPrisao) {
-			this.dados = model.getDados(2);
+			this.dados = model.getDados();
 			if(this.dados[0]==this.dados[1]) {
 				this.qtdDuplasNoDado++;
 				this.feedback = completeFeedback(jogadorDaVez, " tirou uma dupla! Esta livre!");
@@ -294,14 +300,15 @@ public class GameManager extends Observable{
 		else {
 			if(x==2) {
 				if(jogadorIndeciso) {
-					Integer myInt = Integer.valueOf(model.getPrecoTerreno(this.posJogadores[jogadorDaVez]));
-					String aux = myInt.toString();					
-					this.feedback = completeFeedback(jogadorDaVez, " ainda nao se decidiu se quer ou nao comprar " + this.model.getNomeTerreno(this.posJogadores[jogadorDaVez])+". O custo é de "+aux+".");
+//					Integer myInt = Integer.valueOf(model.getPrecoTerreno(this.posJogadores[jogadorDaVez]));
+//					String aux = myInt.toString();					
+//					this.feedback = completeFeedback(jogadorDaVez, " ainda nao se decidiu se quer ou nao comprar " + this.model.getNomeTerreno(this.posJogadores[jogadorDaVez])+". O custo é de "+aux+".");
+					this.feedback = completeFeedback(jogadorDaVez, " ainda nao terminou de jogar!!");
 					notifyObservers();
 					return;
 				
 				}
-				this.dados = model.getDados(2);
+				this.dados = model.getDados();
 				if(this.dados[0]==this.dados[1]) {
 					this.qtdDuplasNoDado++;
 					this.feedback = completeFeedback(jogadorDaVez, " tirou uma dupla! Rode o dado novamente.");
@@ -324,7 +331,7 @@ public class GameManager extends Observable{
 
 			}
 			else if(x == 1) {
-				this.dados = model.getDados(1);
+				this.dados = model.getDados(); // para evitar bug
 			}
 		}
 	}
@@ -384,15 +391,15 @@ public class GameManager extends Observable{
 	public String completeFeedback(int jogador, String feedback) {
 		this.feedback = model.getNomeJogador(jogadorDaVez);
 		this.feedback = this.feedback.concat(feedback);
-		this.feedback = this.feedback.concat("  SUA COR É ");
+		this.feedback = this.feedback.concat("\nSUA COR É ");
 		this.feedback = this.feedback.concat(model.getCorJogador(jogadorDaVez));
-		this.feedback = this.feedback.concat("  SEU DINHEIRO É ");
+		this.feedback = this.feedback.concat("\nSEU DINHEIRO É ");
 		Integer myInt = Integer.valueOf(this.dinheiroJogadores[jogadorDaVez]);
 		String aux = myInt.toString();
 		this.feedback = this.feedback.concat(aux);
-		this.feedback = this.feedback.concat("  SUAS PROPRIEDADES:");
+		this.feedback = this.feedback.concat("\nSUAS PROPRIEDADES:");
 		this.feedback = this.feedback.concat(this.propriedadesJogadores[jogadorDaVez].toString());
-		this.feedback = this.feedback.concat("  BANCO: ");
+		this.feedback = this.feedback.concat("\nBANCO: ");
 		myInt = Integer.valueOf(this.banco);
 		aux = myInt.toString();
 		this.feedback = this.feedback.concat(aux);

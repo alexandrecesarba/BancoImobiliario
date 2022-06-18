@@ -6,14 +6,14 @@ class TerrenoNeutro extends Terreno{
 		this.dono= -2; // não pode ser comprado
 		switch(carta) {
 		case Inicio:
-			this.nome = "Inicio - ganhe 200!";
+			this.nome = "voltou para o inicio - ganhe 200!";
 			aluguelAtual = 200;
 			break;
 		case SorteReves:
 			aluguelAtual = -2;
 			break;
 		case Prisao:
-			this.nome = "Visitando seus amigos, que fofo.";
+			this.nome = "visitando seus amigos, que fofo.";
 			aluguelAtual = 0;
 			break;
 		case LucrosOuDividendos:
@@ -21,7 +21,7 @@ class TerrenoNeutro extends Terreno{
 			aluguelAtual = 200;
 			break;
 		case ParadaLivre:
-			this.nome = "Calma, respira, relaxa um pouco. Parada livre ai.";
+			this.nome = "hora da calma. Respira, relaxa um pouco. Parada livre ai.";
 			aluguelAtual = 0;
 			break;
 		case Imposto:

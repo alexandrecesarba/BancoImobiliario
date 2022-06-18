@@ -250,7 +250,6 @@ public class Tabuleiro extends JFrame implements ActionListener{
 	}
 	
 	public void paint(Graphics g) {
-		setFeedback();
 		Graphics2D g2D = (Graphics2D) g;
 		super.paintComponents(g2D);
 		g2D.drawImage(image,10,105,image.getWidth(), image.getHeight(),null);
@@ -268,6 +267,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		if(terrenoImagem != null) {
 			g2D.drawImage(terrenoImagem,130,460,180,230,null);
 		}
+		setFeedback();
 		
 	}
 	

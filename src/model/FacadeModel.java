@@ -17,9 +17,9 @@ public class FacadeModel {
 		
 	}
 	
-	public int[] getDados(int x) {
+	public int[] getDados() {
 		int[] resultados = {0,0};
-		for(int i=0; i < x; i++) {
+		for(int i=0; i < 2; i++) {
 			resultados[i] = dado.rodaDado();
 		}
 		return resultados;
@@ -69,7 +69,7 @@ public class FacadeModel {
 		 return aux.temHotel();
 	}
 	
-	public int getTerrenoConstrucaoPreço(int pos,int tipo) {
+	public int getTerrenoConstrucaoPreco(int pos) {
 		TerrenoAvenida aux = (TerrenoAvenida)tabuleiro.getTerreno(pos); 
 		return aux.getPrecoConstrucao();
 	}
