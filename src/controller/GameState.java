@@ -11,7 +11,6 @@ import java.util.Collections;
 // jogadorDaVez 2
 // dados 66 //resultado do dado1 + resultado do dado 2
 // qtdDuplasNoDado 0 //int qntd de duplas tiradas no dado nesta rodada
-// total_dados 12 //int total dos dados
 // carta 23 //int cartaSorte
 // dinheiro do banco
 // ranking 
@@ -42,8 +41,9 @@ public class GameState {
 //	}	
 	private GameState() {}
 	
-	String setState(int n_jogadores, int[] posJ, int[] dinheiroJ, ArrayList<String>[] propriedadesJ, boolean[] jogadorPreso,int jogadorDaVez, int[] dados, int qtdDuplasNoDado,int total_dados, int cartaSorte, int banco, String rank) {
-		String state = "";
+	String setState(String gameFeedback,int n_jogadores, int[] posJ, int[] dinheiroJ, ArrayList<String>[] propriedadesJ, boolean[] jogadorPreso,int jogadorDaVez, String nomeTerrenoAtual, int tipoTerrenoAtual,int[] dados, int qtdDuplasNoDado, int cartaSorte, int banco, String rank) {
+		String state = gameFeedback;
+		state = state.concat("endOfFeedback\n");
 		this.myInt = Integer.valueOf(n_jogadores);
 		this.aux = myInt.toString();
 		state = state.concat(aux+"\n");
@@ -74,6 +74,13 @@ public class GameState {
 		
 		state = state.concat("jogadorDaVez "+aux+"\n");
 		
+		state = state.concat("nomeTerrenoAtual "+nomeTerrenoAtual+"endOfNome\n");
+		
+		this.myInt = Integer.valueOf(tipoTerrenoAtual);
+		this.aux = myInt.toString();
+		
+		state = state.concat("tipoTerrenoAtual "+aux+"\n");
+		
 		this.myInt = Integer.valueOf(dados[0]);
 		this.aux = myInt.toString();
 		this.myInt = Integer.valueOf(dados[1]);
@@ -85,12 +92,7 @@ public class GameState {
 		this.aux = myInt.toString();
 		
 		state = state.concat("qtdDuplasNoDado "+aux+" \n");
-		
-		this.myInt = Integer.valueOf(total_dados);
-		this.aux = myInt.toString();
-		
-		state = state.concat("total_dados "+aux+" \n");
-		
+			
 		this.myInt = Integer.valueOf(cartaSorte);
 		this.aux = myInt.toString();
 		
@@ -102,25 +104,37 @@ public class GameState {
 		state = state.concat("banco "+aux+" endOfbanco\n");
 		
 		state = state.concat("ranking "+rank+"\n");
-
+		System.out.println(state);
 		return state;
 		
 	}
 	
+	public String getFeedback(String state) {
+		return state.substring(0,state.indexOf("endOfFeedback"));
+	}
+	
 	public int getNJogadores(String state, int jogador) {
-		aux = state.substring(0,1);
-		aux.trim();
+		aux = state.substring(state.indexOf("endOfFeedback") + 14,state.indexOf("endOfFeedback") + 15);
+		aux = aux.trim();
 		return Integer.parseInt(aux);
+	}
+	
+	public int getTipoTerreno(String state) {
+		aux = state.substring(state.indexOf("tipoTerrenoAtual ") + 17,state.indexOf("tipoTerrenoAtual ") + 19);
+		aux = aux.trim();
+		return Integer.parseInt(aux);
+	}
+	
+	public String getNomeTerreno(String state) {
+		aux = state.substring(state.indexOf("nomeTerrenoAtual ") + 17,state.indexOf("endOfNome"));
+		return aux;
 	}
 	
 	public int getPosJogador(String state, int jogador) {
 		this.myInt = Integer.valueOf(jogador);
 		this.aux2 = myInt.toString();
-		System.out.println(state);
 		aux = state.substring(state.indexOf("pos" + aux2 +" ") + 5, state.indexOf("dinheiro"+ aux2));
-		System.out.println(aux);
-		aux.trim();
-		System.out.println(aux);
+		aux = aux.trim();
 		return Integer.parseInt(aux);
 	}
 	
@@ -128,7 +142,7 @@ public class GameState {
 		this.myInt = Integer.valueOf(jogador);
 		this.aux2 = myInt.toString();
 		aux = state.substring(state.indexOf("dinheiro" + aux2 +" ") + 10, state.indexOf("propriedades"+ aux2));
-		aux.trim();
+		aux = aux.trim();
 		return Integer.parseInt(aux);
 	}
 	
@@ -136,7 +150,7 @@ public class GameState {
 		this.myInt = Integer.valueOf(jogador);
 		this.aux2 = myInt.toString();
 		aux = state.substring(state.indexOf("propriedades"+ aux2 +" ") + 14, state.indexOf("preso" + aux2));
-		aux.trim();
+		aux = aux.trim();
 		return aux;
 	}
 	
@@ -144,14 +158,14 @@ public class GameState {
 		this.myInt = Integer.valueOf(jogador);
 		this.aux2 = myInt.toString();
 		aux = state.substring(state.indexOf("preso" + aux2 +" ") + 7, state.indexOf("preso" + aux2 +" ") + 13);
-		aux.trim();
+		aux = aux.trim();
 		return Boolean.valueOf(aux);
 	}
 	
 	public int[] getDados(String state) {
 		int[] dados = {0,0};
 		aux = state.substring(state.indexOf("dados ") + 6, state.indexOf("dados ") + 9);
-		aux.trim();
+		aux = aux.trim();
 		dados[0] = Integer.parseInt(aux.substring(0,1));
 		dados[1] = Integer.parseInt(aux.substring(1));
 		return dados;
@@ -159,31 +173,26 @@ public class GameState {
 	
 	public int getDuplasNoDado(String state) {
 		aux = state.substring(state.indexOf("qtdDuplasNoDado ") + 16, state.indexOf("qtdDuplasNoDado ") + 18);
-		aux.trim();
+		aux = aux.trim();
 		return Integer.parseInt(aux);
 	}
 	
-	public int getTotalDados(String state) {
-		aux = state.substring(state.indexOf("total_dados ") + 12, state.indexOf("total_dados ") + 15);
-		aux.trim();
-		return Integer.parseInt(aux);
-	}
 	
 	public int getCarta(String state) {
-		aux = state.substring(state.indexOf("carta ") + 6, state.indexOf("carta ") + 9);
-		aux.trim();
+		aux = state.substring(state.lastIndexOf("carta ") + 6, state.lastIndexOf("carta ") + 9);
+		aux = aux.trim();
 		return Integer.parseInt(aux);
 	}
 	
 	public int getBanco(String state) {
 		aux = state.substring(state.indexOf("banco ") + 6, state.indexOf("endOfbanco"));
-		aux.trim();
+		aux = aux.trim();
 		return Integer.parseInt(aux);
 	}
 	
 	public String getRanking(String state) {
 		aux = state.substring(state.indexOf("ranking ") + 8);
-		aux.trim();
+		aux = aux.trim();
 		return aux;
 	}
 	

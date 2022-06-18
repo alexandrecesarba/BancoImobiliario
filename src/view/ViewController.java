@@ -10,8 +10,8 @@ import controller.GameManager;
 public class ViewController extends Observer{
 
 	private static ViewController instance = new ViewController();
-	private GameManager manager;
-	private String state = "";
+	private GameManager manager = GameManager.getInstance();
+	private String state;
 	int carta;
 	int resultadoDados[] = new int[]{0,0};
 	int heightJogador;
@@ -20,7 +20,6 @@ public class ViewController extends Observer{
 	int[] posYTabuleiro;
 	int multiplicadorPosX=7;
 	int multiplicadorPosY=13;
-	boolean comprou;
 	
 	private ViewController(){
 		this.posXTabuleiro = new int[11];
@@ -38,16 +37,21 @@ public class ViewController extends Observer{
 	}
 	
 	void initJogadores(int n) {
-		this.manager= new GameManager(this,n);
+		GameManager.setManager(manager,this,n);
 	}
 	
-	void encerraJogo() {
-		manager.encerraJogo();
-	}
-	
+//	void encerraJogo() {
+//		manager.encerraJogo();
+//	}
+//	
+//	void comprarTerreno() {
+//		manager.comprarTerreno();
+//	}
+//	
 	
 	String rodaDados() {
 		manager.rodaDados(2);
+		System.out.println("rodou");
 		resultadoDados = manager.gameState.getDados(state);
 		Integer myInt1 = Integer.valueOf(resultadoDados[0]);
 		String s1 = myInt1.toString();
@@ -72,10 +76,29 @@ public class ViewController extends Observer{
 		this.widthJogador = image.getWidth();
 		return image;
 	}
+
+	String getImageTerreno() {
+		String imagem ="";
+		String pathCompanhia = "Imagens-01/companhias/";
+		String pathAvenida = "Imagens-01/territorios/";
+		int tipo = manager.gameState.getTipoTerreno(state);
+		System.out.println("getImageTerreno");
+		System.out.println(tipo);
+		imagem = manager.gameState.getNomeTerreno(state);
+		if(tipo == 2) {return null;}
+		else if(tipo == 1) {
+			return pathCompanhia + imagem;
+			}
+		else{	
+			return pathAvenida + imagem;
+		}
+	}
 	
+	String getFeedback() {
+		return manager.gameState.getFeedback(state);
+	}
 	
 	int[] getPosJogador(int jogador) {
-		System.out.println("getPosJogadores");
 		int pos = manager.gameState.getPosJogador(state, jogador);
 		int[] posJogador = {-1,-1};
 		if(pos >= 0 && pos <= 10 ) { // y fixo x móvel mX = 7 e mY=13
@@ -84,67 +107,32 @@ public class ViewController extends Observer{
 			posJogador[0] = posXTabuleiro[pos];				
 			posJogador[1] = posYTabuleiro[0];
 		}
-		else if(pos >= 20 && pos <= 30 ) {
+		else if(pos >= 10 && pos <= 20 ) {
+			System.out.println("pos >= 10 && pos <= 20");
+			System.out.println(pos-10);
 			this.multiplicadorPosX = 13;
 			this.multiplicadorPosY = 7;
-			posJogador[0] = posXTabuleiro[0];				
+			posJogador[0] = posXTabuleiro[10];			
 			posJogador[1] = posYTabuleiro[pos-10];
 		}
 		else if(pos >= 20 && pos <= 30 ) {
-			this.multiplicadorPosX = 7;
-			this.multiplicadorPosY = 13;
-			posJogador[0] = posXTabuleiro[pos-20];				
-			posJogador[1] = posYTabuleiro[11];
+			System.out.println("pos >= 20 && pos <= 30");
+			System.out.println(20-pos);
+			this.multiplicadorPosX = 13;
+			this.multiplicadorPosY = 7;
+			posJogador[0] = posXTabuleiro[10-(pos-20)];//posXTabuleiro[pos-20];				
+			posJogador[1] = posYTabuleiro[10];
 		}
 		else {
 			this.multiplicadorPosX = 13;
 			this.multiplicadorPosY = 7;
-			posJogador[0] = posXTabuleiro[11];				
-			posJogador[1] = posYTabuleiro[pos-30];
+			System.out.println("pos >= 30 && pos <= 40");
+			System.out.println(pos-30);
+			posJogador[0] = posXTabuleiro[0];				
+			posJogador[1] = posYTabuleiro[10-(pos-30)];
 		}
-		
 		return posJogador;
 	}
-	
-	
-//	
-//	int getPosXJogador(int jogador) {
-//		int pos = 0; //get dado from string do update
-//		if(pos >= 0 && pos <= 10 ) {
-//			this.multiplicadorPosX = 7;
-//			return posXTabuleiro[0];
-//		}
-//		else if(pos >= 20 && pos <= 30 ) {
-//			this.multiplicadorPosY = 7;
-//			return posXTabuleiro[11];
-//			
-//		}
-//		else {
-//			for(int i=0; i< 11; i++) {
-//				posXTabuleiro[i] = 690-55*i;
-//			}
-//		}
-//		
-//	}
-//	
-//	int getPosYJogador(int i) {
-//		int pos = 0; //get dado from string do update
-//		if(pos >= 0 && pos <= 10 ) {
-//			this.multiplicadorPosY = 7;
-//			return posYTabuleiro[0];
-//		}
-//		else if(pos >= 20 && pos <= 30 ) {
-//			this.multiplicadorPosY = 7;
-//			return posYTabuleiro[11];
-//			
-//		}
-//		else {
-//			for(int i=0; i< 11; i++) {
-//				posYTabuleiro[i] = 690-55*i;
-//			}
-//		}
-//	}
-//	
 	
 	String getCartaSorte() {
 		manager.getCartaSorte();
@@ -157,7 +145,6 @@ public class ViewController extends Observer{
 	
 	public void update() {
 		this.state = manager.getState();
-		System.out.println(this.state);
 	}
 
 }

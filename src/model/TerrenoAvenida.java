@@ -14,6 +14,7 @@ class TerrenoAvenida extends Terreno{
 		this.precoConstrucao = precoConstrucao;
 		this.cor = cor;
 		this.tipo = 0;
+		this.dono = -1;
 	}
 	
 	CorTerreno getCor() {

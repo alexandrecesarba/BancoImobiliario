@@ -45,6 +45,10 @@ public class FacadeModel {
 		 return tabuleiro.getTerreno(pos).dono;
 	}
 	
+	public String getNomeTerreno(int pos) {
+		return tabuleiro.getTerreno(pos).nome;
+	}
+	
 	public int terrenoPossuiCasa(int pos) {
 		TerrenoAvenida aux = (TerrenoAvenida)tabuleiro.getTerreno(pos);
 		 return aux.getCasas();
@@ -70,20 +74,21 @@ public class FacadeModel {
 	}
 	
 	public boolean jogoContinua() { // retorna true se ainda há pelo menos dois jogadores não falidos
-		int jogadores_falidos = 0;
-		
-		for(int i=0; i < jogadores.length; i++) {
-			if(jogadores[i].getFalido()) {
-				jogadores_falidos++;
-			}
-		}
-		
-		if((jogadores_falidos - jogadores.length) > 3) {
-			return true;
-		}
-		else {
-			return false;
-		}
+//		int jogadores_falidos = 0;
+//		
+//		for(int i=0; i < jogadores.length; i++) {
+//			if(jogadores[i].getFalido()) {
+//				jogadores_falidos++;
+//			}
+//		}
+//		
+//		if((jogadores_falidos - jogadores.length) > 3) {
+//			return true;
+//		}
+//		else {
+//			return false;
+//		}
+		return true;
 	}
 	
 	public String ranking() { // retorna true se ainda há pelo menos dois jogadores não falidos
@@ -99,6 +104,13 @@ public class FacadeModel {
 		return rank;
 	}
 	
+	public String getNomeJogador(int jogadorDaVez) {
+		return jogadores[jogadorDaVez].getNome();
+	}
+	
+	public String getCorJogador(int jogadorDaVez) {
+		return jogadores[jogadorDaVez].getCor().toString();
+	}
 	
 	public void mudaEstadoCartaLivreDaPrisão(int jogadorDaVez) {
 		jogadores[jogadorDaVez].mudaEstadoCartaSaiaPrisao();
@@ -118,15 +130,21 @@ public class FacadeModel {
 		return jogadores[jogadorDaVez].mudaEstadoPreso();
 	}
 	
-	public boolean jogadorPreso(int jogadorDaVez) {
-		return jogadores[jogadorDaVez].naPrisao;
+	public void resetPosicaoJogador(int jogadorDaVez, int pos) {
+		jogadores[jogadorDaVez].resetPosicao(pos);
 	}
 	
 	public int jogadorAndou(int jogadorDaVez, int casas) {
 		jogadores[jogadorDaVez].setPosicao(casas);
 		int checaPosicao = jogadores[jogadorDaVez].getPosicao();
-		if(checaPosicao == Tabuleiro.tabuleiro.length-1) {
-			jogadores[jogadorDaVez].setPosicao(0);
+		if(checaPosicao >= (Tabuleiro.tabuleiro.length-1)) {
+			jogadores[jogadorDaVez].resetPosicao(checaPosicao - (Tabuleiro.tabuleiro.length-1));
+			System.out.println("checaPosicao");
+			System.out.println(checaPosicao);
+			System.out.println("Tabuleiro.tabuleiro.length-1");
+			System.out.println(Tabuleiro.tabuleiro.length-1);
+			System.out.println("checaPosicao >= Tabuleiro.tabuleiro.length-1");
+			System.out.println(checaPosicao - (Tabuleiro.tabuleiro.length-1));
 		}
 		return jogadores[jogadorDaVez].getPosicao();
 	}
@@ -142,15 +160,14 @@ public class FacadeModel {
 		return jogadores[jogadorDaVez].getDinheiro();
 	}
 	
-	public boolean checaEstadoJogador(int jogadorDaVez) {
-		if(jogadores[jogadorDaVez].getDinheiro() > 0) {
-			return true;
-		}
-		else {
+	public void checaEstadoJogador(int jogadorDaVez) {
+		if(jogadores[jogadorDaVez].getDinheiro() < 0) {
 			jogadores[jogadorDaVez].faliu();
 			tabuleiro.jogadorFaliu(jogadorDaVez);
 			jogadores[jogadorDaVez].vendaPropriedades();
-			return false;
+			this.atualizaPropriedadesJogadores();
+			this.atualizaDinheiroJogadores();
+			this.atualizaPropriedadesJogadores();
 		}
 	}
 	

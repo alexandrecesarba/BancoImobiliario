@@ -6,6 +6,7 @@ class TerrenoCompanhia extends Terreno{
 		this.preco = preco;
 		this.nome = nome;
 		this.tipo = 1;
+		this.dono = -1;
 	}
 
 }

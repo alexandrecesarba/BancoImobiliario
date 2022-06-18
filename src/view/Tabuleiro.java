@@ -13,6 +13,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 
@@ -25,15 +26,19 @@ public class Tabuleiro extends JFrame implements ActionListener{
 	private BufferedImage dadoImagem1;
 	private BufferedImage dadoImagem2;
 	private BufferedImage cartaImagem;
+	private BufferedImage terrenoImagem = null;
 	private JButton cartaSorte = new JButton("REMOVER CARTA");
 	private JButton salvarJogo = new JButton("SALVAR");
-	private JButton carregarJogo = new JButton("CARREGAR");
-	private JButton encerrarJogo = new JButton("ENCERRAR PARTIDA");
+	private JButton comprarTerreno = new JButton("COMPRAR TERRENO");
+	private JButton construir = new JButton("CONSTRUIR");
+	private JButton encerrarJogo = new JButton("ENCERRAR");
 	private JButton rodaDados = new JButton("ROLL");
 	private JButton setaDados = new JButton("SET");
 	private JButton baralhoSorte = new JButton("BARALHO");
 	private BufferedImage[] jogadores;
-
+	private Dialogo dialogo;
+	private String feedback;
+	
 	// botoes dado
 	private JButton dado1 = new JButton("1");
 	private JButton dado2 = new JButton("2");
@@ -67,35 +72,34 @@ public class Tabuleiro extends JFrame implements ActionListener{
 	}
 	
 	Tabuleiro(int n) {
-//		this.getContentPane()
-		this.getContentPane().setVisible(true);
+		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.getContentPane().setLayout(null);
+		this.setLayout(null);
 		setImagesDado(valorDado1,valorDado2);
-		salvarJogo.setBounds(20,20,100,45);
-		carregarJogo.setBounds(120,20,100,45);
-		encerrarJogo.setBounds(220,20,200,45);
 		this.n_jogadores = n;
 		view.initJogadores(n_jogadores);
 		
 		//posicao dos dados
-		dado1.setBounds(210,550,45,45);
-		dado2.setBounds(260,550,45,45);
-		dado3.setBounds(310,550,45,45);
-		dado4.setBounds(210,600,45,45);
-		dado5.setBounds(260,600,45,45);
-		dado6.setBounds(310,600,45,45);
+		dado1.setBounds(360,590,40,40);
+		dado2.setBounds(400,590,40,40);
+		dado3.setBounds(440,590,40,40);
+		dado4.setBounds(360,630,40,40);
+		dado5.setBounds(400,630,40,40);
+		dado6.setBounds(440,630,40,40);
 		
-		rdado1.setBounds(410,550,45,45);
-		rdado2.setBounds(460,550,45,45);
-		rdado3.setBounds(510,550,45,45);
-		rdado4.setBounds(410,600,45,45);
-		rdado5.setBounds(460,600,45,45);
-		rdado6.setBounds(510,600,45,45);
+		rdado1.setBounds(480,590,40,40);
+		rdado2.setBounds(520,590,40,40);
+		rdado3.setBounds(560,590,40,40);
+		rdado4.setBounds(480,630,40,40);
+		rdado5.setBounds(520,630,40,40);
+		rdado6.setBounds(560,630,40,40);
 		
 //		this.getContentPane().setComponentZOrder(baralhoSorte, -3); doesnt work
-		baralhoSorte.setBounds(140,250,100,150);
-		
+		baralhoSorte.setBounds(140,220,100,150);
+		salvarJogo.setBounds(10,10,110,30);
+		encerrarJogo.setBounds(10,40,110,30);
+		comprarTerreno.setBounds(120,10,210,30);
+		construir.setBounds(120,40,210,30);
 		
 		//cores dos dados
 		baralhoSorte.setBackground(Color.orange);
@@ -115,7 +119,8 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		
 		
 		add(salvarJogo);
-		add(carregarJogo);
+		add(comprarTerreno);
+		add(construir);
 		add(encerrarJogo);
 		add(baralhoSorte);
 		
@@ -133,19 +138,20 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		add(rdado5);
 		add(rdado6);
 		
-		rodaDados.setBounds(350,460,67,40);
+		rodaDados.setBounds(425,535,67,35);
 		rodaDados.setBackground(Color.red);
 		add(rodaDados);
 		rodaDados.addActionListener(this);
 		
-		setaDados.setBounds(350,500,67,40);
+		setaDados.setBounds(490,535,67,35);
 		setaDados.setBackground(Color.gray);
 		add(setaDados);
 		setaDados.addActionListener(this);
 		
 		
 		salvarJogo.addActionListener(this);
-		carregarJogo.addActionListener(this);
+		comprarTerreno.addActionListener(this);
+		construir.addActionListener(this);
 		encerrarJogo.addActionListener(this);
 		baralhoSorte.addActionListener(this);
 		
@@ -212,27 +218,52 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-//		cartaSorte.setBounds(230,250,100,150);
-		cartaSorte.setBounds(120,405,140,40);
+		cartaSorte.setBounds(120,370,140,40);
 		cartaSorte.addActionListener(this);
 		add(cartaSorte);
 		this.repaint();
 	}
 	
+	void setFeedback() {
+		this.feedback = view.getFeedback();
+		this.dialogo = new Dialogo(feedback);
+	}
+	
+	void setImagesTerreno() {
+		String imageTerreno = view.getImageTerreno();
+		if(imageTerreno == null) {
+			return;
+		}
+		else {
+			imageTerreno += ".png";
+			try {
+				System.out.println(imageTerreno);
+				terrenoImagem = ImageIO.read(getClass().getResourceAsStream(imageTerreno));
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+			this.repaint();
+		}
+	}
+	
 	public void paint(Graphics g) {
+		setFeedback();
 		Graphics2D g2D = (Graphics2D) g;
 		super.paintComponents(g2D);
 		g2D.drawImage(image,10,105,image.getWidth(), image.getHeight(),null);
-		g2D.drawImage(dadoImagem1,260,490,70,70,null);
-		g2D.drawImage(dadoImagem2,460,490,70,70,null);
+		g2D.drawImage(dadoImagem1,400,470,70,70,null);
+		g2D.drawImage(dadoImagem2,510,470,70,70,null);
 		if(cartaImagem != null) {
-			g2D.drawImage(cartaImagem,280,230,180,230,null);
+			g2D.drawImage(cartaImagem,380,220,180,230,null);
 		}
 		for(int i=0; i< this.n_jogadores; i++) {
 			g2D.drawImage(view.getImageJogador(i), 
-					view.getPosJogador(i)[0] + (view.multiplicadorPosX*i), 
-					view.getPosJogador(i)[1] + (view.multiplicadorPosY*i), 
+					view.getPosJogador(i)[0],// + (view.multiplicadorPosX*i), 
+					view.getPosJogador(i)[1],// + (view.multiplicadorPosY*i), 
 					view.widthJogador, view.heightJogador,null);
+		}
+		if(terrenoImagem != null) {
+			g2D.drawImage(terrenoImagem,130,460,180,230,null);
 		}
 		
 	}
@@ -296,6 +327,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		
 		else if (e.getSource() == rodaDados) {
 			this.setImagesDado();
+			this.setImagesTerreno();
 			this.repaint();
 		}
 		
@@ -315,8 +347,8 @@ public class Tabuleiro extends JFrame implements ActionListener{
 			cartaImagem = null;
 			this.repaint();
 		}
-		else if(e.getSource() == carregarJogo) {
-			// to be implemented
+		else if(e.getSource() == comprarTerreno) {
+//			view.comprarTerreno();
 		}
 		else{
 			//to be implemented

@@ -14,7 +14,7 @@ class CartaSorteReves {
 	//-1 -> vá para a prisão
 	
 	int getEfeito(int carta) {
-		return efeito[carta];
+		return efeito[carta-1];
 	}
 
 }

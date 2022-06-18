@@ -4,7 +4,7 @@ package model;
 class Terreno {
 	protected String nome;
 	protected int aluguelAtual;
-	protected int dono = -1;
+	protected int dono;
 	protected int preco;
 	protected int precoConstrucao;
 	protected int tipo;
