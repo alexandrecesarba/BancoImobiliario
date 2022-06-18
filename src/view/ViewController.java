@@ -53,7 +53,7 @@ public class ViewController extends Observer{
 	}
 	
 	void construirNoTerreno(int tipoConstrucao) {
-//		manager.construirNoTerreno(tipoConstrucao);
+		manager.construirNoTerreno(tipoConstrucao);
 	}
 	
 	String rodaDados() {

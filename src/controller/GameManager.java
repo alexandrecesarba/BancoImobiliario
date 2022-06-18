@@ -127,28 +127,41 @@ public class GameManager extends Observable{
 	}
 	
 	
-//	public void construirNoTerreno(int tipoConstrucao) {
-//		int pos = this.posJogadores[jogadorDaVez];
-////		int tipoTerreno = model.getTipoTerreno(pos); para talvez feedback melhores, mas desnecessario
-//		int dono = model.getDonoTerreno(pos); 
-//		if(dono != jogadorDaVez) {
-//			this.feedback = completeFeedback(jogadorDaVez, " esse terreno nao e seu, seu doido." );
-//		}
-//		else {
-//			int qntdCasas = model.terrenoPossuiCasa(pos);
-//			if(tipoConstrucao == 0) {
-//				//construa casa
-//				this.feedback = completeFeedback(jogadorDaVez, " partiu construir uma casa em " + model.getNomeTerreno(pos) +"!");
-//			}else {
-//				if(qntdCasas == 0) {
-//					this.feedback = completeFeedback(jogadorDaVez, " primeiro deve construir uma casa em" + model.getNomeTerreno(pos) +"!");
-//				}
-//				this.feedback = completeFeedback(jogadorDaVez, " partiu construir um hotel em " + model.getNomeTerreno(pos) +"!");
-//			}
-//		}
-//		notifyObservers();
-//		
-//	}
+	public void construirNoTerreno(int tipoConstrucao) {
+		int pos = this.posJogadores[jogadorDaVez];
+//		int tipoTerreno = model.getTipoTerreno(pos); para talvez feedback melhores, mas desnecessario
+		int dono = model.getDonoTerreno(pos); 
+		if(dono != jogadorDaVez) {
+			this.feedback = completeFeedback(jogadorDaVez, " esse terreno nao e seu, seu doido." );
+			notifyObservers();
+		}
+		else {
+			int qntdCasas = model.terrenoPossuiCasa(pos);
+			if(tipoConstrucao == 0) {
+				//construa casa
+				this.feedback = completeFeedback(jogadorDaVez, " partiu construir uma casa em " + model.getNomeTerreno(pos) +"!");
+				model.construirNoTerreno(pos, tipoConstrucao);
+				model.transacaoJogador(jogadorDaVez, -model.getTerrenoConstrucaoPreco(pos));
+				this.banco += model.getTerrenoConstrucaoPreco(pos);
+				this.dinheiroJogadores = model.atualizaDinheiroJogadores();
+				encerraRodada();
+			}else {
+				if(qntdCasas > 0 && !model.terrenoPossuiHotel(pos)) {
+					this.feedback = completeFeedback(jogadorDaVez, " partiu construir um hotel em " + model.getNomeTerreno(pos) +"!");
+					model.construirNoTerreno(pos, tipoConstrucao);
+					model.transacaoJogador(jogadorDaVez, -model.getTerrenoConstrucaoPreco(pos));
+					this.banco += model.getTerrenoConstrucaoPreco(pos);
+					this.dinheiroJogadores = model.atualizaDinheiroJogadores();
+					encerraRodada();
+				}
+				else {
+					this.feedback = completeFeedback(jogadorDaVez, " primeiro deve construir uma casa em" + model.getNomeTerreno(pos) +"!");
+					notifyObservers();
+				}
+			}
+		}
+		
+	}
 	
 	
 	void entrouAvenida(int pos) {
@@ -156,7 +169,7 @@ public class GameManager extends Observable{
 		if(dono == -1) { // não tem dono
 			Integer myInt = Integer.valueOf(model.getPrecoTerreno(pos));
 			String aux = myInt.toString();
-			this.feedback = completeFeedback(jogadorDaVez, ", a rua"+ model.getNomeTerreno(pos) +"ainda não tem dono! Ela custa "+aux+". Aperte COMPRAR ou NAO COMPRAR no tabuleiro.");
+			this.feedback = completeFeedback(jogadorDaVez, ", a rua "+ model.getNomeTerreno(pos) +" ainda não tem dono! Ela custa "+aux+". Aperte COMPRAR ou NAO COMPRAR no tabuleiro.");
 			this.jogadorIndeciso = true;
 			notifyObservers();
 		}else {// tem dono
@@ -252,13 +265,18 @@ public class GameManager extends Observable{
 		//-1 -> vá para a prisão
 		this.cartaSorte = model.getCartaSorteReves();
 		int efeitoCarta = model.getEfeitoCarta(this.cartaSorte);
-		System.out.println(cartaSorte);
-		System.out.println(efeitoCarta);
-		if(efeitoCarta == 0) {
+		if(efeitoCarta == -1) {
+			this.feedback = completeFeedback(jogadorDaVez, " DANCOU! TEJE PRESO!");
+			model.mudaPrisãoJogador(jogadorDaVez);
+			model.resetPosicaoJogador(jogadorDaVez, 10);
+			this.jogadoresPresos = model.atualizaJogadoresPresos();
+			this.posJogadores = model.atualizaPosJogadores();
+		}
+		else if(efeitoCarta == 0) {
 			this.feedback = completeFeedback(jogadorDaVez," conseguiu a carta de saida livre da prisao! Guarde-a para emergencias");
 			model.mudaEstadoCartaLivreDaPrisão(jogadorDaVez);
 		}
-		if(efeitoCarta == 1) {
+		else if(efeitoCarta == 1) {
 			this.feedback = completeFeedback(jogadorDaVez, " descolou 50 de cada jogador, podem ir passando.");
 			for(int i=0; i < jogadores; i++) {
 				if(!model.jogadorFalido(i)) {
@@ -270,71 +288,86 @@ public class GameManager extends Observable{
 			}
 		}
 		else {
+			this.feedback = completeFeedback(jogadorDaVez, ", transacao feita!");
+			if(cartaSorte == 10) {
+				model.resetPosicaoJogador(jogadorDaVez, 0);
+				this.feedback = completeFeedback(jogadorDaVez, " voltando pro inicio!");
+				this.posJogadores = model.atualizaPosJogadores();
+			}
 			this.banco -= efeitoCarta;
 			model.transacaoJogador(jogadorDaVez, efeitoCarta);
 			this.dinheiroJogadores = model.atualizaDinheiroJogadores();
 			model.checaEstadoJogador(jogadorDaVez);
-			this.feedback = completeFeedback(jogadorDaVez, ", transacao feita!");
 		}
 		this.jogadorIndeciso = false;
 		notifyObservers();
 		encerraRodada();
 	}
 	
+	
 	public void rodaDados(int x) {
 		if(tentativaSairDaPrisao) {
-			this.dados = model.getDados();
-			if(this.dados[0]==this.dados[1]) {
-				this.qtdDuplasNoDado++;
-				this.feedback = completeFeedback(jogadorDaVez, " tirou uma dupla! Esta livre!");
+			if(model.temCartaLivreDaPrisão(jogadorDaVez)) {
+				// se der tempo, tornar este uso opcional
+				this.feedback = model.getNomeJogador(jogadorDaVez);
+				this.feedback = this.feedback.concat(" esta preso, mas usou sua carta de saida!");
+				model.mudaEstadoCartaLivreDaPrisão(jogadorDaVez);
 				model.mudaPrisãoJogador(jogadorDaVez);
-				this.jogadoresPresos = model.atualizaJogadoresPresos();
-				notifyObservers();
+				model.atualizaJogadoresPresos();
 				encerraRodada();
 			}
 			else {
-				this.feedback = completeFeedback(jogadorDaVez, " continua preso, mais sorte da proxima vez!");
-				encerraRodada();
-			}
-		}
-		else {
-			if(x==2) {
-				if(jogadorIndeciso) {
-//					Integer myInt = Integer.valueOf(model.getPrecoTerreno(this.posJogadores[jogadorDaVez]));
-//					String aux = myInt.toString();					
-//					this.feedback = completeFeedback(jogadorDaVez, " ainda nao se decidiu se quer ou nao comprar " + this.model.getNomeTerreno(this.posJogadores[jogadorDaVez])+". O custo é de "+aux+".");
-					this.feedback = completeFeedback(jogadorDaVez, " ainda nao terminou de jogar!!");
-					notifyObservers();
-					return;
-				
-				}
+				this.feedback= completeFeedback(jogadorDaVez," esta preso! Tente tirar uma dupla no dado."); 
+				notifyObservers();
 				this.dados = model.getDados();
 				if(this.dados[0]==this.dados[1]) {
 					this.qtdDuplasNoDado++;
-					this.feedback = completeFeedback(jogadorDaVez, " tirou uma dupla! Rode o dado novamente.");
-					this.podeJogar = false;
-					if(this.qtdDuplasNoDado == 2) {
-						this.feedback = completeFeedback(jogadorDaVez, " tirou OUTRA DUPLA! Rode o dado DE NOVO.");
-					}
-					if(this.qtdDuplasNoDado == 3) {
-						this.feedback = completeFeedback(jogadorDaVez, " tirou TRES DUPLAS SEGUIDAS! Com certeza ta roubando, TEJE PRESO!");
-						model.mudaPrisãoJogador(jogadorDaVez);
-						this.jogadoresPresos = model.atualizaJogadoresPresos();
-						this.podeJogar = true;
-						notifyObservers();
-					}
+					this.feedback = completeFeedback(jogadorDaVez, " tirou uma dupla! Esta livre!");
+					model.mudaPrisãoJogador(jogadorDaVez);
+					this.jogadoresPresos = model.atualizaJogadoresPresos();
+					encerraRodada();
 				}
 				else {
-					this.podeJogar = true;
+					this.feedback = completeFeedback(jogadorDaVez, " continua preso, mais sorte da proxima vez!");
+					encerraRodada();
 				}
-				jogadorMoveu(this.dados[0]+this.dados[1]);
-
-			}
-			else if(x == 1) {
-				this.dados = model.getDados(); // para evitar bug
 			}
 		}
+		if(x==2) {
+			if(jogadorIndeciso) {
+//			Integer myInt = Integer.valueOf(model.getPrecoTerreno(this.posJogadores[jogadorDaVez]));
+//			String aux = myInt.toString();					
+//			this.feedback = completeFeedback(jogadorDaVez, " ainda nao se decidiu se quer ou nao comprar " + this.model.getNomeTerreno(this.posJogadores[jogadorDaVez])+". O custo é de "+aux+".");
+				this.feedback = completeFeedback(jogadorDaVez, " ainda nao terminou de jogar!!");
+				notifyObservers();
+				return;	
+			}
+			this.dados = model.getDados();
+			if(this.dados[0]==this.dados[1]) {
+				this.qtdDuplasNoDado++;
+				this.feedback = completeFeedback(jogadorDaVez, " tirou uma dupla! Rode o dado novamente.");
+				this.podeJogar = false;
+				if(this.qtdDuplasNoDado == 2) {
+					this.feedback = completeFeedback(jogadorDaVez, " tirou OUTRA DUPLA! Rode o dado DE NOVO.");
+				}
+				if(this.qtdDuplasNoDado == 3) {
+					this.feedback = completeFeedback(jogadorDaVez, " tirou TRES DUPLAS SEGUIDAS! Com certeza ta roubando, TEJE PRESO!");
+					model.mudaPrisãoJogador(jogadorDaVez);
+					model.resetPosicaoJogador(x, 10);
+					this.jogadoresPresos = model.atualizaJogadoresPresos();
+					this.posJogadores = model.atualizaPosJogadores();
+					this.podeJogar = true;
+					notifyObservers();
+				}
+			}
+			else { this.podeJogar = true;}
+				jogadorMoveu(this.dados[0]+this.dados[1]);
+		}
+		if(x == 1) {
+			this.dados = model.getDados(); // para evitar bug
+		}
 	}
+	
 	
 	void encerraRodada() {
 		if(!model.jogoContinua()) {
@@ -364,20 +397,20 @@ public class GameManager extends Observable{
 		}else {
 			tentativaSairDaPrisao = false;
 		}
-		if(tentativaSairDaPrisao) {
-			if(model.temCartaLivreDaPrisão(jogadorDaVez)) {
-				// se der tempo, tornar este uso opcional
-				this.feedback = model.getNomeJogador(jogadorDaVez);
-				this.feedback = this.feedback.concat(" esta preso, mas usou sua carta de saida!");
-				model.mudaEstadoCartaLivreDaPrisão(jogadorDaVez);
-				model.mudaPrisãoJogador(jogadorDaVez);
-				model.atualizaJogadoresPresos();
-				notifyObservers();
-				encerraRodada();
-			}else {
-				this.feedback= completeFeedback(jogadorDaVez," esta preso! Tente tirar uma dupla no dado."); 
-			}
-		}
+//		if(tentativaSairDaPrisao) {
+//			if(model.temCartaLivreDaPrisão(jogadorDaVez)) {
+//				// se der tempo, tornar este uso opcional
+//				this.feedback = model.getNomeJogador(jogadorDaVez);
+//				this.feedback = this.feedback.concat(" esta preso, mas usou sua carta de saida!");
+//				model.mudaEstadoCartaLivreDaPrisão(jogadorDaVez);
+//				model.mudaPrisãoJogador(jogadorDaVez);
+//				model.atualizaJogadoresPresos();
+//				notifyObservers();
+//				encerraRodada();
+//			}else {
+//				this.feedback= completeFeedback(jogadorDaVez," esta preso! Tente tirar uma dupla no dado."); 
+//			}
+//		}
 		notifyObservers();
 	}
 	
