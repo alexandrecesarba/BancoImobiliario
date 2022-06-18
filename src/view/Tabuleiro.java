@@ -29,9 +29,11 @@ public class Tabuleiro extends JFrame implements ActionListener{
 	private BufferedImage terrenoImagem = null;
 	private JButton cartaSorte = new JButton("REMOVER CARTA");
 	private JButton salvarJogo = new JButton("SALVAR");
-	private JButton comprarTerreno = new JButton("COMPRAR TERRENO");
-	private JButton construir = new JButton("CONSTRUIR");
-	private JButton encerrarJogo = new JButton("ENCERRAR");
+	private JButton comprarTerreno = new JButton("COMPRAR");
+	private JButton naoComprarTerreno = new JButton("NAO COMPRAR");
+	private JButton construirCasa = new JButton("CONSTRUIR CASA");
+	private JButton construirHotel = new JButton("CONSTRUIR HOTEL");
+	private JButton encerrarJogo = new JButton("ENCERRAR PARTIDA");
 	private JButton rodaDados = new JButton("ROLL");
 	private JButton setaDados = new JButton("SET");
 	private JButton baralhoSorte = new JButton("BARALHO");
@@ -93,13 +95,15 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		rdado4.setBounds(480,630,40,40);
 		rdado5.setBounds(520,630,40,40);
 		rdado6.setBounds(560,630,40,40);
+	
 		
-//		this.getContentPane().setComponentZOrder(baralhoSorte, -3); doesnt work
 		baralhoSorte.setBounds(140,220,100,150);
 		salvarJogo.setBounds(10,10,110,30);
-		encerrarJogo.setBounds(10,40,110,30);
-		comprarTerreno.setBounds(120,10,210,30);
-		construir.setBounds(120,40,210,30);
+		encerrarJogo.setBounds(330,40,260,30);
+		comprarTerreno.setBounds(330,10,130,30);
+		naoComprarTerreno.setBounds(460,10,130,30);
+		construirCasa.setBounds(120,10,210,30);
+		construirHotel.setBounds(120,40,210,30);
 		
 		//cores dos dados
 		baralhoSorte.setBackground(Color.orange);
@@ -120,7 +124,9 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		
 		add(salvarJogo);
 		add(comprarTerreno);
-		add(construir);
+		add(naoComprarTerreno);
+		add(construirCasa);
+		add(construirHotel);
 		add(encerrarJogo);
 		add(baralhoSorte);
 		
@@ -138,12 +144,12 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		add(rdado5);
 		add(rdado6);
 		
-		rodaDados.setBounds(425,535,67,35);
+		rodaDados.setBounds(10,40,110,30);
 		rodaDados.setBackground(Color.red);
 		add(rodaDados);
 		rodaDados.addActionListener(this);
 		
-		setaDados.setBounds(490,535,67,35);
+		setaDados.setBounds(450,535,70,30);
 		setaDados.setBackground(Color.gray);
 		add(setaDados);
 		setaDados.addActionListener(this);
@@ -151,7 +157,9 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		
 		salvarJogo.addActionListener(this);
 		comprarTerreno.addActionListener(this);
-		construir.addActionListener(this);
+		naoComprarTerreno.addActionListener(this);
+		construirCasa.addActionListener(this);
+		construirHotel.addActionListener(this);
 		encerrarJogo.addActionListener(this);
 		baralhoSorte.addActionListener(this);
 		
@@ -190,11 +198,6 @@ public class Tabuleiro extends JFrame implements ActionListener{
 			e.printStackTrace();
 		}
 	}
-	
-//	void setImagesJogador(int jogador, int posX, int posY) {
-//		
-//	}
-	
 	
 	void setImagesDado(int s1, int s2) {
 		String image1 = "die_face_" + s1 + ".png";
@@ -348,7 +351,20 @@ public class Tabuleiro extends JFrame implements ActionListener{
 			this.repaint();
 		}
 		else if(e.getSource() == comprarTerreno) {
-//			view.comprarTerreno();
+			view.comprarTerreno();
+			setFeedback();
+		}
+		else if(e.getSource() == naoComprarTerreno) {
+			view.naoComprarTerreno();
+			setFeedback();
+		}
+		else if(e.getSource() == construirCasa) {
+			view.construirNoTerreno(0);
+			setFeedback();
+		}
+		else if(e.getSource() == construirHotel) {
+			view.construirNoTerreno(1);
+			setFeedback();
 		}
 		else{
 			//to be implemented

@@ -42,7 +42,7 @@ class TerrenoAvenida extends Terreno{
 		return this.hotel;
 	}
 	
-	void setAluguel() {
+	void resetAluguel() {
 		if(hotel) {
 			aluguelAtual += aluguel[5];
 		}

@@ -44,10 +44,17 @@ public class ViewController extends Observer{
 //		manager.encerraJogo();
 //	}
 //	
-//	void comprarTerreno() {
-//		manager.comprarTerreno();
-//	}
-//	
+	void comprarTerreno() {
+		manager.comprarTerreno();
+	}
+	
+	void naoComprarTerreno() {
+		manager.naoComprarTerreno();
+	}
+	
+	void construirNoTerreno(int tipoConstrucao) {
+//		manager.construirNoTerreno(tipoConstrucao);
+	}
 	
 	String rodaDados() {
 		manager.rodaDados(2);

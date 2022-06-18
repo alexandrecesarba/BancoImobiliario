@@ -9,7 +9,7 @@ public class Dialogo extends JFrame{
 	public Dialogo(String feedback) {
 		setTitle("JOGO");
 		setVisible(true);
-		setSize(500,300);
+		setSize(1200,100);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		instrucao.setText(feedback);
 		janelaPanel.add(instrucao);

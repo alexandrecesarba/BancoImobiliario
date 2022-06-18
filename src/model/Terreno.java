@@ -13,12 +13,22 @@ class Terreno {
 		return dono;
 	}
 	
+	void setDono(int novoDono) {
+		if(this.dono != -2) {
+			this.dono = novoDono;
+		}
+	}
+	
 	int getAluguel() {
 		return aluguelAtual;
 	}
 	
 	int getPreco() {
 		return preco;
+	}
+	
+	String getNome() {
+		return nome;
 	}
 	
 	void Compra(int dono) {

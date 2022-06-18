@@ -19,9 +19,9 @@ class BaralhoSorte {
 	}
 	
 	int getCarta() {
-		int aux = baralho.get(1);
+		int aux = baralho.get(0);
 		baralho.add(aux);
-		baralho.remove(baralho.get(1));
+		baralho.remove(baralho.get(0));
 		return aux;
 	}
 	

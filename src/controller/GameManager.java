@@ -42,6 +42,7 @@ public class GameManager extends Observable{
 	private String state = "";
 	private int[] ordemRodada;
 	private boolean podeJogar = true;
+	private boolean jogadorIndeciso = false;
 
 
 	private GameManager() {
@@ -95,34 +96,60 @@ public class GameManager extends Observable{
 	}
 	
 	public void comprarTerreno() {
+		this.jogadorIndeciso = false;
 		int pos = this.posJogadores[jogadorDaVez];
-		int tipoTerreno = model.getTipoTerreno(pos);
 		int dono = model.getDonoTerreno(pos); 
-		if(dono == -1) { // não tem dono
-			model.jogadorComprou(jogadorDaVez,pos);
-			model.checaEstadoJogador(jogadorDaVez);
-			
-			
+		if(dono == -2) { // nao e compravel
+			this.feedback = completeFeedback(jogadorDaVez, " calma la magnata! Esse terreno voce nao pode comprar.");
 		}
-		setState();
+		else if(dono == -1) { // nao tem dono
+			this.banco += model.jogadorComprou(jogadorDaVez,pos);
+			model.checaEstadoJogador(jogadorDaVez);
+			model.setDonoTerreno(jogadorDaVez, pos);
+			this.dinheiroJogadores = model.atualizaDinheiroJogadores();
+			this.propriedadesJogadores = model.atualizaPropriedadesJogadores();
+			this.feedback = completeFeedback(jogadorDaVez, ", você comprou " + model.getNomeTerreno(pos));
+			
+		}else if(dono == jogadorDaVez) {
+			this.feedback = completeFeedback(jogadorDaVez, " calma la! Esse terreno ja e seu! Se quiser construir, aperte o botao CONSTRUIR.");
+		}else {
+			this.feedback = completeFeedback(jogadorDaVez, " sinto muito mas esse terreno ja pertence a " + model.getNomeJogador(dono));
+		}
 		notifyObservers();
-		
+		encerraRodada();
+	}
+
+	public void naoComprarTerreno() {
+		this.jogadorIndeciso = false;
+		this.feedback = completeFeedback(jogadorDaVez, " nao quis. Ok ent");
+//		notifyObservers();
+		encerraRodada();
 	}
 	
-	public void construirNoTerreno() {
-		int pos = this.posJogadores[jogadorDaVez];
-		int tipoTerreno = model.getTipoTerreno(pos);
-		int dono = model.getDonoTerreno(pos); 
-		if(dono == -1) { // não tem dono
-			model.jogadorComprou(jogadorDaVez,pos);
-			model.checaEstadoJogador(jogadorDaVez);
-			
-			
-		}
-		setState();
-		notifyObservers();
-		
-	}
+	
+//	public void construirNoTerreno(int tipoConstrucao) {
+//		int pos = this.posJogadores[jogadorDaVez];
+////		int tipoTerreno = model.getTipoTerreno(pos); para talvez feedback melhores, mas desnecessario
+//		int dono = model.getDonoTerreno(pos); 
+//		if(dono != jogadorDaVez) {
+//			this.feedback = completeFeedback(jogadorDaVez, " esse terreno nao e seu, seu doido." );
+//		}
+//		else {
+//			int qntdCasas = model.terrenoPossuiCasa(pos);
+//			if(tipoConstrucao == 0) {
+//				//construa casa
+//				this.feedback = completeFeedback(jogadorDaVez, " partiu construir uma casa em " + model.getNomeTerreno(pos) +"!");
+//			}else {
+//				if(qntdCasas == 0) {
+//					this.feedback = completeFeedback(jogadorDaVez, " primeiro deve construir uma casa em" + model.getNomeTerreno(pos) +"!");
+//				}
+//				this.feedback = completeFeedback(jogadorDaVez, " partiu construir um hotel em " + model.getNomeTerreno(pos) +"!");
+//			}
+//		}
+//		notifyObservers();
+//		
+//	}
+	
 	
 	void entrouAvenida(int pos) {
 		encerraRodada();
@@ -153,40 +180,34 @@ public class GameManager extends Observable{
 	}
 ////	
 	void entrouCompanhia(int pos) {
-		encerraRodada();
-////		int dono = model.getDonoTerreno(pos); 
-////		if(dono == -1) { // não tem dono
-//////			boolean compra = false;//send to View opção de compra;
-//////			if(compra) {
-//////				model.jogadorComprou(jogadorDaVez,pos);
-//////				if(!model.checaEstadoJogador(jogadorDaVez)) {
-//////				}
-//////			}
-////		}else {// tem dono
-////			if(dono != jogadorDaVez) { //dono não é o jogadorDaVez
-////
-////				rodaDados(1); //deve-se rodar o dado 1 vez
-////				
-////				int preco = model.getAluguelTerreno(pos)*this.dados[0];
-////				
-////				//send to View resultado do dado + valor total
-////				
-////				model.transacaoJogador(jogadorDaVez, -preco);
-////				
-////				if(model.checaEstadoJogador(jogadorDaVez)) {
-////					model.transacaoJogador(dono, model.getAluguelTerreno(pos));
-////				}else {
-////					//send to view noticia de falencia
-////					encerraRodada();
-////				}
-////			}
-////		}
-////		notifyObservers();
-////		// tem dono? sim - não
-////			//sim tem dono - é o jogadorDaVez? sim- não
-////			//não tem dono - jogadorDaVez quer comprar? sim-não
-////		// jogadorDaVez não é o dono - paga aluguel - rodaDado pra ver o valor;
-////			//tem dinheiro? não - vai à falencia - sim - desconta
+		int dono = model.getDonoTerreno(pos); 
+		if(dono == -1) { // não tem dono
+			Integer myInt = Integer.valueOf(model.getPrecoTerreno(pos));
+			String aux = myInt.toString();
+			this.feedback = completeFeedback(jogadorDaVez, ", esta companhia ainda não tem dono! Ela custa "+aux+". Aperte COMPRAR ou NAO COMPRAR no tabuleiro.");
+			this.jogadorIndeciso = true;
+			notifyObservers();
+		}else {// tem dono
+			if(dono == jogadorDaVez) { //dono e o jogadorDaVez
+				this.feedback = completeFeedback(jogadorDaVez, " essa companhia ja e sua!");
+				encerraRodada();
+			}
+			else {
+				this.feedback = completeFeedback(jogadorDaVez, " essa companhia pertence a " + model.getNomeJogador(dono) + ". Pague o aluguel multiplicado pelo resultado do dado da esquerda.");
+				rodaDados(1);
+				model.transacaoJogador(jogadorDaVez, -model.getAluguelTerreno(pos)*this.dados[0]);
+				model.transacaoJogador(dono, model.getAluguelTerreno(pos)*this.dados[0]); 
+				// se o jogador falir com essa operacao, este caso nao esta sendo tratado
+				this.dinheiroJogadores = model.atualizaDinheiroJogadores();
+				model.checaEstadoJogador(jogadorDaVez);
+				encerraRodada();
+			}
+		}
+//		// tem dono? sim - não
+//			//sim tem dono - é o jogadorDaVez? sim- não
+//			//não tem dono - jogadorDaVez quer comprar? sim-não
+//		// jogadorDaVez não é o dono - paga aluguel - rodaDado pra ver o valor;
+//			//tem dinheiro? não - vai à falencia - sim - desconta
 	}
 	
 	void entrouNeutro(int pos) {
@@ -194,7 +215,7 @@ public class GameManager extends Observable{
 		if(efeito == -1) { // prisão
 			model.mudaPrisãoJogador(jogadorDaVez);
 			this.jogadoresPresos = model.atualizaJogadoresPresos();
-			this.feedback = completeFeedback(jogadorDaVez,"ORA ORA E UM SONEGADOR DE IMPOSTOS, TEJE PRESO!");
+			this.feedback = completeFeedback(jogadorDaVez," - ORA ORA E UM SONEGADOR DE IMPOSTOS, TEJE PRESO!");
 			model.resetPosicaoJogador(jogadorDaVez, 10); //10 = pos no tabuleiro da prisao
 			this.posJogadores = model.atualizaPosJogadores();
 			notifyObservers();
@@ -209,7 +230,7 @@ public class GameManager extends Observable{
 			model.transacaoJogador(jogadorDaVez, efeito);
 			this.dinheiroJogadores = model.atualizaDinheiroJogadores();
 			model.checaEstadoJogador(jogadorDaVez);
-			this.feedback = completeFeedback(jogadorDaVez,", transacao feita!");
+			this.feedback = completeFeedback(jogadorDaVez," " + model.getNomeTerreno(pos));
 			notifyObservers();
 			encerraRodada();
 			
@@ -226,6 +247,8 @@ public class GameManager extends Observable{
 		//-1 -> vá para a prisão
 		this.cartaSorte = model.getCartaSorteReves();
 		int efeitoCarta = model.getEfeitoCarta(this.cartaSorte);
+		System.out.println(cartaSorte);
+		System.out.println(efeitoCarta);
 		if(efeitoCarta == 0) {
 			this.feedback = completeFeedback(jogadorDaVez," conseguiu a carta de saida livre da prisao! Guarde-a para emergencias");
 			model.mudaEstadoCartaLivreDaPrisão(jogadorDaVez);
@@ -270,6 +293,14 @@ public class GameManager extends Observable{
 		}
 		else {
 			if(x==2) {
+				if(jogadorIndeciso) {
+					Integer myInt = Integer.valueOf(model.getPrecoTerreno(this.posJogadores[jogadorDaVez]));
+					String aux = myInt.toString();					
+					this.feedback = completeFeedback(jogadorDaVez, " ainda nao se decidiu se quer ou nao comprar " + this.model.getNomeTerreno(this.posJogadores[jogadorDaVez])+". O custo é de "+aux+".");
+					notifyObservers();
+					return;
+				
+				}
 				this.dados = model.getDados(2);
 				if(this.dados[0]==this.dados[1]) {
 					this.qtdDuplasNoDado++;
@@ -294,25 +325,9 @@ public class GameManager extends Observable{
 			}
 			else if(x == 1) {
 				this.dados = model.getDados(1);
-				this.feedback = completeFeedback(jogadorDaVez, "e sua vez... ixi, paguem ai :O");
-				notifyObservers();
 			}
 		}
 	}
-	
-//	void dadoDupla() {
-//		if(this.qtdDuplasNoDado == 1 || this.qtdDuplasNoDado == 2) {
-//			//jogador tem direito a mais um roll
-//			//send info to view
-//		}
-//		else if(qtdDuplasNoDado == 3) {
-//			//jogador vai para a prisão
-//			model.mudaPrisãoJogador(jogadorDaVez);
-//			this.jogadoresPresos[jogadorDaVez] = true;
-//			notifyObservers();
-//		}
-//		
-//	}
 	
 	void encerraRodada() {
 		if(!model.jogoContinua()) {

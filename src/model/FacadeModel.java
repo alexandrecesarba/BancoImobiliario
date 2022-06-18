@@ -45,8 +45,18 @@ public class FacadeModel {
 		 return tabuleiro.getTerreno(pos).dono;
 	}
 	
+	public int getPrecoTerreno(int pos) {
+		 return tabuleiro.getTerreno(pos).getPreco();
+	}
+	
+	
+	public void setDonoTerreno(int dono,int pos) {
+		 tabuleiro.getTerreno(pos).setDono(dono);
+	}
+	
+	
 	public String getNomeTerreno(int pos) {
-		return tabuleiro.getTerreno(pos).nome;
+		return tabuleiro.getTerreno(pos).getNome();
 	}
 	
 	public int terrenoPossuiCasa(int pos) {
@@ -71,6 +81,7 @@ public class FacadeModel {
 		}else {
 			aux.setHotel();
 		}
+		aux.resetAluguel();
 	}
 	
 	public boolean jogoContinua() { // retorna true se ainda há pelo menos dois jogadores não falidos
@@ -157,7 +168,7 @@ public class FacadeModel {
 		tabuleiro.getTerreno(pos).Compra(jogadorDaVez);
 		jogadores[jogadorDaVez].setDinheiro(-tabuleiro.getTerreno(pos).preco);
 		jogadores[jogadorDaVez].compraPropriedades(tabuleiro.getTerreno(pos).nome);
-		return jogadores[jogadorDaVez].getDinheiro();
+		return tabuleiro.getTerreno(pos).preco;
 	}
 	
 	public void checaEstadoJogador(int jogadorDaVez) {
