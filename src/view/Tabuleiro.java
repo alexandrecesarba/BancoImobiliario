@@ -344,6 +344,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		}
 		else if(e.getSource() == encerrarJogo) {
 			view.encerraJogo();
+			setFeedback();
 		}
 		else if(e.getSource() == cartaSorte) {
 			this.remove(cartaSorte);

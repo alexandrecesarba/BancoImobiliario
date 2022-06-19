@@ -528,20 +528,6 @@ public class GameManager extends Observable{
 		}else {
 			tentativaSairDaPrisao = false;
 		}
-//		if(tentativaSairDaPrisao) {
-//			if(model.temCartaLivreDaPrisão(jogadorDaVez)) {
-//				// se der tempo, tornar este uso opcional
-//				this.feedback = model.getNomeJogador(jogadorDaVez);
-//				this.feedback = this.feedback.concat(" esta preso, mas usou sua carta de saida!");
-//				model.mudaEstadoCartaLivreDaPrisão(jogadorDaVez);
-//				model.mudaPrisãoJogador(jogadorDaVez);
-//				model.atualizaJogadoresPresos();
-//				notifyObservers();
-//				encerraRodada();
-//			}else {
-//				this.feedback= completeFeedback(jogadorDaVez," esta preso! Tente tirar uma dupla no dado."); 
-//			}
-//		}
 		notifyObservers();
 		autoSave();
 	}
@@ -568,6 +554,30 @@ public class GameManager extends Observable{
 		myInt = Integer.valueOf(this.banco);
 		aux = myInt.toString();
 		this.feedback = this.feedback.concat(aux);
+		int posAtual = posJogadores[jogadorDaVez];
+		if(this.tipoTerrenoAtual == 0) {
+			this.feedback = this.feedback.concat("\nNUM DE CASAS NO TERRENO ATUAL: ");
+			myInt = Integer.valueOf(this.qtdCasasPropriedade[posJogadores[jogadorDaVez]]);
+			aux = myInt.toString();
+			this.feedback = this.feedback.concat(aux);
+			if(this.temHotelPropriedades[posJogadores[jogadorDaVez]]) {
+				this.feedback = this.feedback.concat("\nHÁ HOTEL NESTE TERRENO.");
+			}
+			else {
+				this.feedback = this.feedback.concat("\nNÃO HÁ HOTEL NESTE TERRENO.");
+			}
+			this.feedback = this.feedback.concat("\nALUGUEL: ");
+			myInt = Integer.valueOf(model.getAluguelTerreno(posJogadores[jogadorDaVez]));
+			aux = myInt.toString();
+			this.feedback = this.feedback.concat(aux);
+		}
+		else if(this.tipoTerrenoAtual == 1) {
+			this.feedback = this.feedback.concat("\nALUGUEL: ");
+			myInt = Integer.valueOf(model.getAluguelTerreno(posJogadores[jogadorDaVez]));
+			aux = myInt.toString();
+			this.feedback = this.feedback.concat(aux);
+			this.feedback = this.feedback.concat("X VALOR DO DADO");
+		}
 		return this.feedback;
 	}
 	

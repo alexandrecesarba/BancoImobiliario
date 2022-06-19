@@ -1,13 +1,28 @@
-Jogador 4 essa companhia pertence a Jogador 0. Vamos descontar o aluguel multiplicado pelo resultado do dado da esquerda, ok?
-SUA COR É roxo
-SEU DINHEIRO É 4000
-SUAS PROPRIEDADES:[]
-BANCO: 200770endOfFeedback
-0
-jogadorDaVez 5
-nomeTerrenoAtual company2endOfNome
-tipoTerrenoAtual 1
-dados 64 
+Jogador 2, você comprou Av. Europa
+SUA COR É laranja
+SEU DINHEIRO É 3800
+SUAS PROPRIEDADES:[Av. Europa]
+BANCO: 200620
+NUM DE CASAS NO TERRENO ATUAL: 0
+NÃO HÁ HOTEL NESTE TERRENO.
+ALUGUEL:16endOfFeedback
+6
+pos0 8dinheiro0 3780propriedades0 [Av. Rebouças] 
+preso0 false 
+pos1 7dinheiro1 3800propriedades1 [company2] 
+preso1 false 
+pos2 11dinheiro2 3800propriedades2 [Av. Europa] 
+preso2 false 
+pos3 0dinheiro3 4000propriedades3 [] 
+preso3 false 
+pos4 0dinheiro4 4000propriedades4 [] 
+preso4 false 
+pos5 0dinheiro5 4000propriedades5 [] 
+preso5 false 
+jogadorDaVez 3
+nomeTerrenoAtual Av. EuropaendOfNome
+tipoTerrenoAtual 0
+dados 65 
 qtdDuplasNoDado 0 
 carta -1 
 jogadorComSaidaLivre -1 
@@ -91,5 +106,5 @@ temHotel36 false endOfHotel36
 temHotel37 false endOfHotel37
 temHotel38 false endOfHotel38
 temHotel39 false endOfHotel39
-banco 200770 endOfbanco
+banco 200620 endOfbanco
 ranking 

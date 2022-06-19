@@ -38,6 +38,7 @@ public class ViewController extends Observer{
 	
 	void initJogo(int n, boolean novoJogo) {
 		GameManager.setManager(manager,this,n, novoJogo);
+		this.update();
 	}
 	
 	int getNJogadores() {
