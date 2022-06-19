@@ -38,7 +38,10 @@ public class ViewController extends Observer{
 	
 	void initJogo(int n, boolean novoJogo) {
 		GameManager.setManager(manager,this,n, novoJogo);
-		this.update();
+	}
+	
+	int getNJogadores() {
+		return manager.gameState.getNJogadores(state);
 	}
 	
 	void encerraJogo() {
@@ -104,8 +107,6 @@ public class ViewController extends Observer{
 		String pathCompanhia = "Imagens-01/companhias/";
 		String pathAvenida = "Imagens-01/territorios/";
 		int tipo = manager.gameState.getTipoTerreno(state);
-		System.out.println("getImageTerreno");
-		System.out.println(tipo);
 		imagem = manager.gameState.getNomeTerreno(state);
 		if(tipo == 2) {return null;}
 		else if(tipo == 1) {
@@ -122,6 +123,8 @@ public class ViewController extends Observer{
 	
 	int[] getPosJogador(int jogador) {
 		int pos = manager.gameState.getPosJogador(state, jogador);
+		System.out.println("getPosJogador");
+		System.out.println(pos);
 		int[] posJogador = {-1,-1};
 		if(pos >= 0 && pos <= 10 ) { // y fixo x móvel mX = 7 e mY=13
 //			this.multiplicadorPosX = 7;

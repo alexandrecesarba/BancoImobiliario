@@ -52,7 +52,7 @@ public class JanelaInicial extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == carregarJogo) {
 			view.carregaJogo();
-			Tabuleiro frame = new Tabuleiro(qtdJogadores, false);
+			Tabuleiro frame = new Tabuleiro(qtdJogadores,false);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setVisible(true);
 		}

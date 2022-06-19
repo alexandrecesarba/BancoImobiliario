@@ -59,13 +59,13 @@ public class GameManager extends Observable{
 	
 	public static void setManager(GameManager gm,Observer o,int n_jogadores, boolean novoJogo) {
 		gm.attach(o);
-		gm.jogadores = n_jogadores;
 		if(novoJogo) {
-			gm.initGame();
+			gm.initGame(n_jogadores);
 		}
 	}
 	
-	public void initGame() { // NEEDS TO CHANGE CALLING FOR WHEN LOADING GAME
+	public void initGame(int n) { // NEEDS TO CHANGE CALLING FOR WHEN LOADING GAME
+		this.jogadores = n;
 		this.ordemRodada = new int[jogadores];
 		for(int i=0; i < jogadores; i++) {
 			this.ordemRodada[i] = i;
@@ -79,7 +79,7 @@ public class GameManager extends Observable{
 	
 	@SuppressWarnings("unchecked")
 	public void loadGame() {
-		System.out.println(state);
+//		System.out.println(state);
 		this.model = new FacadeModel(jogadores);
 		this.jogadores = gameState.getNJogadores(state);
 		this.ordemRodada = new int[jogadores];
@@ -655,11 +655,12 @@ public class GameManager extends Observable{
                 }
                 leitor.close();
         	}
+        	this.loadGame();
         }catch(FileNotFoundException e) {
             System.out.println("Arquivo nao encontrado.");
             e.printStackTrace();
         }
-        loadGame();
+        this.loadGame();
     }
 	
 }

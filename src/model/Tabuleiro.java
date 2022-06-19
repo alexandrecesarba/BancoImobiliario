@@ -107,11 +107,11 @@ class Tabuleiro {
 	
 	Terreno getTerrenoPorNome(String terreno) {
 		for(int pos=0; pos < tabuleiro.length; pos++) {
-			if(tabuleiro[pos].nome.equals(terreno)) {
+			if(tabuleiro[pos].getNome().equals(terreno)) {
 				return tabuleiro[pos];
 			}
 		}
-		return null;
+		return tabuleiro[0];
 	}
 	
 	void jogadorFaliu(int jogador) {

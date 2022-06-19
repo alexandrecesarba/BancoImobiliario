@@ -1,6 +1,7 @@
 package model;
 
 class TerrenoNeutro extends Terreno{
+	
 	TerrenoNeutro(TipoTerreno carta) {
 		this.tipo = 2;
 		this.dono= -2; // não pode ser comprado
@@ -10,6 +11,7 @@ class TerrenoNeutro extends Terreno{
 			aluguelAtual = 200;
 			break;
 		case SorteReves:
+			this.nome = "SorteOuReves";
 			aluguelAtual = -2;
 			break;
 		case Prisao:
@@ -29,6 +31,7 @@ class TerrenoNeutro extends Terreno{
 			aluguelAtual = -200;
 			break;
 		case VaPrisao:
+			this.nome = "VaPrisao";
 			aluguelAtual = -1;
 			break;
 		}

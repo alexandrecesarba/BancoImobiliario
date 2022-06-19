@@ -1,25 +1,13 @@
-Jogador 2, você comprou company3
-SUA COR É laranja
-SEU DINHEIRO É 3630
-SUAS PROPRIEDADES:[Av. 9 de Julho, company3]
-BANCO: 200970endOfFeedback
-6
-pos0 10dinheiro0 4200propriedades0 [company2] 
-preso0 false 
-pos1 24dinheiro1 3600propriedades1 [] 
-preso1 false 
-pos2 15dinheiro2 3630propriedades2 [Av. 9 de Julho, company3] 
-preso2 false 
-pos3 7dinheiro3 3800propriedades3 [] 
-preso3 false 
-pos4 0dinheiro4 4000propriedades4 [] 
-preso4 false 
-pos5 5dinheiro5 3800propriedades5 [company1] 
-preso5 false 
-jogadorDaVez 3
-nomeTerrenoAtual company3endOfNome
+Jogador 4 essa companhia pertence a Jogador 0. Vamos descontar o aluguel multiplicado pelo resultado do dado da esquerda, ok?
+SUA COR É roxo
+SEU DINHEIRO É 4000
+SUAS PROPRIEDADES:[]
+BANCO: 200770endOfFeedback
+0
+jogadorDaVez 5
+nomeTerrenoAtual company2endOfNome
 tipoTerrenoAtual 1
-dados 15 
+dados 64 
 qtdDuplasNoDado 0 
 carta -1 
 jogadorComSaidaLivre -1 
@@ -103,5 +91,5 @@ temHotel36 false endOfHotel36
 temHotel37 false endOfHotel37
 temHotel38 false endOfHotel38
 temHotel39 false endOfHotel39
-banco 200970 endOfbanco
+banco 200770 endOfbanco
 ranking 

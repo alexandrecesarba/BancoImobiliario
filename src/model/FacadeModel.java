@@ -286,7 +286,8 @@ public class FacadeModel {
 				jogadores[i].mudaEstadoPreso();
 			}
 			for(int prop=0; prop < propriedadesJogadores[i].size(); prop++) {
-				if(!propriedadesJogadores[i].get(0).equals("")) {
+				System.out.println(propriedadesJogadores[i].get(prop));
+				if(!propriedadesJogadores[i].get(prop).equals("")){
 					jogadores[i].compraPropriedades(propriedadesJogadores[i].get(prop));
 					tabuleiro.getTerrenoPorNome(propriedadesJogadores[i].get(prop)).Compra(i);
 				}

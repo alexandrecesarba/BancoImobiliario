@@ -79,8 +79,14 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLayout(null);
 		this.n_jogadores = n;
-		view.initJogo(n_jogadores, novoJogo);
-		
+		view.initJogo(n, novoJogo);
+		if(novoJogo) {
+			view.initJogo(n, novoJogo);
+			this.n_jogadores = n;
+		}
+		else {
+			this.n_jogadores = view.getNJogadores();
+		}
 		//posicao dos dados
 		dado1.setBounds(360,590,45,45);
 		dado2.setBounds(400,590,45,45);
