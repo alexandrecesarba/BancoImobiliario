@@ -37,6 +37,10 @@ public class FacadeModel {
 		return tabuleiro.getTerreno(pos).aluguelAtual;
 	}
 	
+	public int getTabuleiroLength() {
+		return Tabuleiro.tabuleiro.length;
+	}
+	
 	public int getTipoTerreno(int pos) {
 		return tabuleiro.getTipoTerreno(pos);
 	}

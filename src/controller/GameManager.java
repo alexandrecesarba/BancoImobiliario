@@ -73,6 +73,37 @@ public class GameManager extends Observable{
 		
 	}
 	
+	public void loadGame() {
+		this.model = new FacadeModel(jogadores);
+		this.jogadores = gameState.getNJogadores(state);
+		this.ordemRodada = new int[jogadores];
+		for(int i=0; i < jogadores; i++) {
+			this.ordemRodada[i] = i;
+			this.posJogadores[i] = gameState.getPosJogador(state, i);
+			this.dinheiroJogadores[i] = gameState.getDinheiroJogador(state,i);
+			this.propriedadesJogadores[i].add(gameState.getPropriedadesJogadores(state, i));
+			this.jogadoresPresos[i] = gameState.getEstadoPresoJogador(state, i);
+		}
+		for(int i=0; i < model.getTabuleiroLength(); i++) {
+			this.qtdCasasPropriedade[i] = gameState.getQntdCasasPropriedades(state, i);
+			this.temHotelPropriedades[i] = gameState.getHotelPropriedades(state, i);
+		}
+		this.jogadorDaVez = gameState.getJogadorDaVez(state);
+		this.dados = gameState.getDados(state);
+		this.nomeTerrenoAtual = gameState.getNomeTerreno(state);
+		this.tipoTerrenoAtual = gameState.getTipoTerreno(state);
+		this.qtdDuplasNoDado = gameState.getDuplasNoDado(state);
+		this.cartaSaidaLivreDaPrisao = gameState.getJogadorComCartaSaiaLivre(state); // nenhum jogador a possui
+		this.cartaSorte = gameState.getCarta(state);
+		this.banco = gameState.getBanco(state);
+		this.rank = gameState.getRanking(state);
+		this.feedback = gameState.getFeedback(state);
+		this.banco = gameState.getBanco(state);
+		// THIS MODEL = FAZER FCS PRA RECEBER AS INFOS
+		notifyObservers();
+		
+	}
+	
 	public void jogadorMoveu(int casas) {
 		int pos = model.jogadorAndou(jogadorDaVez, casas);
 		this.tipoTerrenoAtual = model.getTipoTerreno(pos);
@@ -535,7 +566,7 @@ public class GameManager extends Observable{
 	
 	public void salvaJogo() {
         try {
-            File saveFile = new File ("save.txt");
+            File saveFile = new File ("saveBI.txt");
             if(saveFile.createNewFile()) {
                 System.out.println("Arquivo de save criado com sucesso");
             }
@@ -547,7 +578,7 @@ public class GameManager extends Observable{
         try {
             FileWriter escriba = new FileWriter("save.txt");
             //Escrever infos aqui:
-            escriba.write("info");
+            escriba.write(this.state);
             //--------------------
             escriba.close();
             System.out.println("Jogo salvo com sucesso!");
@@ -561,14 +592,16 @@ public class GameManager extends Observable{
         try {
             File saveFile = new File("save.txt");
             Scanner leitor = new Scanner(saveFile);
+            this.state = "";
             while(leitor.hasNextLine()) {
-                System.out.println(leitor.nextLine()); //Isso so esta printando o arquivo, no lugar botar para pegar a info e jogar no gamestate (eu acho)
+                this.state = state.concat(leitor.nextLine());
             }
             leitor.close();
         }catch(FileNotFoundException e) {
             System.out.println("Arquivo nao encontrado.");
             e.printStackTrace();
         }
+        loadGame();
     }
 
 	

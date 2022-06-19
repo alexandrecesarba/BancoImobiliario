@@ -140,8 +140,14 @@ public class GameState {
 		return state.substring(0,state.indexOf("endOfFeedback"));
 	}
 	
-	public int getNJogadores(String state, int jogador) {
+	public int getNJogadores(String state) {
 		aux = state.substring(state.indexOf("endOfFeedback") + 14,state.indexOf("endOfFeedback") + 15);
+		aux = aux.trim();
+		return Integer.parseInt(aux);
+	}
+	
+	public int getJogadorDaVez(String state) {
+		aux = state.substring(state.indexOf("jogadorDaVez ") + 13,state.indexOf("jogadorDaVez ") + 15);
 		aux = aux.trim();
 		return Integer.parseInt(aux);
 	}
@@ -181,7 +187,7 @@ public class GameState {
 		return aux;
 	}
 	
-	public boolean getEstadoJogador(String state, int jogador) {
+	public boolean getEstadoPresoJogador(String state, int jogador) {
 		this.myInt = Integer.valueOf(jogador);
 		this.aux2 = myInt.toString();
 		aux = state.substring(state.indexOf("preso" + aux2 +" ") + 7, state.indexOf("preso" + aux2 +" ") + 13);
