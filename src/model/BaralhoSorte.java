@@ -16,8 +16,6 @@ class BaralhoSorte {
 			baralho.add(i);
 		}
 		Collections.shuffle(baralho);
-
-		System.out.println(baralho);
 	}
 	
 	int getCarta() {

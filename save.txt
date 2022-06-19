@@ -1,1 +1,107 @@
-info
+Jogador 3, você comprou Leblon
+SUA COR É amarelo
+SEU DINHEIRO É 3360
+SUAS PROPRIEDADES:[Av. Rebouças, Av. Vieira Souto, Leblon]
+BANCO: 202275endOfFeedback
+6
+pos0 21dinheiro0 3474propriedades0 [Av. Brigadero Faria Lima, Av. Pacaembú, Flamengo] 
+preso0 false 
+pos1 22dinheiro1 3575propriedades1 [company1, Rua Augusta] 
+preso1 false 
+pos2 20dinheiro2 3630propriedades2 [Av. 9 de Julho, company3] 
+preso2 false 
+pos3 1dinheiro3 3360propriedades3 [Av. Rebouças, Av. Vieira Souto, Leblon] 
+preso3 false 
+pos4 14dinheiro4 3986propriedades4 [] 
+preso4 false 
+pos5 23dinheiro5 3700propriedades5 [Av. Europa, Botafogo] 
+preso5 false 
+jogadorDaVez 4
+nomeTerrenoAtual LeblonendOfNome
+tipoTerrenoAtual 0
+dados 43 
+qtdDuplasNoDado 0 
+carta 27 
+jogadorComSaidaLivre -1 
+qntdCasasTerreno0 0 
+qntdCasasTerreno1 0 
+qntdCasasTerreno2 0 
+qntdCasasTerreno3 0 
+qntdCasasTerreno4 0 
+qntdCasasTerreno5 0 
+qntdCasasTerreno6 0 
+qntdCasasTerreno7 0 
+qntdCasasTerreno8 0 
+qntdCasasTerreno9 0 
+qntdCasasTerreno10 0 
+qntdCasasTerreno11 0 
+qntdCasasTerreno12 0 
+qntdCasasTerreno13 0 
+qntdCasasTerreno14 0 
+qntdCasasTerreno15 0 
+qntdCasasTerreno16 0 
+qntdCasasTerreno17 0 
+qntdCasasTerreno18 0 
+qntdCasasTerreno19 0 
+qntdCasasTerreno20 0 
+qntdCasasTerreno21 0 
+qntdCasasTerreno22 0 
+qntdCasasTerreno23 0 
+qntdCasasTerreno24 0 
+qntdCasasTerreno25 0 
+qntdCasasTerreno26 0 
+qntdCasasTerreno27 0 
+qntdCasasTerreno28 0 
+qntdCasasTerreno29 0 
+qntdCasasTerreno30 0 
+qntdCasasTerreno31 0 
+qntdCasasTerreno32 0 
+qntdCasasTerreno33 0 
+qntdCasasTerreno34 0 
+qntdCasasTerreno35 0 
+qntdCasasTerreno36 0 
+qntdCasasTerreno37 0 
+qntdCasasTerreno38 0 
+qntdCasasTerreno39 0 
+temHotel0 false endOfHotel
+temHotel1 false endOfHotel
+temHotel2 false endOfHotel
+temHotel3 false endOfHotel
+temHotel4 false endOfHotel
+temHotel5 false endOfHotel
+temHotel6 false endOfHotel
+temHotel7 false endOfHotel
+temHotel8 false endOfHotel
+temHotel9 false endOfHotel
+temHotel10 false endOfHotel
+temHotel11 false endOfHotel
+temHotel12 false endOfHotel
+temHotel13 false endOfHotel
+temHotel14 false endOfHotel
+temHotel15 false endOfHotel
+temHotel16 false endOfHotel
+temHotel17 false endOfHotel
+temHotel18 false endOfHotel
+temHotel19 false endOfHotel
+temHotel20 false endOfHotel
+temHotel21 false endOfHotel
+temHotel22 false endOfHotel
+temHotel23 false endOfHotel
+temHotel24 false endOfHotel
+temHotel25 false endOfHotel
+temHotel26 false endOfHotel
+temHotel27 false endOfHotel
+temHotel28 false endOfHotel
+temHotel29 false endOfHotel
+temHotel30 false endOfHotel
+temHotel31 false endOfHotel
+temHotel32 false endOfHotel
+temHotel33 false endOfHotel
+temHotel34 false endOfHotel
+temHotel35 false endOfHotel
+temHotel36 false endOfHotel
+temHotel37 false endOfHotel
+temHotel38 false endOfHotel
+temHotel39 false endOfHotel
+banco 202275 endOfbanco
+ranking 

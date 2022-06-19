@@ -61,7 +61,7 @@ public class GameManager extends Observable{
 		gm.initGame();
 	}
 	
-	public void initGame() {
+	public void initGame() { // NEEDS TO CHANGE CALLING FOR WHEN LOADING GAME
 		this.ordemRodada = new int[jogadores];
 		for(int i=0; i < jogadores; i++) {
 			this.ordemRodada[i] = i;
@@ -99,6 +99,7 @@ public class GameManager extends Observable{
 		this.rank = gameState.getRanking(state);
 		this.feedback = gameState.getFeedback(state);
 		this.banco = gameState.getBanco(state);
+		this.model.loadGameInfo(this.dinheiroJogadores,this.posJogadores,this.propriedadesJogadores,this.jogadoresPresos,this.qtdCasasPropriedade, this.temHotelPropriedades,this.cartaSaidaLivreDaPrisao);
 		notifyObservers();
 		
 	}
@@ -474,7 +475,7 @@ public class GameManager extends Observable{
 	
 	
 	void encerraRodada() {
-		if(!model.jogoContinua()) {
+		if(model.jogoContinua()) {
 			encerraJogo();
 		}
 		System.out.println("JOGADOR ANTERIOR");

@@ -104,21 +104,18 @@ public class FacadeModel {
 	}
 	
 	public boolean jogoContinua() { // retorna true se ainda há pelo menos dois jogadores não falidos
-//		int jogadores_falidos = 0;
-//		
-//		for(int i=0; i < jogadores.length; i++) {
-//			if(jogadores[i].getFalido()) {
-//				jogadores_falidos++;
-//			}
-//		}
-//		
-//		if((jogadores_falidos - jogadores.length) > 3) {
-//			return true;
-//		}
-//		else {
-//			return false;
-//		}
-		return true;
+		int jogadores_falidos = 0;
+		for(int i=0; i < jogadores.length; i++) {
+			if(jogadores[i].getFalido()) {
+				jogadores_falidos++;
+			}
+		}
+		if((jogadores_falidos - jogadores.length) > 3) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	public String ranking() { // retorna true se ainda há pelo menos dois jogadores não falidos
@@ -276,4 +273,37 @@ public class FacadeModel {
 		}
 		return propJ;
 	}
+	
+	public void loadGameInfo(int[] dinheiroJogadores,int[] posJogadores,ArrayList<String>[] propriedadesJogadores, boolean[] jogadoresPresos,
+			int[] qtdCasasPropriedade, boolean[] temHotelPropriedades,int cartaSaidaLivreDaPrisao) {
+		if(cartaSaidaLivreDaPrisao != -1) {
+			mudaEstadoCartaLivreDaPrisão(cartaSaidaLivreDaPrisao);
+		}
+		for(int i=0; i < jogadores.length; i++) {
+			jogadores[i].resetDinheiro(dinheiroJogadores[i]);
+			jogadores[i].resetPosicao(posJogadores[i]);
+			if(jogadoresPresos[i]) {
+				jogadores[i].mudaEstadoPreso();
+			}
+			if(!propriedadesJogadores[i].isEmpty()) {
+				for(int prop=0; prop < propriedadesJogadores[i].size(); prop++) {
+					jogadores[i].compraPropriedades(propriedadesJogadores[i].get(prop));
+					tabuleiro.getTerrenoPorNome(propriedadesJogadores[i].get(prop)).Compra(i);
+				}
+			}
+		}
+		for(int pos=0; pos < Tabuleiro.tabuleiro.length; pos++) {
+			if(qtdCasasPropriedade[pos] > 0) {
+				for(int j=1; j <= qtdCasasPropriedade[pos]; j++) { 
+					construirNoTerreno(pos,0);
+				}
+			}
+			if(temHotelPropriedades[pos]) {
+				construirNoTerreno(pos,1);
+			}
+		}
+	}
+	
+	
+	
 }
