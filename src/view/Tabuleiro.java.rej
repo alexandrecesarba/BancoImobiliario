@@ -1,0 +1,148 @@
+diff a/src/view/Tabuleiro.java b/src/view/Tabuleiro.java	(rejected hunks)
+@@ -1,142 +1,146 @@
+ package view;
+ import java.awt.Color;
+ import java.awt.Container;
+ import java.awt.Graphics;
+ import java.awt.Graphics2D;
+ import java.awt.event.ActionEvent;
+ import java.awt.event.ActionListener;
+ import java.awt.image.BufferedImage;
+ import java.io.IOException;
+ //import java.util.Observable;
+ //import java.util.Observer;
+ 
+ import javax.imageio.ImageIO;
+ import javax.swing.JButton;
+ import javax.swing.JFrame;
+ import javax.swing.JLabel;
+ import javax.swing.JRadioButton;
++
++import controller.GameManager;
++
+ import javax.swing.ButtonGroup;
+ 
+ 
+ public class Tabuleiro extends JFrame implements ActionListener{
+ 	
+ 	private BufferedImage image;
+ 	private String image1;
+ 	private String image2;
+ 	private BufferedImage dadoImagem1;
+ 	private BufferedImage dadoImagem2;
+ 	private BufferedImage cartaImagem;
+ 	private BufferedImage terrenoImagem = null;
+ 	private JButton cartaSorte = new JButton("REMOVER CARTA");
+ 	private JButton salvarJogo = new JButton("SALVAR");
+ 	private JButton comprarTerreno = new JButton("COMPRAR");
+ 	private JButton naoComprarTerreno = new JButton("NAO COMPRAR");
+ 	private JButton construirCasa = new JButton("CONSTRUIR CASA");
+ 	private JButton construirHotel = new JButton("CONSTRUIR HOTEL");
+ 	private JButton encerrarJogo = new JButton("ENCERRAR PARTIDA");
+ 	private JButton rodaDados = new JButton("ROLL");
+ 	private JButton setaDados = new JButton("SET");
+ 	private JButton baralhoSorte = new JButton("BARALHO");
+ 	private BufferedImage[] jogadores;
+ 	private Dialogo dialogo;
+ 	private String feedback;
++	private GameManager gm = new GameManager();
+ 	
+ 	// botoes dado
+ 	private JButton dado1 = new JButton("1");
+ 	private JButton dado2 = new JButton("2");
+ 	private JButton dado3 = new JButton("3");
+ 	private JButton dado4 = new JButton("4");
+ 	private JButton dado5 = new JButton("5");
+ 	private JButton dado6 = new JButton("6");
+ 	
+ 	
+ 	private JButton rdado1 = new JButton("1");
+ 	private JButton rdado2 = new JButton("2");
+ 	private JButton rdado3 = new JButton("3");
+ 	private JButton rdado4 = new JButton("4");
+ 	private JButton rdado5 = new JButton("5");
+ 	private JButton rdado6 = new JButton("6");
+ 	
+ 	private int valorDado1 = 1;
+ 	private int valorDado2 = 1;
+ 	private int n_jogadores;
+ 	
+ 	private ViewController view = ViewController.getInstance();
+ 	String pathDados = "Imagens-01/dados/";
+ 	String pathSorte = "Imagens-01/sorteReves/";
+ 	
+ 	{
+ 		try {
+ 			image = ImageIO.read(getClass().getResourceAsStream("Imagens-01/tabuleiro.png"));
+ 		} catch(IOException e) {
+ 			e.printStackTrace();
+ 		}
+ 	}
+ 	
+ 	Tabuleiro(int n) {
+ 		this.setVisible(true);
+ 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+ 		this.setLayout(null);
+ 		setImagesDado(valorDado1,valorDado2);
+ 		this.n_jogadores = n;
+ 		view.initJogadores(n_jogadores);
+ 		
+ 		//posicao dos dados
+ 		dado1.setBounds(360,590,40,40);
+ 		dado2.setBounds(400,590,40,40);
+ 		dado3.setBounds(440,590,40,40);
+ 		dado4.setBounds(360,630,40,40);
+ 		dado5.setBounds(400,630,40,40);
+ 		dado6.setBounds(440,630,40,40);
+ 		
+ 		rdado1.setBounds(480,590,40,40);
+ 		rdado2.setBounds(520,590,40,40);
+ 		rdado3.setBounds(560,590,40,40);
+ 		rdado4.setBounds(480,630,40,40);
+ 		rdado5.setBounds(520,630,40,40);
+ 		rdado6.setBounds(560,630,40,40);
+ 	
+ 		
+ 		baralhoSorte.setBounds(140,220,100,150);
+ 		salvarJogo.setBounds(10,10,110,30);
+ 		encerrarJogo.setBounds(330,40,260,30);
+ 		comprarTerreno.setBounds(330,10,130,30);
+ 		naoComprarTerreno.setBounds(460,10,130,30);
+ 		construirCasa.setBounds(120,10,210,30);
+ 		construirHotel.setBounds(120,40,210,30);
+ 		
+ 		//cores dos dados
+ 		baralhoSorte.setBackground(Color.orange);
+ 		dado1.setBackground(Color.gray);
+ 		dado2.setBackground(Color.gray);
+ 		dado3.setBackground(Color.gray);
+ 		dado4.setBackground(Color.gray);
+ 		dado5.setBackground(Color.gray);
+ 		dado6.setBackground(Color.gray);
+ 		
+ 		rdado1.setBackground(Color.lightGray);
+ 		rdado2.setBackground(Color.lightGray);
+ 		rdado3.setBackground(Color.lightGray);
+ 		rdado4.setBackground(Color.lightGray);
+ 		rdado5.setBackground(Color.lightGray);
+ 		rdado6.setBackground(Color.lightGray);
+ 		
+ 		
+ 		add(salvarJogo);
+ 		add(comprarTerreno);
+ 		add(naoComprarTerreno);
+ 		add(construirCasa);
+ 		add(construirHotel);
+ 		add(encerrarJogo);
+ 		add(baralhoSorte);
+ 		
+ 		add(dado1);
+ 		add(dado2);
+ 		add(dado3);
+ 		add(dado4);
+ 		add(dado5);
+ 		add(dado6);
+ 		
+ 		add(rdado1);
+ 		add(rdado2);
+ 		add(rdado3);

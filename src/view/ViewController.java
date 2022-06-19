@@ -40,9 +40,9 @@ public class ViewController extends Observer{
 		GameManager.setManager(manager,this,n);
 	}
 	
-//	void encerraJogo() {
-//		manager.encerraJogo();
-//	}
+	void encerraJogo() {
+		manager.encerraJogo();
+	}
 	
 	void comprarTerreno() {
 		manager.comprarTerreno();
@@ -56,9 +56,17 @@ public class ViewController extends Observer{
 		manager.construirNoTerreno(tipoConstrucao);
 	}
 	
+	void salvaJogo() {
+		manager.salvaJogo();
+	}
+	
+	void carregaJogo() {
+		manager.carregaJogo();
+	}
+	
+	
 	String rodaDados() {
 		manager.rodaDados(2);
-		System.out.println("rodou");
 		resultadoDados = manager.gameState.getDados(state);
 		Integer myInt1 = Integer.valueOf(resultadoDados[0]);
 		String s1 = myInt1.toString();
@@ -67,6 +75,10 @@ public class ViewController extends Observer{
 		String image1 = "die_face_" + s1 + ".png";
 		String image2 = "die_face_" + s2 + ".png";
 		return image1+image2;
+	}
+	
+	void setaDados(int dado1, int dado2) {
+		manager.setaDados(dado1,dado2);
 	}
 	
 	BufferedImage getImageJogador(int i) {

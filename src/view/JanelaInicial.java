@@ -9,16 +9,17 @@ public class JanelaInicial extends JFrame implements ActionListener{
 	JPanel janelaPanel = new JPanel();
 	JLabel instrucao1 = new JLabel("Coloque o número de jogadores:");
 	JTextField inputQtdJogadores = new JTextField(15);
-	JButton botaoSubmit = new JButton("Enter");
+	JButton botaoSubmit = new JButton("NOVO JOGO");
 	private int qtdJogadores;
 	private JButton carregarJogo = new JButton("CARREGAR");
-	private GameManager gm = new GameManager();
+	private ViewController view = ViewController.getInstance();
+	
 	public JanelaInicial() {
 		setTitle("Janela Incial");
 		setVisible(true);
-		setSize(1200,700);
+		setSize(500,700);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
-		carregarJogo.setBounds(550,60,100,45);
+		carregarJogo.setBounds(150,60,120,50);
 		add(carregarJogo);
 		carregarJogo.addActionListener(this);
 //		instrucao1.
@@ -40,7 +41,7 @@ public class JanelaInicial extends JFrame implements ActionListener{
 					}
 				}catch(Exception e1) {
 					System.out.println(e1);
-//					JOptionPane.showMessageDialog(null, "Quantidade de jogadores invalida (Min: 3 , Max: 6)");
+					JOptionPane.showMessageDialog(null, "Quantidade de jogadores invalida (Min: 3 , Max: 6)");
 				}
 			}
 		});
@@ -50,7 +51,7 @@ public class JanelaInicial extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == carregarJogo) {
-			gm.carregaJogo();
+			view.carregaJogo();
 		}
 		
 	}

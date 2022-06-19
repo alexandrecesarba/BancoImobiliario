@@ -16,8 +16,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 
-import controller.GameManager;
-
 import javax.swing.ButtonGroup;
 
 
@@ -42,8 +40,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 	private JButton baralhoSorte = new JButton("BARALHO");
 	private BufferedImage[] jogadores;
 	private Dialogo dialogo;
-	private String feedback;
-	private GameManager gm = new GameManager();
+	private String feedback = "";
 	
 	// botoes dado
 	private JButton dado1 = new JButton("1");
@@ -81,24 +78,23 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLayout(null);
-		setImagesDado(valorDado1,valorDado2);
 		this.n_jogadores = n;
 		view.initJogadores(n_jogadores);
 		
 		//posicao dos dados
-		dado1.setBounds(360,590,40,40);
-		dado2.setBounds(400,590,40,40);
-		dado3.setBounds(440,590,40,40);
-		dado4.setBounds(360,630,40,40);
-		dado5.setBounds(400,630,40,40);
-		dado6.setBounds(440,630,40,40);
+		dado1.setBounds(360,590,45,45);
+		dado2.setBounds(400,590,45,45);
+		dado3.setBounds(440,590,45,45);
+		dado4.setBounds(360,630,45,45);
+		dado5.setBounds(400,630,45,45);
+		dado6.setBounds(440,630,45,45);
 		
-		rdado1.setBounds(480,590,40,40);
-		rdado2.setBounds(520,590,40,40);
-		rdado3.setBounds(560,590,40,40);
-		rdado4.setBounds(480,630,40,40);
-		rdado5.setBounds(520,630,40,40);
-		rdado6.setBounds(560,630,40,40);
+		rdado1.setBounds(480,590,45,45);
+		rdado2.setBounds(520,590,45,45);
+		rdado3.setBounds(560,590,45,45);
+		rdado4.setBounds(480,630,45,45);
+		rdado5.setBounds(520,630,45,45);
+		rdado6.setBounds(560,630,45,45);
 	
 		
 		baralhoSorte.setBounds(140,220,100,150);
@@ -204,6 +200,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 	}
 	
 	void setImagesDado(int s1, int s2) {
+		view.setaDados(s1, s2);
 		String image1 = "die_face_" + s1 + ".png";
 		String image2 = "die_face_" + s2 + ".png";
 		try {
@@ -274,13 +271,6 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		setFeedback();
 		
 	}
-	
-	void mostraDado(int dado1,int dado2) {
-		valorDado1 = dado1;
-		valorDado2 = dado2;
-		this.setImagesDado(dado1, dado2);
-		this.repaint();
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -336,17 +326,15 @@ public class Tabuleiro extends JFrame implements ActionListener{
 			this.setImagesDado();
 			this.setImagesTerreno();
 			this.repaint();
-			gm.salvaJogo();
 		}
 		
 		else if (e.getSource() == setaDados) {
 			this.setImagesDado(valorDado1, valorDado2);
 			this.repaint();
-			gm.salvaJogo();
 		}
 		
 		else if(e.getSource() == baralhoSorte) {
-			setImagesBaralho();
+			this.setImagesBaralho();
 		}
 		else if(e.getSource() == encerrarJogo) {
 			// to be implemented
@@ -372,7 +360,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 			view.construirNoTerreno(1);
 			setFeedback();
 		}else if(e.getSource() == salvarJogo) {
-			gm.salvaJogo();
+			view.salvaJogo();
 		}
 		else{
 			//to be implemented

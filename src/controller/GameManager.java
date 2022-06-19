@@ -45,7 +45,7 @@ public class GameManager extends Observable{
 	private boolean jogadorIndeciso = false;
 
 
-	public GameManager() {
+	private GameManager() {
 	}
 	
 	public static GameManager getInstance() {
@@ -304,6 +304,73 @@ public class GameManager extends Observable{
 		encerraRodada();
 	}
 	
+
+//	public void setaDados(int dado1, int dado2) {
+//		//nada
+//	}
+//	
+	
+	public void setaDados(int dado1, int dado2) {
+		this.dados = new int[]{dado1,dado2};
+		if(tentativaSairDaPrisao) {
+			if(model.temCartaLivreDaPrisão(jogadorDaVez)) {
+				this.feedback = model.getNomeJogador(jogadorDaVez);
+				this.feedback = this.feedback.concat(" esta preso, mas usou sua carta de saida!");
+				model.mudaEstadoCartaLivreDaPrisão(jogadorDaVez);
+				model.mudaPrisãoJogador(jogadorDaVez);
+				model.atualizaJogadoresPresos();
+				encerraRodada();
+			}
+			else {
+				this.feedback= completeFeedback(jogadorDaVez," esta preso! Tente tirar uma dupla no dado."); 
+				notifyObservers();
+				if(this.dados[0]==this.dados[1]) {
+					this.qtdDuplasNoDado++;
+					this.feedback = completeFeedback(jogadorDaVez, " tirou uma dupla! Esta livre!");
+					model.mudaPrisãoJogador(jogadorDaVez);
+					this.jogadoresPresos = model.atualizaJogadoresPresos();
+					encerraRodada();
+				}
+				else {
+					this.feedback = completeFeedback(jogadorDaVez, " continua preso, mais sorte da proxima vez!");
+					encerraRodada();
+				}
+			}
+		}
+		if(jogadorIndeciso) {
+			this.feedback = completeFeedback(jogadorDaVez, " ainda nao terminou de jogar!!");
+			notifyObservers();
+			return;	
+		}
+		if(this.dados[0]==this.dados[1]) {
+			this.qtdDuplasNoDado++;
+			this.feedback = completeFeedback(jogadorDaVez, " tirou uma dupla! Rode o dado novamente.");
+			this.podeJogar = false;
+			notifyObservers();
+			if(this.qtdDuplasNoDado == 2) {
+				this.feedback = completeFeedback(jogadorDaVez, " tirou OUTRA DUPLA! Rode o dado DE NOVO.");
+				notifyObservers();
+			}
+			if(this.qtdDuplasNoDado == 3) {
+				this.feedback = completeFeedback(jogadorDaVez, " tirou TRES DUPLAS SEGUIDAS! Com certeza ta roubando, TEJE PRESO!");
+				model.mudaPrisãoJogador(jogadorDaVez);
+				model.resetPosicaoJogador(jogadorDaVez, 10);
+				this.jogadoresPresos = model.atualizaJogadoresPresos();
+				this.posJogadores = model.atualizaPosJogadores();
+				this.podeJogar = true;
+				notifyObservers();
+			}
+		}
+		else { this.podeJogar = true;}
+			jogadorMoveu(this.dados[0]+this.dados[1]);
+	}
+
+	
+	
+	
+	
+	
+	
 	
 	public void rodaDados(int x) {
 		if(tentativaSairDaPrisao) {
@@ -353,7 +420,7 @@ public class GameManager extends Observable{
 				if(this.qtdDuplasNoDado == 3) {
 					this.feedback = completeFeedback(jogadorDaVez, " tirou TRES DUPLAS SEGUIDAS! Com certeza ta roubando, TEJE PRESO!");
 					model.mudaPrisãoJogador(jogadorDaVez);
-					model.resetPosicaoJogador(x, 10);
+					model.resetPosicaoJogador(jogadorDaVez, 10);
 					this.jogadoresPresos = model.atualizaJogadoresPresos();
 					this.posJogadores = model.atualizaPosJogadores();
 					this.podeJogar = true;
@@ -367,6 +434,10 @@ public class GameManager extends Observable{
 			this.dados = model.getDados(); // para evitar bug
 		}
 	}
+	
+	
+	
+	
 	
 	
 	void encerraRodada() {
@@ -412,6 +483,7 @@ public class GameManager extends Observable{
 //			}
 //		}
 		notifyObservers();
+		salvaJogo();
 	}
 	
 	public void encerraJogo() {
