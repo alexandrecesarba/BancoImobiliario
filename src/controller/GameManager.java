@@ -29,12 +29,15 @@ public class GameManager extends Observable{
 	private int[] dados = {0,0};
 	private int jogadorDaVez = 0;
 	private boolean[] jogadoresPresos;
+	private boolean[] temHotelPropriedades;
+	private int[] qtdCasasPropriedade;
 	private int[] posJogadores; 
 	private int[] dinheiroJogadores;
 	private String nomeTerrenoAtual;
 	private int tipoTerrenoAtual = 2;
 	private ArrayList<String>[] propriedadesJogadores;
 	private int qtdDuplasNoDado = 0;
+	private int cartaSaidaLivreDaPrisao = -1; // nenhum jogador a possui
 	private int cartaSorte = -1;
 	private	int banco;
 	private String rank = "";
@@ -521,9 +524,13 @@ public class GameManager extends Observable{
 		this.dinheiroJogadores = model.atualizaDinheiroJogadores();
 		this.jogadoresPresos = model.atualizaJogadoresPresos();
 		this.propriedadesJogadores = model.atualizaPropriedadesJogadores();
+		this.cartaSaidaLivreDaPrisao = model.quemTemCartaLivreDaPrisão();
+		this.qtdCasasPropriedade = model.atualizaCasasPropriedades();
+		this.temHotelPropriedades = model.atualizaHotelPropriedades();
 		this.state = this.gameState.setState(this.feedback, this.jogadores, this.posJogadores, this.dinheiroJogadores, 
 				this.propriedadesJogadores, this.jogadoresPresos,this.jogadorDaVez, this.nomeTerrenoAtual, this.tipoTerrenoAtual, this.dados, 
-				this.qtdDuplasNoDado, this.cartaSorte, this.banco, this.rank);
+				this.qtdDuplasNoDado, this.cartaSorte, 	this.qtdCasasPropriedade,this.temHotelPropriedades,
+				this.cartaSaidaLivreDaPrisao,this.banco, this.rank);
 	}
 	
 	public void salvaJogo() {

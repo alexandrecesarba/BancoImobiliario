@@ -201,6 +201,15 @@ public class FacadeModel {
 		}
 		return posJ;
 	}
+	
+	public int quemTemCartaLivreDaPrisão() {
+		for(int i=0; i < jogadores.length; i++) {
+			if(jogadores[i].temCartaSaiaPrisao) {
+				return i;
+			}
+		}
+		return -1;
+	}
 
 	public int[] atualizaDinheiroJogadores() {
 		int[] dinJ = new int[jogadores.length];
@@ -208,6 +217,26 @@ public class FacadeModel {
 			dinJ[i] = jogadores[i].getDinheiro();
 		}
 		return dinJ;
+	}
+
+	public boolean[] atualizaHotelPropriedades() {
+		TerrenoAvenida aux;
+		boolean[] temHotel = new boolean[tabuleiro.tabuleiro.length];
+		for(int i=0; i < tabuleiro.tabuleiro.length; i++) {
+			aux = (TerrenoAvenida)tabuleiro.getTerreno(i);
+			temHotel[i] = aux.temHotel();
+		}
+		return temHotel;
+	}	
+	
+	public int[] atualizaCasasPropriedades() {
+		TerrenoAvenida aux;
+		int[] qntdCasas = new int[tabuleiro.tabuleiro.length];
+		for(int i=0; i < tabuleiro.tabuleiro.length; i++) {
+			aux = (TerrenoAvenida)tabuleiro.getTerreno(i);
+			qntdCasas[i] = aux.getCasas();
+		}
+		return qntdCasas;
 	}
 
 	public ArrayList<String>[] atualizaPropriedadesJogadores() {

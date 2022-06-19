@@ -41,7 +41,11 @@ public class GameState {
 //	}	
 	private GameState() {}
 	
-	String setState(String gameFeedback,int n_jogadores, int[] posJ, int[] dinheiroJ, ArrayList<String>[] propriedadesJ, boolean[] jogadorPreso,int jogadorDaVez, String nomeTerrenoAtual, int tipoTerrenoAtual,int[] dados, int qtdDuplasNoDado, int cartaSorte, int banco, String rank) {
+	String setState(String gameFeedback,int n_jogadores, int[] posJ, int[] dinheiroJ, ArrayList<String>[] propriedadesJ, 
+			boolean[] jogadorPreso,int jogadorDaVez, String nomeTerrenoAtual, int tipoTerrenoAtual,int[] dados, 
+			int qtdDuplasNoDado, int cartaSorte, int[] qtdCasasPropriedade, boolean[] temHotelPropriedades,
+			int cartaSaidaLivreDaPrisao,int banco, String rank) {
+		
 		String state = gameFeedback;
 		state = state.concat("endOfFeedback\n");
 		this.myInt = Integer.valueOf(n_jogadores);
@@ -97,6 +101,29 @@ public class GameState {
 		this.aux = myInt.toString();
 		
 		state = state.concat("carta "+aux+" \n");
+		
+		this.myInt = Integer.valueOf(cartaSaidaLivreDaPrisao);
+		this.aux = myInt.toString();
+		
+		state = state.concat("jogadorComSaidaLivre "+aux+" \n");
+		
+		for(int i=0; i < qtdCasasPropriedade.length; i++) {
+			this.myInt = Integer.valueOf(i);
+			this.aux2 = myInt.toString();
+			
+			this.myInt = Integer.valueOf(qtdCasasPropriedade[i]);
+			this.aux = myInt.toString();
+			
+			state = state.concat("qntdCasasTerreno"+aux2+" "+aux+" \n");
+		}
+		
+		for(int i=0; i < temHotelPropriedades.length; i++) {
+			this.myInt = Integer.valueOf(i);
+			this.aux2 = myInt.toString();
+		
+			state = state.concat("temHotel"+aux2+" "+String.valueOf(temHotelPropriedades[i])+" endOfHotel\n");
+		}
+		
 		
 		this.myInt = Integer.valueOf(banco);
 		this.aux = myInt.toString();
@@ -182,6 +209,28 @@ public class GameState {
 		aux = state.substring(state.lastIndexOf("carta ") + 6, state.lastIndexOf("carta ") + 9);
 		aux = aux.trim();
 		return Integer.parseInt(aux);
+	}
+	
+	public int getJogadorComCartaSaiaLivre(String state) {
+		aux = state.substring(state.indexOf("jogadorComSaidaLivre ") + 21, state.indexOf("jogadorComSaidaLivre ") + 23);
+		aux = aux.trim();
+		return Integer.parseInt(aux);
+	}
+	
+	public int getQntdCasasPropriedades(String state, int pos) {
+		this.myInt = Integer.valueOf(pos);
+		this.aux2 = myInt.toString();
+		aux = state.substring(state.indexOf("qntdCasasTerreno"+aux2+" ") + 18,state.indexOf("qntdCasasTerreno"+aux2+" ") + 20);
+		aux = aux.trim();
+		return Integer.parseInt(aux);
+	}
+	
+	public boolean getHotelPropriedades(String state, int pos) {
+		this.myInt = Integer.valueOf(pos);
+		this.aux2 = myInt.toString();
+		aux = state.substring(state.indexOf("temHotel"+aux2+" ") + 10, state.indexOf("endOfHotel"));
+		aux = aux.trim();
+		return Boolean.valueOf(aux);
 	}
 	
 	public int getBanco(String state) {
