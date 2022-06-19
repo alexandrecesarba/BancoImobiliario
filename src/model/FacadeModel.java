@@ -50,12 +50,18 @@ public class FacadeModel {
 	}
 	
 	public int getPrecoTerreno(int pos) {
-		 return tabuleiro.getTerreno(pos).getPreco();
+		if(tabuleiro.getTipoTerreno(pos) == 2) {
+			return 0;
+		}
+		return tabuleiro.getTerreno(pos).getPreco();
 	}
 	
 	
 	public void setDonoTerreno(int dono,int pos) {
-		 tabuleiro.getTerreno(pos).setDono(dono);
+		if(tabuleiro.getTipoTerreno(pos) == 2) {
+			return;
+		}
+		tabuleiro.getTerreno(pos).setDono(dono);
 	}
 	
 	
@@ -64,16 +70,25 @@ public class FacadeModel {
 	}
 	
 	public int terrenoPossuiCasa(int pos) {
+		if(tabuleiro.getTipoTerreno(pos) != 0) {
+			return 0;
+		}
 		TerrenoAvenida aux = (TerrenoAvenida)tabuleiro.getTerreno(pos);
 		 return aux.getCasas();
 	}
 	
 	public boolean terrenoPossuiHotel(int pos) {
+		if(tabuleiro.getTipoTerreno(pos) != 0) {
+			return false;
+		}
 		TerrenoAvenida aux = (TerrenoAvenida)tabuleiro.getTerreno(pos);
 		 return aux.temHotel();
 	}
 	
 	public int getTerrenoConstrucaoPreco(int pos) {
+		if(tabuleiro.getTipoTerreno(pos) != 0) {
+			return 0;
+		}
 		TerrenoAvenida aux = (TerrenoAvenida)tabuleiro.getTerreno(pos); 
 		return aux.getPrecoConstrucao();
 	}
@@ -227,8 +242,13 @@ public class FacadeModel {
 		TerrenoAvenida aux;
 		boolean[] temHotel = new boolean[tabuleiro.tabuleiro.length];
 		for(int i=0; i < tabuleiro.tabuleiro.length; i++) {
-			aux = (TerrenoAvenida)tabuleiro.getTerreno(i);
-			temHotel[i] = aux.temHotel();
+			if(tabuleiro.getTipoTerreno(i) == 0) { // terreno neutro
+				aux = (TerrenoAvenida)tabuleiro.getTerreno(i);
+				temHotel[i] = aux.temHotel();
+			}
+			else {
+				temHotel[i] = false;
+			}
 		}
 		return temHotel;
 	}	
@@ -237,8 +257,13 @@ public class FacadeModel {
 		TerrenoAvenida aux;
 		int[] qntdCasas = new int[tabuleiro.tabuleiro.length];
 		for(int i=0; i < tabuleiro.tabuleiro.length; i++) {
-			aux = (TerrenoAvenida)tabuleiro.getTerreno(i);
-			qntdCasas[i] = aux.getCasas();
+			if(tabuleiro.getTipoTerreno(i) == 0) { // terreno neutro
+				aux = (TerrenoAvenida)tabuleiro.getTerreno(i);
+				qntdCasas[i] = aux.getCasas();
+			}
+			else {
+				qntdCasas[i] = 0;
+			}
 		}
 		return qntdCasas;
 	}

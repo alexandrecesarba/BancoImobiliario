@@ -99,7 +99,6 @@ public class GameManager extends Observable{
 		this.rank = gameState.getRanking(state);
 		this.feedback = gameState.getFeedback(state);
 		this.banco = gameState.getBanco(state);
-		// THIS MODEL = FAZER FCS PRA RECEBER AS INFOS
 		notifyObservers();
 		
 	}
