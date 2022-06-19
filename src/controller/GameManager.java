@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.JFileChooser;
+
 import model.FacadeModel;
 import view.Observer;
 
@@ -55,10 +57,12 @@ public class GameManager extends Observable{
 		return instance;
 	}
 	
-	public static void setManager(GameManager gm,Observer o,int n_jogadores) {
+	public static void setManager(GameManager gm,Observer o,int n_jogadores, boolean novoJogo) {
 		gm.attach(o);
 		gm.jogadores = n_jogadores;
-		gm.initGame();
+		if(novoJogo) {
+			gm.initGame();
+		}
 	}
 	
 	public void initGame() { // NEEDS TO CHANGE CALLING FOR WHEN LOADING GAME
@@ -73,21 +77,42 @@ public class GameManager extends Observable{
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void loadGame() {
+		System.out.println(state);
 		this.model = new FacadeModel(jogadores);
 		this.jogadores = gameState.getNJogadores(state);
 		this.ordemRodada = new int[jogadores];
+		this.posJogadores = new int[jogadores];
+		this.dinheiroJogadores = new int[jogadores];
+		this.jogadoresPresos = new boolean[jogadores];
+		this.temHotelPropriedades= new boolean[model.getTabuleiroLength()];
+		this.qtdCasasPropriedade = new int[model.getTabuleiroLength()];
+		this.propriedadesJogadores = new ArrayList[jogadores];
+		
 		for(int i=0; i < jogadores; i++) {
 			this.ordemRodada[i] = i;
 			this.posJogadores[i] = gameState.getPosJogador(state, i);
 			this.dinheiroJogadores[i] = gameState.getDinheiroJogador(state,i);
-			this.propriedadesJogadores[i].add(gameState.getPropriedadesJogadores(state, i));
 			this.jogadoresPresos[i] = gameState.getEstadoPresoJogador(state, i);
+			this.propriedadesJogadores[i] = new ArrayList<String>();
+			
+			if(!gameState.getPropriedadesJogadores(state, i).equals("")) {
+				String[] aux = gameState.getPropriedadesJogadores(state, i).split(",");
+				for(String s: aux) {
+					s = s.replace("[", "");
+					s = s.replace("]", "");
+					this.propriedadesJogadores[i].add(s);	
+				}	
+			}else {
+				this.propriedadesJogadores[i].add("");
+			}
 		}
 		for(int i=0; i < model.getTabuleiroLength(); i++) {
 			this.qtdCasasPropriedade[i] = gameState.getQntdCasasPropriedades(state, i);
 			this.temHotelPropriedades[i] = gameState.getHotelPropriedades(state, i);
 		}
+		
 		this.jogadorDaVez = gameState.getJogadorDaVez(state);
 		this.dados = gameState.getDados(state);
 		this.nomeTerrenoAtual = gameState.getNomeTerreno(state);
@@ -385,18 +410,19 @@ public class GameManager extends Observable{
 				this.feedback = completeFeedback(jogadorDaVez, " tirou OUTRA DUPLA! Rode o dado DE NOVO.");
 				notifyObservers();
 			}
-			if(this.qtdDuplasNoDado == 3) {
+			else if(this.qtdDuplasNoDado == 3) {
 				this.feedback = completeFeedback(jogadorDaVez, " tirou TRES DUPLAS SEGUIDAS! Com certeza ta roubando, TEJE PRESO!");
 				model.mudaPrisãoJogador(jogadorDaVez);
 				model.resetPosicaoJogador(jogadorDaVez, 10);
 				this.jogadoresPresos = model.atualizaJogadoresPresos();
 				this.posJogadores = model.atualizaPosJogadores();
-				this.podeJogar = true;
-				notifyObservers();
+				this.encerraRodada();
 			}
 		}
-		else { this.podeJogar = true;}
-			jogadorMoveu(this.dados[0]+this.dados[1]);
+		else { 
+			this.podeJogar = true;
+		}
+		jogadorMoveu(this.dados[0]+this.dados[1]);
 	}
 
 	
@@ -517,7 +543,7 @@ public class GameManager extends Observable{
 //			}
 //		}
 		notifyObservers();
-		salvaJogo();
+		autoSave();
 	}
 	
 	public void encerraJogo() {
@@ -565,10 +591,16 @@ public class GameManager extends Observable{
 	}
 	
 	public void salvaJogo() {
+		JFileChooser fileChooser = new JFileChooser();
+        int fcResponse = fileChooser.showSaveDialog(null);
+        String fPath = "";
         try {
-            File saveFile = new File ("saveBI.txt");
-            if(saveFile.createNewFile()) {
-                System.out.println("Arquivo de save criado com sucesso");
+            if(fcResponse == JFileChooser.APPROVE_OPTION) {
+            	fPath = fileChooser.getSelectedFile().getAbsolutePath();
+            	File saveFile = new File(fPath);
+            	if(saveFile.createNewFile()) {
+                    System.out.println("Arquivo de save criado com sucesso");
+                }
             }
             }catch (IOException e) {
                 System.out.println("Erro na criacao do arquivo de save");
@@ -576,10 +608,8 @@ public class GameManager extends Observable{
         }
         
         try {
-            FileWriter escriba = new FileWriter("save.txt");
-            //Escrever infos aqui:
+            FileWriter escriba = new FileWriter(fPath);
             escriba.write(this.state);
-            //--------------------
             escriba.close();
             System.out.println("Jogo salvo com sucesso!");
         }catch(IOException e) {
@@ -587,23 +617,50 @@ public class GameManager extends Observable{
             e.printStackTrace();
         }
     }
+	
+	public void autoSave() {
+		try {
+            File saveFile = new File ("auto_save.txt");
+            if(saveFile.createNewFile()) {
+                System.out.println("Arquivo de auto save criado com sucesso");
+            }
+            }catch (IOException e) {
+                System.out.println("Erro na criacao do arquivo de auto save");
+                e.printStackTrace();
+        }
+        
+        try {
+            FileWriter escriba = new FileWriter("auto_save.txt");
+            escriba.write(this.state);
+            escriba.close();
+            System.out.println("Auto save bem sucedido");
+        }catch(IOException e) {
+            System.out.println("Erro no auto save");
+            e.printStackTrace();
+        }
+	}
     
     public void carregaJogo() {
+    	JFileChooser fileChooser = new JFileChooser();
+        int fcResponse = fileChooser.showOpenDialog(null);
+        String fPath = "";
         try {
-            File saveFile = new File("save.txt");
-            Scanner leitor = new Scanner(saveFile);
-            this.state = "";
-            while(leitor.hasNextLine()) {
-                this.state = state.concat(leitor.nextLine());
-            }
-            leitor.close();
+        	if(fcResponse == JFileChooser.APPROVE_OPTION) {
+        		fPath = fileChooser.getSelectedFile().getAbsolutePath();
+        		File saveFile = new File(fPath);
+                Scanner leitor = new Scanner(saveFile);
+                this.state = "";
+                while(leitor.hasNextLine()) {
+                    this.state = state.concat(leitor.nextLine()+ "\n");
+                }
+                leitor.close();
+        	}
         }catch(FileNotFoundException e) {
             System.out.println("Arquivo nao encontrado.");
             e.printStackTrace();
         }
         loadGame();
     }
-
 	
 }
 

@@ -121,7 +121,7 @@ public class GameState {
 			this.myInt = Integer.valueOf(i);
 			this.aux2 = myInt.toString();
 		
-			state = state.concat("temHotel"+aux2+" "+String.valueOf(temHotelPropriedades[i])+" endOfHotel\n");
+			state = state.concat("temHotel"+aux2+" "+String.valueOf(temHotelPropriedades[i])+" endOfHotel"+aux2+"\n");
 		}
 		
 		
@@ -141,7 +141,7 @@ public class GameState {
 	}
 	
 	public int getNJogadores(String state) {
-		aux = state.substring(state.indexOf("endOfFeedback") + 14,state.indexOf("endOfFeedback") + 15);
+		aux = state.substring(state.indexOf("endOfFeedback") + 13,state.indexOf("endOfFeedback") + 15);
 		aux = aux.trim();
 		return Integer.parseInt(aux);
 	}
@@ -234,7 +234,7 @@ public class GameState {
 	public boolean getHotelPropriedades(String state, int pos) {
 		this.myInt = Integer.valueOf(pos);
 		this.aux2 = myInt.toString();
-		aux = state.substring(state.indexOf("temHotel"+aux2+" ") + 10, state.indexOf("endOfHotel"));
+		aux = state.substring(state.indexOf("temHotel"+aux2+" ") + 10, state.indexOf("endOfHotel"+aux2));
 		aux = aux.trim();
 		return Boolean.valueOf(aux);
 	}

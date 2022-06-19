@@ -36,8 +36,9 @@ public class ViewController extends Observer{
 		return instance;
 	}
 	
-	void initJogadores(int n) {
-		GameManager.setManager(manager,this,n);
+	void initJogo(int n, boolean novoJogo) {
+		GameManager.setManager(manager,this,n, novoJogo);
+		this.update();
 	}
 	
 	void encerraJogo() {
@@ -64,6 +65,8 @@ public class ViewController extends Observer{
 		manager.carregaJogo();
 	}
 	
+	void carregaInfo() {
+	}
 	
 	String rodaDados() {
 		manager.rodaDados(2);
@@ -121,32 +124,34 @@ public class ViewController extends Observer{
 		int pos = manager.gameState.getPosJogador(state, jogador);
 		int[] posJogador = {-1,-1};
 		if(pos >= 0 && pos <= 10 ) { // y fixo x móvel mX = 7 e mY=13
-			this.multiplicadorPosX = 7;
-			this.multiplicadorPosY = 13;
+//			this.multiplicadorPosX = 7;
+//			this.multiplicadorPosY = 13;
+			this.multiplicadorPosX = 3;
+			this.multiplicadorPosY = 3;
 			posJogador[0] = posXTabuleiro[pos];				
 			posJogador[1] = posYTabuleiro[0];
 		}
 		else if(pos >= 10 && pos <= 20 ) {
-			System.out.println("pos >= 10 && pos <= 20");
-			System.out.println(pos-10);
-			this.multiplicadorPosX = 13;
-			this.multiplicadorPosY = 7;
+//			this.multiplicadorPosX = 13;
+//			this.multiplicadorPosY = 7;
+			this.multiplicadorPosX = 3;
+			this.multiplicadorPosY = 3;
 			posJogador[0] = posXTabuleiro[10];			
 			posJogador[1] = posYTabuleiro[pos-10];
 		}
 		else if(pos >= 20 && pos <= 30 ) {
-			System.out.println("pos >= 20 && pos <= 30");
-			System.out.println(20-pos);
-			this.multiplicadorPosX = 13;
-			this.multiplicadorPosY = 7;
+//			this.multiplicadorPosX = 13;
+//			this.multiplicadorPosY = 7;
+			this.multiplicadorPosX = 3;
+			this.multiplicadorPosY = 3;
 			posJogador[0] = posXTabuleiro[10-(pos-20)];		
 			posJogador[1] = posYTabuleiro[10];
 		}
 		else {
-			this.multiplicadorPosX = 13;
-			this.multiplicadorPosY = 7;
-			System.out.println("pos >= 30 && pos <= 40");
-			System.out.println(pos-30);
+//			this.multiplicadorPosX = 13;
+//			this.multiplicadorPosY = 7;
+			this.multiplicadorPosX = 3;
+			this.multiplicadorPosY = 3;
 			posJogador[0] = posXTabuleiro[0];				
 			posJogador[1] = posYTabuleiro[10-(pos-30)];
 		}

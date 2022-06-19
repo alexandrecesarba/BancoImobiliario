@@ -31,7 +31,7 @@ public class JanelaInicial extends JFrame implements ActionListener{
 				qtdJogadores = Integer.parseInt(inputQtdJogadores.getText());
 				try {
 					if(qtdJogadores >= 3 && qtdJogadores <= 6) {
-						Tabuleiro frame = new Tabuleiro(qtdJogadores);
+						Tabuleiro frame = new Tabuleiro(qtdJogadores, true);
 						frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 						frame.setVisible(true);
 					}
@@ -52,6 +52,9 @@ public class JanelaInicial extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == carregarJogo) {
 			view.carregaJogo();
+			Tabuleiro frame = new Tabuleiro(qtdJogadores, false);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setVisible(true);
 		}
 		
 	}

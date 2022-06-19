@@ -74,12 +74,12 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		}
 	}
 	
-	Tabuleiro(int n) {
+	Tabuleiro(int n, boolean novoJogo) {
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLayout(null);
 		this.n_jogadores = n;
-		view.initJogadores(n_jogadores);
+		view.initJogo(n_jogadores, novoJogo);
 		
 		//posicao dos dados
 		dado1.setBounds(360,590,45,45);
@@ -261,8 +261,8 @@ public class Tabuleiro extends JFrame implements ActionListener{
 		}
 		for(int i=0; i< this.n_jogadores; i++) {
 			g2D.drawImage(view.getImageJogador(i), 
-					view.getPosJogador(i)[0],// + (view.multiplicadorPosX*i), 
-					view.getPosJogador(i)[1],// + (view.multiplicadorPosY*i), 
+					view.getPosJogador(i)[0] + (view.multiplicadorPosX*i), 
+					view.getPosJogador(i)[1] + (view.multiplicadorPosY*i), 
 					view.widthJogador, view.heightJogador,null);
 		}
 		if(terrenoImagem != null) {
@@ -337,7 +337,7 @@ public class Tabuleiro extends JFrame implements ActionListener{
 			this.setImagesBaralho();
 		}
 		else if(e.getSource() == encerrarJogo) {
-			// to be implemented
+			view.encerraJogo();
 		}
 		else if(e.getSource() == cartaSorte) {
 			this.remove(cartaSorte);
