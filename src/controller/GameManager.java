@@ -333,7 +333,7 @@ public class GameManager extends Observable{
 		}
 		else if(efeitoCarta == 0) {
 			this.feedback = completeFeedback(jogadorDaVez," conseguiu a carta de saida livre da prisao! Guarde-a para emergencias");
-			model.mudaEstadoCartaLivreDaPrisão(jogadorDaVez);
+			model.mudaEstadoCartaLivreDaPrisao(jogadorDaVez);
 		}
 		else if(efeitoCarta == 1) {
 			this.feedback = completeFeedback(jogadorDaVez, " descolou 50 de cada jogador, podem ir passando.");
@@ -375,7 +375,7 @@ public class GameManager extends Observable{
 			if(model.temCartaLivreDaPrisão(jogadorDaVez)) {
 				this.feedback = model.getNomeJogador(jogadorDaVez);
 				this.feedback = this.feedback.concat(" esta preso, mas usou sua carta de saida!");
-				model.mudaEstadoCartaLivreDaPrisão(jogadorDaVez);
+				model.mudaEstadoCartaLivreDaPrisao(jogadorDaVez);
 				model.mudaPrisãoJogador(jogadorDaVez);
 				model.atualizaJogadoresPresos();
 				encerraRodada();
@@ -438,7 +438,7 @@ public class GameManager extends Observable{
 				// se der tempo, tornar este uso opcional
 				this.feedback = model.getNomeJogador(jogadorDaVez);
 				this.feedback = this.feedback.concat(" esta preso, mas usou sua carta de saida!");
-				model.mudaEstadoCartaLivreDaPrisão(jogadorDaVez);
+				model.mudaEstadoCartaLivreDaPrisao(jogadorDaVez);
 				model.mudaPrisãoJogador(jogadorDaVez);
 				model.atualizaJogadoresPresos();
 				encerraRodada();
