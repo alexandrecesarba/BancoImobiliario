@@ -88,19 +88,19 @@ public class Tabuleiro extends JFrame implements ActionListener{
 			this.n_jogadores = view.getNJogadores();
 		}
 		//posicao dos dados
-		dado1.setBounds(360,590,45,45);
-		dado2.setBounds(400,590,45,45);
-		dado3.setBounds(440,590,45,45);
-		dado4.setBounds(360,630,45,45);
-		dado5.setBounds(400,630,45,45);
-		dado6.setBounds(440,630,45,45);
+		dado1.setBounds(360,590,40,40);
+		dado2.setBounds(400,590,40,40);
+		dado3.setBounds(440,590,40,40);
+		dado4.setBounds(360,630,40,40);
+		dado5.setBounds(400,630,40,40);
+		dado6.setBounds(440,630,40,40);
 		
-		rdado1.setBounds(480,590,45,45);
-		rdado2.setBounds(520,590,45,45);
-		rdado3.setBounds(560,590,45,45);
-		rdado4.setBounds(480,630,45,45);
-		rdado5.setBounds(520,630,45,45);
-		rdado6.setBounds(560,630,45,45);
+		rdado1.setBounds(480,590,40,40);
+		rdado2.setBounds(520,590,40,40);
+		rdado3.setBounds(560,590,40,40);
+		rdado4.setBounds(480,630,40,40);
+		rdado5.setBounds(520,630,40,40);
+		rdado6.setBounds(560,630,40,40);
 	
 		
 		baralhoSorte.setBounds(140,220,100,150);

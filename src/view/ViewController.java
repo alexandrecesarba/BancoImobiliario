@@ -124,8 +124,6 @@ public class ViewController extends Observer{
 	
 	int[] getPosJogador(int jogador) {
 		int pos = manager.gameState.getPosJogador(state, jogador);
-		System.out.println("getPosJogador");
-		System.out.println(pos);
 		int[] posJogador = {-1,-1};
 		if(pos >= 0 && pos <= 10 ) { // y fixo x móvel mX = 7 e mY=13
 //			this.multiplicadorPosX = 7;
