@@ -48,6 +48,7 @@ public class GameManager extends Observable{
 	private int[] ordemRodada;
 	private boolean podeJogar = true;
 	private boolean jogadorIndeciso = false;
+	private int total_dados=0;
 
 
 	private GameManager() {
@@ -79,7 +80,6 @@ public class GameManager extends Observable{
 	
 	@SuppressWarnings("unchecked")
 	public void loadGame() {
-//		System.out.println(state);
 		this.model = new FacadeModel(jogadores);
 		this.jogadores = gameState.getNJogadores(state);
 		this.ordemRodada = new int[jogadores];
@@ -121,7 +121,6 @@ public class GameManager extends Observable{
 		this.cartaSaidaLivreDaPrisao = gameState.getJogadorComCartaSaiaLivre(state); // nenhum jogador a possui
 		this.cartaSorte = gameState.getCarta(state);
 		this.banco = gameState.getBanco(state);
-		this.rank = gameState.getRanking(state);
 		this.feedback = gameState.getFeedback(state);
 		this.banco = gameState.getBanco(state);
 		this.model.loadGameInfo(this.dinheiroJogadores,this.posJogadores,this.propriedadesJogadores,this.jogadoresPresos,this.qtdCasasPropriedade, this.temHotelPropriedades,this.cartaSaidaLivreDaPrisao);
@@ -133,9 +132,7 @@ public class GameManager extends Observable{
 		int pos = model.jogadorAndou(jogadorDaVez, casas);
 		this.tipoTerrenoAtual = model.getTipoTerreno(pos);
 		if(this.tipoTerrenoAtual != 2) {
-			System.out.println("ENTROU NO IF");
 			this.nomeTerrenoAtual = model.getNomeTerreno(pos);
-			System.out.println(this.nomeTerrenoAtual);
 		}
 		else {
 			this.nomeTerrenoAtual = "neutro";
@@ -188,7 +185,10 @@ public class GameManager extends Observable{
 	
 	public void construirNoTerreno(int tipoConstrucao) {
 		int pos = this.posJogadores[jogadorDaVez];
-//		int tipoTerreno = model.getTipoTerreno(pos); para talvez feedback melhores, mas desnecessario
+		if(this.tipoTerrenoAtual !=1) {
+			this.feedback = completeFeedback(jogadorDaVez, ", nao pode construir aqui!!!!");
+			notifyObservers();
+		}
 		int dono = model.getDonoTerreno(pos); 
 		if(dono != jogadorDaVez) {
 			this.feedback = completeFeedback(jogadorDaVez, " esse terreno nao e seu, seu doido." );
@@ -246,9 +246,8 @@ public class GameManager extends Observable{
 			}
 			else {
 				this.feedback = completeFeedback(jogadorDaVez,", "+model.getNomeTerreno(pos) + " pertence a " + model.getNomeJogador(dono) + ". Vamos descontar o aluguel, ok?");
-				rodaDados(1);
-				model.transacaoJogador(jogadorDaVez, -model.getAluguelTerreno(pos)*this.dados[0]);
-				model.transacaoJogador(dono, model.getAluguelTerreno(pos)*this.dados[0]); 
+				model.transacaoJogador(jogadorDaVez, -model.getAluguelTerreno(pos));
+				model.transacaoJogador(dono, model.getAluguelTerreno(pos)); 
 				this.dinheiroJogadores = model.atualizaDinheiroJogadores();
 				model.checaEstadoJogador(jogadorDaVez);// se o jogador falir com essa operacao, este caso nao esta sendo tratado
 				encerraRodada();
@@ -271,9 +270,9 @@ public class GameManager extends Observable{
 			}
 			else {
 				this.feedback = completeFeedback(jogadorDaVez, " essa companhia pertence a " + model.getNomeJogador(dono) + ". Vamos descontar o aluguel multiplicado pelo resultado do dado da esquerda, ok?");
-				rodaDados(1);
-				model.transacaoJogador(jogadorDaVez, -model.getAluguelTerreno(pos)*this.dados[0]);
-				model.transacaoJogador(dono, model.getAluguelTerreno(pos)*this.dados[0]); 
+				rodaDados();
+				model.transacaoJogador(jogadorDaVez, -model.getAluguelTerreno(pos)*(this.dados[0]+this.dados[1]));
+				model.transacaoJogador(dono, model.getAluguelTerreno(pos)*(this.dados[0]+this.dados[1])); 
 				this.dinheiroJogadores = model.atualizaDinheiroJogadores();
 				model.checaEstadoJogador(jogadorDaVez);// se o jogador falir com essa operacao, este caso nao esta sendo tratado
 				encerraRodada();
@@ -357,6 +356,7 @@ public class GameManager extends Observable{
 			model.transacaoJogador(jogadorDaVez, efeitoCarta);
 			this.dinheiroJogadores = model.atualizaDinheiroJogadores();
 			model.checaEstadoJogador(jogadorDaVez);
+			notifyObservers();
 		}
 		this.jogadorIndeciso = false;
 		notifyObservers();
@@ -370,9 +370,11 @@ public class GameManager extends Observable{
 //	
 	
 	public void setaDados(int dado1, int dado2) {
-		this.dados = new int[]{dado1,dado2};
+		this.dados[0] = dado1;
+		this.dados[1] = dado2;
 		if(tentativaSairDaPrisao) {
 			if(model.temCartaLivreDaPrisão(jogadorDaVez)) {
+				// se der tempo, tornar este uso opcional
 				this.feedback = model.getNomeJogador(jogadorDaVez);
 				this.feedback = this.feedback.concat(" esta preso, mas usou sua carta de saida!");
 				model.mudaEstadoCartaLivreDaPrisão(jogadorDaVez);
@@ -403,12 +405,15 @@ public class GameManager extends Observable{
 		}
 		if(this.dados[0]==this.dados[1]) {
 			this.qtdDuplasNoDado++;
+			this.total_dados += this.dados[0]+this.dados[1];
+			System.out.println(qtdDuplasNoDado);
+			System.out.println(dado1);
+			System.out.println(dado2);
+			System.out.println(this.podeJogar);
 			this.feedback = completeFeedback(jogadorDaVez, " tirou uma dupla! Rode o dado novamente.");
 			this.podeJogar = false;
-			notifyObservers();
 			if(this.qtdDuplasNoDado == 2) {
 				this.feedback = completeFeedback(jogadorDaVez, " tirou OUTRA DUPLA! Rode o dado DE NOVO.");
-				notifyObservers();
 			}
 			else if(this.qtdDuplasNoDado == 3) {
 				this.feedback = completeFeedback(jogadorDaVez, " tirou TRES DUPLAS SEGUIDAS! Com certeza ta roubando, TEJE PRESO!");
@@ -416,14 +421,20 @@ public class GameManager extends Observable{
 				model.resetPosicaoJogador(jogadorDaVez, 10);
 				this.jogadoresPresos = model.atualizaJogadoresPresos();
 				this.posJogadores = model.atualizaPosJogadores();
-				this.encerraRodada();
+				this.podeJogar = true;
+				notifyObservers();
+				encerraRodada();
 			}
 		}
-		else { 
+		else {
+			this.total_dados += this.dados[0]+this.dados[1];
 			this.podeJogar = true;
+			notifyObservers();
+			jogadorMoveu(total_dados);
 		}
-		jogadorMoveu(this.dados[0]+this.dados[1]);
+		notifyObservers();
 	}
+
 
 	
 	
@@ -432,7 +443,7 @@ public class GameManager extends Observable{
 	
 	
 	
-	public void rodaDados(int x) {
+	public void rodaDados() {
 		if(tentativaSairDaPrisao) {
 			if(model.temCartaLivreDaPrisão(jogadorDaVez)) {
 				// se der tempo, tornar este uso opcional
@@ -460,39 +471,35 @@ public class GameManager extends Observable{
 				}
 			}
 		}
-		if(x==2) {
-			if(jogadorIndeciso) {
+		if(jogadorIndeciso) {
 //			Integer myInt = Integer.valueOf(model.getPrecoTerreno(this.posJogadores[jogadorDaVez]));
 //			String aux = myInt.toString();					
 //			this.feedback = completeFeedback(jogadorDaVez, " ainda nao se decidiu se quer ou nao comprar " + this.model.getNomeTerreno(this.posJogadores[jogadorDaVez])+". O custo é de "+aux+".");
-				this.feedback = completeFeedback(jogadorDaVez, " ainda nao terminou de jogar!!");
+			this.feedback = completeFeedback(jogadorDaVez, " ainda nao terminou de jogar!!");
+			notifyObservers();
+			return;	
+		}
+		this.dados = model.getDados();
+		if(this.dados[0]==this.dados[1]) {
+			this.qtdDuplasNoDado++;
+			this.feedback = completeFeedback(jogadorDaVez, " tirou uma dupla! Rode o dado novamente.");
+			this.podeJogar = false;
+			if(this.qtdDuplasNoDado == 2) {
+				this.feedback = completeFeedback(jogadorDaVez, " tirou OUTRA DUPLA! Rode o dado DE NOVO.");
+			}
+			if(this.qtdDuplasNoDado == 3) {
+				this.feedback = completeFeedback(jogadorDaVez, " tirou TRES DUPLAS SEGUIDAS! Com certeza ta roubando, TEJE PRESO!");
+				model.mudaPrisãoJogador(jogadorDaVez);
+				model.resetPosicaoJogador(jogadorDaVez, 10);
+				this.jogadoresPresos = model.atualizaJogadoresPresos();
+				this.posJogadores = model.atualizaPosJogadores();
+				this.podeJogar = true;
 				notifyObservers();
-				return;	
 			}
-			this.dados = model.getDados();
-			if(this.dados[0]==this.dados[1]) {
-				this.qtdDuplasNoDado++;
-				this.feedback = completeFeedback(jogadorDaVez, " tirou uma dupla! Rode o dado novamente.");
-				this.podeJogar = false;
-				if(this.qtdDuplasNoDado == 2) {
-					this.feedback = completeFeedback(jogadorDaVez, " tirou OUTRA DUPLA! Rode o dado DE NOVO.");
-				}
-				if(this.qtdDuplasNoDado == 3) {
-					this.feedback = completeFeedback(jogadorDaVez, " tirou TRES DUPLAS SEGUIDAS! Com certeza ta roubando, TEJE PRESO!");
-					model.mudaPrisãoJogador(jogadorDaVez);
-					model.resetPosicaoJogador(jogadorDaVez, 10);
-					this.jogadoresPresos = model.atualizaJogadoresPresos();
-					this.posJogadores = model.atualizaPosJogadores();
-					this.podeJogar = true;
-					notifyObservers();
-				}
-			}
-			else { this.podeJogar = true;}
-				jogadorMoveu(this.dados[0]+this.dados[1]);
 		}
-		if(x == 1) {
-			this.dados = model.getDados(); // para evitar bug
-		}
+		else { this.podeJogar = true;}
+			jogadorMoveu(this.dados[0]+this.dados[1]);
+		this.dados = model.getDados(); // para evitar bug
 	}
 	
 	
@@ -501,6 +508,7 @@ public class GameManager extends Observable{
 	
 	
 	void encerraRodada() {
+		this.total_dados = 0;
 		if(model.jogoContinua()) {
 			encerraJogo();
 		}
@@ -533,9 +541,10 @@ public class GameManager extends Observable{
 	}
 	
 	public void encerraJogo() {
+		System.out.println("ENCERRADOOOOOOOO");
 		this.rank = model.ranking();
-		this.feedback = "Jogo encerrado! O ranking final: ";
-		this.feedback = this.feedback.concat(gameState.getRanking(state));
+		this.feedback = "Jogo encerrado! O ranking final: \n";
+		this.feedback = this.feedback.concat(this.rank);
 		notifyObservers();	
 	}
 	
@@ -597,7 +606,7 @@ public class GameManager extends Observable{
 		this.state = this.gameState.setState(this.feedback, this.jogadores, this.posJogadores, this.dinheiroJogadores, 
 				this.propriedadesJogadores, this.jogadoresPresos,this.jogadorDaVez, this.nomeTerrenoAtual, this.tipoTerrenoAtual, this.dados, 
 				this.qtdDuplasNoDado, this.cartaSorte, 	this.qtdCasasPropriedade,this.temHotelPropriedades,
-				this.cartaSaidaLivreDaPrisao,this.banco, this.rank);
+				this.cartaSaidaLivreDaPrisao,this.banco);//, this.rank);
 	}
 	
 	public void salvaJogo() {

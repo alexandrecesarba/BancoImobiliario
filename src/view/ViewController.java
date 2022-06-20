@@ -73,7 +73,7 @@ public class ViewController extends Observer{
 	}
 	
 	String rodaDados() {
-		manager.rodaDados(2);
+		manager.rodaDados();
 		resultadoDados = manager.gameState.getDados(state);
 		Integer myInt1 = Integer.valueOf(resultadoDados[0]);
 		String s1 = myInt1.toString();

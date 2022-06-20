@@ -122,10 +122,10 @@ public class FacadeModel {
 		String rank = "";
 		for(int i=0; i < jogadores.length-1; i++) {
 			if(jogadores[i].getDinheiro() >= jogadores[i+1].getDinheiro()) {
-				rank.concat(jogadores[i].getNome()+ " ");
+				rank = rank.concat(jogadores[i].getNome()+"\n");
 			}
 			else {
-				rank.concat(jogadores[i+1].getNome()+ " ");
+				rank = rank.concat(jogadores[i+1].getNome()+"\n");
 			}
 		}
 		return rank;

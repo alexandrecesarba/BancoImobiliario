@@ -44,7 +44,7 @@ public class GameState {
 	String setState(String gameFeedback,int n_jogadores, int[] posJ, int[] dinheiroJ, ArrayList<String>[] propriedadesJ, 
 			boolean[] jogadorPreso,int jogadorDaVez, String nomeTerrenoAtual, int tipoTerrenoAtual,int[] dados, 
 			int qtdDuplasNoDado, int cartaSorte, int[] qtdCasasPropriedade, boolean[] temHotelPropriedades,
-			int cartaSaidaLivreDaPrisao,int banco, String rank) {
+			int cartaSaidaLivreDaPrisao,int banco) {  //,String rank) {
 		
 		String state = gameFeedback;
 		state = state.concat("endOfFeedback\n");
@@ -130,8 +130,7 @@ public class GameState {
 		
 		state = state.concat("banco "+aux+" endOfbanco\n");
 		
-		state = state.concat("ranking "+rank+"\n");
-		System.out.println(state);
+//		System.out.println(state);
 		return state;
 		
 	}
@@ -244,12 +243,5 @@ public class GameState {
 		aux = aux.trim();
 		return Integer.parseInt(aux);
 	}
-	
-	public String getRanking(String state) {
-		aux = state.substring(state.indexOf("ranking ") + 8);
-		aux = aux.trim();
-		return aux;
-	}
-	
 	
 }
