@@ -139,7 +139,7 @@ public class FacadeModel {
 		return jogadores[jogadorDaVez].getCor().toString();
 	}
 	
-	public void mudaEstadoCartaLivreDaPrisão(int jogadorDaVez) {
+	public void mudaEstadoCartaLivreDaPrisao(int jogadorDaVez) {
 		jogadores[jogadorDaVez].mudaEstadoCartaSaiaPrisao();
 		if(jogadores[jogadorDaVez].temCartaSaiaPrisao) {
 			baralhoSorte.removeCartaLivrePrisao();
@@ -277,7 +277,7 @@ public class FacadeModel {
 	public void loadGameInfo(int[] dinheiroJogadores,int[] posJogadores,ArrayList<String>[] propriedadesJogadores, boolean[] jogadoresPresos,
 			int[] qtdCasasPropriedade, boolean[] temHotelPropriedades,int cartaSaidaLivreDaPrisao) {
 		if(cartaSaidaLivreDaPrisao != -1) {
-			mudaEstadoCartaLivreDaPrisão(cartaSaidaLivreDaPrisao);
+			mudaEstadoCartaLivreDaPrisao(cartaSaidaLivreDaPrisao);
 		}
 		for(int i=0; i < jogadores.length; i++) {
 			jogadores[i].resetDinheiro(dinheiroJogadores[i]);

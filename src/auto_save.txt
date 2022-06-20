@@ -1,0 +1,106 @@
+Jogador 0 tirou TRES DUPLAS SEGUIDAS! Com certeza ta roubando, TEJE PRESO!
+SUA COR É vermelho
+SEU DINHEIRO É 4000
+SUAS PROPRIEDADES:[]
+BANCO: 200000
+NUM DE CASAS NO TERRENO ATUAL: 0
+NÃO HÁ HOTEL NESTE TERRENO.
+ALUGUEL: 4endOfFeedback
+4
+pos0 10dinheiro0 4000propriedades0 [] 
+preso0 true 
+pos1 0dinheiro1 4000propriedades1 [] 
+preso1 false 
+pos2 0dinheiro2 4000propriedades2 [] 
+preso2 false 
+pos3 0dinheiro3 4000propriedades3 [] 
+preso3 false 
+jogadorDaVez 1
+nomeTerrenoAtual Av. Nossa S. de CopacabanaendOfNome
+tipoTerrenoAtual 0
+dados 11 
+qtdDuplasNoDado 0 
+carta -1 
+jogadorComSaidaLivre -1 
+qntdCasasTerreno0 0 
+qntdCasasTerreno1 0 
+qntdCasasTerreno2 0 
+qntdCasasTerreno3 0 
+qntdCasasTerreno4 0 
+qntdCasasTerreno5 0 
+qntdCasasTerreno6 0 
+qntdCasasTerreno7 0 
+qntdCasasTerreno8 0 
+qntdCasasTerreno9 0 
+qntdCasasTerreno10 0 
+qntdCasasTerreno11 0 
+qntdCasasTerreno12 0 
+qntdCasasTerreno13 0 
+qntdCasasTerreno14 0 
+qntdCasasTerreno15 0 
+qntdCasasTerreno16 0 
+qntdCasasTerreno17 0 
+qntdCasasTerreno18 0 
+qntdCasasTerreno19 0 
+qntdCasasTerreno20 0 
+qntdCasasTerreno21 0 
+qntdCasasTerreno22 0 
+qntdCasasTerreno23 0 
+qntdCasasTerreno24 0 
+qntdCasasTerreno25 0 
+qntdCasasTerreno26 0 
+qntdCasasTerreno27 0 
+qntdCasasTerreno28 0 
+qntdCasasTerreno29 0 
+qntdCasasTerreno30 0 
+qntdCasasTerreno31 0 
+qntdCasasTerreno32 0 
+qntdCasasTerreno33 0 
+qntdCasasTerreno34 0 
+qntdCasasTerreno35 0 
+qntdCasasTerreno36 0 
+qntdCasasTerreno37 0 
+qntdCasasTerreno38 0 
+qntdCasasTerreno39 0 
+temHotel0 false endOfHotel0
+temHotel1 false endOfHotel1
+temHotel2 false endOfHotel2
+temHotel3 false endOfHotel3
+temHotel4 false endOfHotel4
+temHotel5 false endOfHotel5
+temHotel6 false endOfHotel6
+temHotel7 false endOfHotel7
+temHotel8 false endOfHotel8
+temHotel9 false endOfHotel9
+temHotel10 false endOfHotel10
+temHotel11 false endOfHotel11
+temHotel12 false endOfHotel12
+temHotel13 false endOfHotel13
+temHotel14 false endOfHotel14
+temHotel15 false endOfHotel15
+temHotel16 false endOfHotel16
+temHotel17 false endOfHotel17
+temHotel18 false endOfHotel18
+temHotel19 false endOfHotel19
+temHotel20 false endOfHotel20
+temHotel21 false endOfHotel21
+temHotel22 false endOfHotel22
+temHotel23 false endOfHotel23
+temHotel24 false endOfHotel24
+temHotel25 false endOfHotel25
+temHotel26 false endOfHotel26
+temHotel27 false endOfHotel27
+temHotel28 false endOfHotel28
+temHotel29 false endOfHotel29
+temHotel30 false endOfHotel30
+temHotel31 false endOfHotel31
+temHotel32 false endOfHotel32
+temHotel33 false endOfHotel33
+temHotel34 false endOfHotel34
+temHotel35 false endOfHotel35
+temHotel36 false endOfHotel36
+temHotel37 false endOfHotel37
+temHotel38 false endOfHotel38
+temHotel39 false endOfHotel39
+banco 200000 endOfbanco
+ranking 
